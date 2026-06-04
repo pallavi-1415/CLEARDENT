@@ -373,11 +373,11 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
         newErrors.name = 'Name must be at least 2 characters';
       }
       
-      const phoneRegex = /^(\+\d{1,3}[- ]?)?\d{10}$/; // Basic 10 digit + optional country code
+      const phoneRegex = /^\d{10}$/;
       if (!patientPhone.trim()) {
         newErrors.phone = 'Phone number is required';
-      } else if (!phoneRegex.test(patientPhone.replace(/[\s-]/g, ''))) {
-        newErrors.phone = 'Please enter a valid 10-digit phone number';
+      } else if (!phoneRegex.test(patientPhone)) {
+        newErrors.phone = 'Please enter exactly 10 digits';
       }
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -855,7 +855,20 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                       </div>
                       <div className="bm-input-wrap">
                         <span className="bm-label">Phone Number</span>
-                        <input className={`bm-input ${errors.phone ? 'error' : ''}`} type="tel" placeholder="+91 98765 43210" value={patientPhone} onChange={(e) => { setPatientPhone(e.target.value); setErrors(prev => ({...prev, phone: null})); }} />
+                        <input 
+                          className={`bm-input ${errors.phone ? 'error' : ''}`} 
+                          type="tel" 
+                          placeholder="9876543210" 
+                          maxLength={10}
+                          value={patientPhone} 
+                          onChange={(e) => { 
+                            const val = e.target.value.replace(/\D/g, '');
+                            if (val.length <= 10) {
+                              setPatientPhone(val); 
+                              setErrors(prev => ({...prev, phone: null})); 
+                            }
+                          }} 
+                        />
                         <Phone className="bm-input-icon" size={18} style={{ top: '39px' }} />
                         {errors.phone && <div className="bm-error-text"><span>⚠</span> {errors.phone}</div>}
                       </div>
