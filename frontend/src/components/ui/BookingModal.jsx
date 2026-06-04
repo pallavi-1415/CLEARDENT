@@ -162,6 +162,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
   const [loading, setLoading] = useState(false);
   const [bookingSuccessData, setBookingSuccessData] = useState(null);
   const [showAllSlots, setShowAllSlots] = useState(false);
+  const [errors, setErrors] = useState({});
   const prevCategory = useRef(selectedCategory);
   const contentRef = useRef(null);
   const receiptRef = useRef(null);
@@ -357,18 +358,50 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
 
   const allDoctorSlots = getDoctorSlotsForSelectedDate();
 
-  /* ── Step navigation ── */
+  /* ── Step navigation & Validation ── */
+  const validateStep = (step) => {
+    const newErrors = {};
+    if (step === 1) {
+      if (!selectedCategory) newErrors.category = 'Please select a category';
+      if (!selectedTreatment) newErrors.treatment = 'Please select a procedure';
+      if (!selectedDoctor) newErrors.doctor = 'Please select a dentist';
+    }
+    if (step === 2) {
+      if (!patientName.trim()) {
+        newErrors.name = 'Full name is required';
+      } else if (patientName.trim().length < 2) {
+        newErrors.name = 'Name must be at least 2 characters';
+      }
+      
+      const phoneRegex = /^(\+\d{1,3}[- ]?)?\d{10}$/; // Basic 10 digit + optional country code
+      if (!patientPhone.trim()) {
+        newErrors.phone = 'Phone number is required';
+      } else if (!phoneRegex.test(patientPhone.replace(/[\s-]/g, ''))) {
+        newErrors.phone = 'Please enter a valid 10-digit phone number';
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!patientEmail.trim()) {
+        newErrors.email = 'Email address is required';
+      } else if (!emailRegex.test(patientEmail)) {
+        newErrors.email = 'Please enter a valid email address';
+      }
+    }
+    if (step === 3) {
+      if (!selectedLocation) newErrors.location = 'Please select a clinic location';
+    }
+    if (step === 4) {
+      if (!selectedDate) newErrors.date = 'Please select an appointment date';
+      if (!selectedTimeSlot) newErrors.timeSlot = 'Please select a time slot';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleNextStep = () => {
-    if (currentStep === 1) {
-      if (!selectedTreatment) { window.showError?.('Please select a service.'); return; }
-      if (!selectedDoctor) { window.showError?.('Please choose a doctor.'); return; }
-    }
-    if (currentStep === 2) {
-      if (!patientName.trim()) { window.showError?.('Please enter your full name.'); return; }
-      if (!patientPhone.trim()) { window.showError?.('Please enter your contact phone number.'); return; }
-    }
-    if (currentStep === 4 && (!selectedDoctor || !selectedDate || !selectedTimeSlot)) {
-      window.showError?.('Please select a Date and Time Slot.'); return;
+    if (!validateStep(currentStep)) {
+      window.showError?.('Please fix the errors before continuing.');
+      return;
     }
     if (currentStep === 5) {
       const token = localStorage.getItem('token');
@@ -382,7 +415,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
     setCurrentStep(prev => prev + 1);
     setTimeout(() => contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
-  const handleBackStep = () => { setCurrentStep(prev => Math.max(1, prev - 1)); };
+  const handleBackStep = () => { setErrors({}); setCurrentStep(prev => Math.max(1, prev - 1)); };
 
   /* ── Submit ── */
   const handleBookingSubmit = async () => {
@@ -444,6 +477,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
     setPaymentMethod('Pay at Clinic');
     setBookingSuccessData(null);
     setShowAllSlots(false);
+    setErrors({});
     setCurrentMonthDate(new Date());
     prevCategory.current = TREATMENTS_DATA[0];
   };
@@ -556,14 +590,11 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
           cursor: pointer;
           transition: all 0.2s ease;
         }
-        .bm-select-header:hover, .bm-select-header.open {
-          border-color: #1A907C;
-          background: #ffffff;
-        }
-        .bm-select-header.open {
-          box-shadow: 0 0 0 4px rgba(26, 144, 124, 0.1);
-        }
-        .bm-select-icon {
+        .bm-select-header:hover, .bm-select-header.open { border-color: #1A907C; background: #ffffff; }
+        .bm-select-header.error { border-color: #ef4444; background: #fef2f2; }
+        .bm-select-header.open { box-shadow: 0 0 0 4px rgba(26, 144, 124, 0.1); }
+        .bm-select-header.error.open { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1); }
+        .bm-select-icon { color: #9ca3af; margin-right: 12px; display: flex; align-items: center; }
           color: #9ca3af;
           margin-right: 12px;
           display: flex;
@@ -629,12 +660,14 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
         /* Inputs & Textareas */
         .bm-input-wrap { position: relative; margin-bottom: 24px; }
         .bm-label { font-size: 0.85rem; font-weight: 600; color: #4b5563; margin-bottom: 8px; display: block; }
-        .bm-input, .bm-textarea {
-          width: 100%; border: 1.5px solid #d1d5db; border-radius: 8px; padding: 14px 16px; padding-left: 42px; font-size: 0.95rem; color: #111827; background: #f9fafb; outline: none; transition: all 0.2s ease; font-family: inherit;
-        }
+        .bm-input, .bm-textarea { width: 100%; border: 1.5px solid #d1d5db; border-radius: 8px; padding: 14px 16px; padding-left: 42px; font-size: 0.95rem; color: #111827; background: #f9fafb; outline: none; transition: all 0.2s ease; font-family: inherit; }
         .bm-input:focus, .bm-textarea:focus { border-color: #1A907C; background: #ffffff; box-shadow: 0 0 0 4px rgba(26, 144, 124, 0.1); }
+        .bm-input.error { border-color: #ef4444; background: #fef2f2; }
+        .bm-input.error:focus { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1); }
         .bm-input-icon { position: absolute; left: 14px; top: 38px; color: #9ca3af; pointer-events: none; transition: color 0.2s; }
         .bm-input:focus ~ .bm-input-icon { color: #1A907C; }
+        .bm-input.error ~ .bm-input-icon { color: #ef4444; }
+        .bm-error-text { color: #ef4444; font-size: 0.8rem; font-weight: 500; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
         .bm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
         /* Action Buttons */
@@ -682,11 +715,12 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
         .bm-date-item.active .bm-date-day, .bm-date-item.active .bm-date-num { color: #111827; font-weight: 700; }
         .bm-date-item.active::after { content: ''; position: absolute; bottom: -17px; left: 0; right: 0; height: 3px; background: #111827; border-radius: 3px 3px 0 0; }
 
-        .bm-slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px; }
+        .bm-slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 8px; }
         .bm-slot-btn { padding: 12px 10px; background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; color: #374151; transition: all 0.2s; text-align: center; }
         .bm-slot-btn:hover:not(:disabled):not(.selected) { border-color: #1A907C; color: #1A907C; background: #f0fdfa; }
         .bm-slot-btn.selected { background: #1A907C; border-color: #1A907C; color: #ffffff; box-shadow: 0 4px 10px rgba(26, 144, 124, 0.2); }
-        .bm-slot-btn:disabled { opacity: 0.4; cursor: not-allowed; background: #f3f4f6; text-decoration: line-through; }
+        .bm-slot-btn.error { border-color: #ef4444; background: #fef2f2; color: #ef4444; }
+        .bm-slot-btn:disabled { opacity: 0.4; cursor: not-allowed; background: #f3f4f6; text-decoration: line-through; border-color: #d1d5db; color: #374151; }
 
         @media print {
           body * { visibility: hidden; }
@@ -758,38 +792,48 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                           const cat = TREATMENTS_DATA.find(c => c.id === val);
                           setSelectedCategory(cat); 
                           setSelectedTreatment(null);
+                          setErrors(prev => ({ ...prev, category: null, treatment: null }));
                         }}
                         placeholder="Select a category"
                         icon={<Activity size={18} />}
                       />
+                      {errors.category && <div className="bm-error-text"><span>⚠</span> {errors.category}</div>}
                     </div>
 
                     <div className="bm-input-wrap">
                       <span className="bm-label">Procedure</span>
-                      <CustomSelect 
-                        options={procedureOptions}
-                        value={selectedTreatment?.name || ''}
-                        onChange={(val) => {
-                          const t = selectedCategory?.items.find(i => i.name === val);
-                          setSelectedTreatment(t || null);
-                        }}
-                        placeholder="— Select a procedure —"
-                        icon={<HeartPulse size={18} />}
-                      />
+                      <div className={`bm-custom-select ${errors.treatment ? 'error' : ''}`}>
+                        <CustomSelect 
+                          options={procedureOptions}
+                          value={selectedTreatment?.name || ''}
+                          onChange={(val) => {
+                            const t = selectedCategory?.items.find(i => i.name === val);
+                            setSelectedTreatment(t || null);
+                            setErrors(prev => ({ ...prev, treatment: null }));
+                          }}
+                          placeholder="— Select a procedure —"
+                          icon={<HeartPulse size={18} />}
+                        />
+                      </div>
+                      {errors.treatment && <div className="bm-error-text"><span>⚠</span> {errors.treatment}</div>}
                     </div>
 
                     <div className="bm-input-wrap">
                       <span className="bm-label">Assigned Dentist</span>
-                      <CustomSelect 
-                        options={dentistOptions}
-                        value={selectedDoctor?.name || ''}
-                        onChange={(val) => {
-                          const doc = dbDoctors.find(d => d.name === val);
-                          setSelectedDoctor(doc || null);
-                        }}
-                        placeholder="— Select a dentist —"
-                        icon={<Stethoscope size={18} />}
-                      />
+                      <div className={`bm-custom-select ${errors.doctor ? 'error' : ''}`}>
+                        <CustomSelect 
+                          options={dentistOptions}
+                          value={selectedDoctor?.name || ''}
+                          onChange={(val) => {
+                            const doc = dbDoctors.find(d => d.name === val);
+                            setSelectedDoctor(doc || null);
+                            setErrors(prev => ({ ...prev, doctor: null }));
+                          }}
+                          placeholder="— Select a dentist —"
+                          icon={<Stethoscope size={18} />}
+                        />
+                      </div>
+                      {errors.doctor && <div className="bm-error-text"><span>⚠</span> {errors.doctor}</div>}
                     </div>
                   </div>
                 </div>
@@ -805,19 +849,22 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                     <div className="bm-grid-2">
                       <div className="bm-input-wrap">
                         <span className="bm-label">Full Name</span>
-                        <input className="bm-input" type="text" placeholder="John Doe" value={patientName} onChange={(e) => setPatientName(e.target.value)} />
+                        <input className={`bm-input ${errors.name ? 'error' : ''}`} type="text" placeholder="John Doe" value={patientName} onChange={(e) => { setPatientName(e.target.value); setErrors(prev => ({...prev, name: null})); }} />
                         <User className="bm-input-icon" size={18} style={{ top: '39px' }} />
+                        {errors.name && <div className="bm-error-text"><span>⚠</span> {errors.name}</div>}
                       </div>
                       <div className="bm-input-wrap">
                         <span className="bm-label">Phone Number</span>
-                        <input className="bm-input" type="tel" placeholder="+91 98765 43210" value={patientPhone} onChange={(e) => setPatientPhone(e.target.value)} />
+                        <input className={`bm-input ${errors.phone ? 'error' : ''}`} type="tel" placeholder="+91 98765 43210" value={patientPhone} onChange={(e) => { setPatientPhone(e.target.value); setErrors(prev => ({...prev, phone: null})); }} />
                         <Phone className="bm-input-icon" size={18} style={{ top: '39px' }} />
+                        {errors.phone && <div className="bm-error-text"><span>⚠</span> {errors.phone}</div>}
                       </div>
                     </div>
                     <div className="bm-input-wrap">
                       <span className="bm-label">Email Address</span>
-                      <input className="bm-input" type="email" placeholder="john@example.com" value={patientEmail} onChange={(e) => setPatientEmail(e.target.value)} />
+                      <input className={`bm-input ${errors.email ? 'error' : ''}`} type="email" placeholder="john@example.com" value={patientEmail} onChange={(e) => { setPatientEmail(e.target.value); setErrors(prev => ({...prev, email: null})); }} />
                       <Mail className="bm-input-icon" size={18} style={{ top: '39px' }} />
+                      {errors.email && <div className="bm-error-text"><span>⚠</span> {errors.email}</div>}
                     </div>
                     <div className="bm-input-wrap">
                       <span className="bm-label">Notes (Optional)</span>
@@ -900,15 +947,21 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                         return (
                           <button
                             key={slot}
-                            className={`bm-slot-btn ${selectedTimeSlot === slot ? 'selected' : ''}`}
+                            className={`bm-slot-btn ${selectedTimeSlot === slot ? 'selected' : ''} ${errors.timeSlot ? 'error' : ''}`}
                             disabled={isBooked}
-                            onClick={() => !isBooked && setSelectedTimeSlot(slot)}
+                            onClick={() => {
+                              if (!isBooked) {
+                                setSelectedTimeSlot(slot);
+                                setErrors(prev => ({ ...prev, timeSlot: null }));
+                              }
+                            }}
                           >
                             {slot}
                           </button>
                         );
                       })}
                     </div>
+                    {errors.timeSlot && <div className="bm-error-text" style={{ marginBottom: '16px' }}><span>⚠</span> {errors.timeSlot}</div>}
                     
                     {allDoctorSlots.length > 12 && (
                       <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
