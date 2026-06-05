@@ -8,7 +8,7 @@ import FeatureBanner from './components/FeatureBanner';
 import FaqSection from './components/FaqSection';
 import AppointmentCta from './components/AppointmentCta';
 import Footer from '../../components/layout/Footer';
-import PortalDashboardView from './components/PortalDashboardView';
+import PortalDashboardView from '../../dashboards/patient';
 
 function Home({ navigate, isLoggedIn, onLogout, currentUser, activeTab, setActiveTab, portalSubTab, setPortalSubTab }) {
   return (

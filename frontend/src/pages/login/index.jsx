@@ -74,8 +74,13 @@ function Login({ navigate, onLoginSuccess }) {
         >
           {/* Top Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-white/25 backdrop-blur-[8px] flex items-center justify-center font-serif font-bold text-[1rem] tracking-[0.05em] border border-white/30">L</div>
-            <span className="font-serif text-[1.05rem] font-medium tracking-[0.15em] uppercase">Lumina Medical</span>
+            <div className="w-9 h-9 rounded-[8px] bg-white/25 backdrop-blur-[8px] flex items-center justify-center border border-white/30 text-white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                <path d="M12 6a3.5 3.5 0 0 0-3.5 3.5c0 3.5 3.5 6.5 3.5 6.5s3.5-3 3.5-6.5A3.5 3.5 0 0 0 12 6z" />
+              </svg>
+            </div>
+            <span className="font-serif text-[1.05rem] font-medium tracking-[0.15em] uppercase">ClearDent</span>
           </div>
 
           {/* Center Text Block (Glassmorphic Card) */}
@@ -84,7 +89,7 @@ function Login({ navigate, onLoginSuccess }) {
               Dedicated to the art of healing, guided by the science of medicine.
             </h2>
             <p className="text-[0.85rem] text-white/80 tracking-[0.04em] uppercase m-0">
-              Lumina Secure Sign In Portal
+              ClearDent Secure Sign In Portal
             </p>
           </div>
 
@@ -112,7 +117,7 @@ function Login({ navigate, onLoginSuccess }) {
             <div className="mb-6">
               <h1 className="font-serif text-[1.75rem] font-normal tracking-[0.05em] uppercase text-text-primary mb-2">Secure Login</h1>
               <p className="text-[0.82rem] text-text-secondary tracking-[0.01em] m-0">
-                Sign in to your Lumina Medical account.
+                Sign in to your ClearDent account.
               </p>
             </div>
 

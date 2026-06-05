@@ -44,9 +44,9 @@ const getDoctorPhoto = (name, index) => {
 };
 
 const CLINIC_LOCATIONS = [
-  { id: 'mumbai', name: 'Lumina Dental — Mumbai', address: 'Bandra West, Link Road, Mumbai, MH 400050', hours: '8:00 AM – 8:00 PM', phone: '+91 98765 43210', mapUrl: 'https://maps.google.com/?q=Bandra+West,Mumbai' },
-  { id: 'delhi', name: 'Lumina Dental — Delhi', address: 'Connaught Place, Block C, New Delhi, DL 110001', hours: '9:00 AM – 7:00 PM', phone: '+91 91234 56789', mapUrl: 'https://maps.google.com/?q=Connaught+Place,Delhi' },
-  { id: 'bangalore', name: 'Lumina Dental — Bangalore', address: 'Indiranagar 100ft Road, Bangalore, KA 560038', hours: '8:30 AM – 7:30 PM', phone: '+91 99887 76655', mapUrl: 'https://maps.google.com/?q=Indiranagar,Bangalore' }
+  { id: 'mumbai', name: 'ClearDent — Mumbai', address: 'Bandra West, Link Road, Mumbai, MH 400050', hours: '8:00 AM – 8:00 PM', phone: '+91 98765 43210', mapUrl: 'https://maps.google.com/?q=Bandra+West,Mumbai' },
+  { id: 'delhi', name: 'ClearDent — Delhi', address: 'Connaught Place, Block C, New Delhi, DL 110001', hours: '9:00 AM – 7:00 PM', phone: '+91 91234 56789', mapUrl: 'https://maps.google.com/?q=Connaught+Place,Delhi' },
+  { id: 'bangalore', name: 'ClearDent — Bangalore', address: 'Indiranagar 100ft Road, Bangalore, KA 560038', hours: '8:30 AM – 7:30 PM', phone: '+91 99887 76655', mapUrl: 'https://maps.google.com/?q=Indiranagar,Bangalore' }
 ];
 
 const STEPS = [
@@ -418,6 +418,16 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
   const handleBackStep = () => { setErrors({}); setCurrentStep(prev => Math.max(1, prev - 1)); };
 
   /* ── Submit ── */
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const handleBookingSubmit = async () => {
     if (!selectedTreatment || !selectedDoctor || !selectedDate || !selectedTimeSlot) {
       window.showError?.('Please complete all required booking details.'); return;
@@ -436,6 +446,92 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
         location: selectedLocation.name,
         paymentMethod
       };
+
+      if (paymentMethod === 'Razorpay / Online Payment') {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+          window.showError?.('Razorpay SDK failed to load. Are you online?');
+          setLoading(false);
+          return;
+        }
+
+        let numericPrice = selectedTreatment.price.replace(/[^0-9.]/g, '');
+        if (!numericPrice) numericPrice = '500'; // fallback
+        
+        const orderResponse = await fetch('http://localhost:5000/api/payment/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ amount: numericPrice })
+        });
+        const orderData = await orderResponse.json();
+        if (!orderData.success) {
+           window.showError?.(orderData.message || 'Failed to create payment order.');
+           setLoading(false);
+           return;
+        }
+
+        const options = {
+          key: 'rzp_test_SxtsLJgL1kjYsy', // Your actual Razorpay Key ID
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: 'ClearDent Studio',
+          description: `Payment for ${selectedTreatment.name}`,
+          image: 'https://cdn-icons-png.flaticon.com/512/2966/2966327.png',
+          order_id: orderData.orderId,
+          handler: async function (response) {
+            try {
+              const verifyRes = await fetch('http://localhost:5000/api/payment/verify', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+              const verifyData = await verifyRes.json();
+              if (verifyData.success) {
+                const result = await createAppointment(appointmentData, token);
+                setBookingSuccessData(result.appointment);
+                window.showToast?.('Payment successful & Appointment booked!');
+                setCurrentStep(6);
+              } else {
+                window.showError?.('Payment verification failed!');
+              }
+            } catch (err) {
+              console.error(err);
+              window.showError?.('Server error during payment verification.');
+            } finally {
+              setLoading(false);
+            }
+          },
+          prefill: {
+            name: patientName,
+            email: patientEmail,
+            contact: patientPhone
+          },
+          theme: {
+            color: '#0e8374'
+          },
+          modal: {
+            ondismiss: function() {
+               setLoading(false);
+               window.showToast?.('Payment process was cancelled.');
+            }
+          }
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+        return;
+      }
+
       const result = await createAppointment(appointmentData, token);
       setBookingSuccessData(result.appointment);
       window.showToast?.('Appointment booked successfully!');
@@ -444,7 +540,9 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       console.error(err);
       window.showError?.(err.message || 'Failed to book appointment. Please try again.');
     } finally {
-      setLoading(false);
+      if (paymentMethod !== 'Razorpay / Online Payment') {
+        setLoading(false);
+      }
     }
   };
 
@@ -458,7 +556,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Lumina_Receipt_${bookingSuccessData?._id?.slice(-6) || 'Booking'}.pdf`);
+      pdf.save(`ClearDent_Receipt_${bookingSuccessData?._id?.slice(-6) || 'Booking'}.pdf`);
     } catch (err) {
       console.error('Failed to generate PDF', err);
     }
@@ -741,14 +839,11 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
             {/* ─── SIDEBAR ─── */}
             <div className="bm-sidebar">
               <div className="bm-brand">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="8" cy="8" r="3" />
-                  <circle cx="16" cy="8" r="3" />
-                  <circle cx="8" cy="16" r="3" />
-                  <circle cx="16" cy="16" r="3" />
-                  <path d="M10.5 8h3 M8 10.5v3" opacity="0.5" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                  <path d="M12 6a3.5 3.5 0 0 0-3.5 3.5c0 3.5 3.5 6.5 3.5 6.5s3.5-3 3.5-6.5A3.5 3.5 0 0 0 12 6z" />
                 </svg>
-                <span className="bm-brand-text">Lumina</span>
+                <span className="bm-brand-text">ClearDent</span>
               </div>
 
               <nav className="bm-stepper">
@@ -997,7 +1092,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   </div>
                   <div className="bm-content-card">
                     <div className="bm-payment-grid">
-                      {['Pay at Clinic', 'Online Card Payment', 'Health Insurance'].map((method) => {
+                      {['Pay at Clinic', 'Razorpay / Online Payment', 'Health Insurance'].map((method) => {
                         const isSelected = paymentMethod === method;
                         return (
                           <div
@@ -1007,13 +1102,13 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                           >
                             <div className="bm-payment-icon">
                               {method === 'Pay at Clinic' && <Banknote size={24} />}
-                              {method === 'Online Card Payment' && <CreditCard size={24} />}
+                              {method === 'Razorpay / Online Payment' && <CreditCard size={24} />}
                               {method === 'Health Insurance' && <ShieldCheck size={24} />}
                             </div>
                             <div className="bm-payment-info">
                               <div className="bm-payment-name">{method}</div>
                               <div className="bm-payment-desc">
-                                {method === 'Pay at Clinic' ? 'Pay cash, UPI, or card at the reception.' : method === 'Online Card Payment' ? 'Secure online transaction using Razorpay.' : 'Submit your policy details at the clinic.'}
+                                {method === 'Pay at Clinic' ? 'Pay cash, UPI, or card at the reception.' : method === 'Razorpay / Online Payment' ? 'Secure online transaction using Razorpay.' : 'Submit your policy details at the clinic.'}
                               </div>
                             </div>
                             <div className="bm-payment-radio"></div>
@@ -1037,7 +1132,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                       </div>
                       <h2 className="bm-step-title" style={{ marginBottom: '8px', textAlign: 'center' }}>Booking Confirmed!</h2>
                       <p style={{ color: '#6b7280', marginBottom: '32px', textAlign: 'center' }} className="no-print">
-                        Thank you for choosing Lumina Dental.
+                        Thank you for choosing ClearDent.
                       </p>
 
                       {/* Receipt Block */}

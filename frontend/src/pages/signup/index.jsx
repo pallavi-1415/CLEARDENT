@@ -115,7 +115,7 @@ function Signup({ navigate, onLoginSuccess }) {
             Application Submitted
           </h1>
           <p className="text-[0.92rem] text-text-secondary leading-[1.6] mb-6">
-            Thank you for registering with Lumina Medical, <strong>{name.toLowerCase().startsWith('dr.') ? name : `Dr. ${name}`}</strong>.
+            Thank you for registering with ClearDent, <strong>{name.toLowerCase().startsWith('dr.') ? name : `Dr. ${name}`}</strong>.
           </p>
           <div className="bg-bg-secondary border border-border-light rounded-[6px] p-5 text-left mb-8">
             <h4 className="text-[0.8rem] font-semibold uppercase tracking-[0.1em] text-text-primary mb-2">What happens next?</h4>
@@ -148,8 +148,13 @@ function Signup({ navigate, onLoginSuccess }) {
         >
           {/* Top Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-white/25 backdrop-blur-[8px] flex items-center justify-center font-serif font-bold text-[1rem] tracking-[0.05em] border border-white/30">L</div>
-            <span className="font-serif text-[1.05rem] font-medium tracking-[0.15em] uppercase">Lumina Medical</span>
+            <div className="w-9 h-9 rounded-[8px] bg-white/25 backdrop-blur-[8px] flex items-center justify-center border border-white/30 text-white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                <path d="M12 6a3.5 3.5 0 0 0-3.5 3.5c0 3.5 3.5 6.5 3.5 6.5s3.5-3 3.5-6.5A3.5 3.5 0 0 0 12 6z" />
+              </svg>
+            </div>
+            <span className="font-serif text-[1.05rem] font-medium tracking-[0.15em] uppercase">ClearDent</span>
           </div>
 
           {/* Center Text Block */}

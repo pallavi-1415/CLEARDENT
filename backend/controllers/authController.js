@@ -16,25 +16,6 @@ exports.signup = async (req, res) => {
   try {
     const { name, email, password, dob, role = 'patient', specialization = '' } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Name, email and password are required' });
-    }
-
-    // Doctors must upload a license
-    if (role === 'doctor' && !req.file) {
-      return res.status(400).json({ message: 'Medical license file is required for doctor registration.' });
-    }
-
-    // Block admin registration through this public route
-    if (role === 'admin') {
-      return res.status(403).json({ message: 'Admin registration is not permitted through this form.' });
-    }
-
-    // Validate role
-    if (!['patient', 'doctor'].includes(role)) {
-      return res.status(400).json({ message: 'Invalid role. Must be patient or doctor.' });
-    }
-
     // Check if user already exists
     const existing = await User.findOne({ email });
     if (existing) {
@@ -91,9 +72,6 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
-    }
 
     const user = await User.findOne({ email });
     if (!user) {

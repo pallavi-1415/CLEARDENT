@@ -9,7 +9,7 @@ const appointmentSchema = new mongoose.Schema({
   appointmentDate: { type: String, required: true },
   timeSlot: { type: String, required: true },
   notes: { type: String, default: '' },
-  location: { type: String, default: 'Lumina Smile Studio - Downtown' },
+  location: { type: String, default: 'ClearDent Smile Studio - Downtown' },
   paymentMethod: { type: String, default: 'Pay at Clinic' },
   status: { type: String, default: 'Upcoming', enum: ['Upcoming', 'Approved', 'Completed', 'Cancelled'] }
 }, { timestamps: true });

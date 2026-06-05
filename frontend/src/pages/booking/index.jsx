@@ -46,14 +46,14 @@ const getDoctorPhoto = (name, index) => {
 const CLINIC_LOCATIONS = [
   {
     id: 'downtown',
-    name: 'Lumina Smile Studio - Downtown',
+    name: 'ClearDent Smile Studio - Downtown',
     address: '120 Medical Plaza, Suite 400, Downtown',
     hours: '8:00 AM - 8:00 PM',
     phone: '+1 (555) 123-4567'
   },
   {
     id: 'westside',
-    name: 'Lumina Westside Dental Hub',
+    name: 'ClearDent Westside Dental Hub',
     address: '450 Wellness Blvd, Block B, Westside',
     hours: '9:00 AM - 7:00 PM',
     phone: '+1 (555) 765-4321'
@@ -434,6 +434,16 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
   };
 
   // Submit Booking to MongoDB Atlas
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const handleBookingSubmit = async (e) => {
     if (e) e.preventDefault();
     if (!selectedTreatment) {
@@ -465,6 +475,91 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         paymentMethod: paymentMethod
       };
 
+      if (paymentMethod === 'Razorpay / Online Payment') {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+          window.showError?.('Razorpay SDK failed to load. Are you online?');
+          setLoading(false);
+          return;
+        }
+
+        let numericPrice = selectedTreatment.price.replace(/[^0-9.]/g, '');
+        if (!numericPrice) numericPrice = '500'; // fallback
+        
+        const orderResponse = await fetch('http://localhost:5000/api/payment/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ amount: numericPrice })
+        });
+        const orderData = await orderResponse.json();
+        if (!orderData.success) {
+           window.showError?.(orderData.message || 'Failed to create payment order.');
+           setLoading(false);
+           return;
+        }
+
+        const options = {
+          key: 'rzp_test_SxtsLJgL1kjYsy', // Your actual Razorpay Key ID
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: 'ClearDent Studio',
+          description: `Payment for ${selectedTreatment.name}`,
+          image: 'https://cdn-icons-png.flaticon.com/512/2966/2966327.png',
+          order_id: orderData.orderId,
+          handler: async function (response) {
+            try {
+              const verifyRes = await fetch('http://localhost:5000/api/payment/verify', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+              const verifyData = await verifyRes.json();
+              if (verifyData.success) {
+                const result = await createAppointment(appointmentData, token);
+                setBookingSuccessData(result.appointment);
+                window.showToast?.('Payment successful & Appointment booked!');
+                setCurrentStep(6);
+              } else {
+                window.showError?.('Payment verification failed!');
+              }
+            } catch (err) {
+              console.error(err);
+              window.showError?.('Server error during payment verification.');
+            } finally {
+              setLoading(false);
+            }
+          },
+          prefill: {
+            name: patientName,
+            email: patientEmail,
+            contact: patientPhone
+          },
+          theme: {
+            color: '#0e8374'
+          },
+          modal: {
+            ondismiss: function() {
+               setLoading(false);
+               window.showToast?.('Payment process was cancelled.');
+            }
+          }
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+        return;
+      }
+
       const result = await createAppointment(appointmentData, token);
       setBookingSuccessData(result.appointment);
       window.showToast?.('Appointment booked successfully!');
@@ -473,7 +568,9 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
       console.error(err);
       window.showError?.(err.message || 'Server error. Failed to book appointment. Please try again.');
     } finally {
-      setLoading(false);
+      if (paymentMethod !== 'Razorpay / Online Payment') {
+        setLoading(false);
+      }
     }
   };
 
@@ -561,7 +658,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-90"><div className="w-1 h-1 rounded-full bg-white"></div></div>
                   </div>
                   <div>
-                    <span className="block text-[1.12rem] font-black tracking-tight text-[#1a332e] leading-none">Lumina</span>
+                    <span className="block text-[1.12rem] font-black tracking-tight text-[#1a332e] leading-none">ClearDent</span>
                     <span className="text-[0.6rem] text-[#0e8374] font-extrabold uppercase tracking-widest block mt-0.5">Dental Studio</span>
                   </div>
                 </div>
@@ -774,7 +871,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                 <div className="space-y-6">
                   <div>
                     <h2 className="text-xl font-bold text-[#1a332e] tracking-tight">Studio Location</h2>
-                    <p className="text-xs text-[#879d97] mt-0.5">Choose the Lumina Smile clinic location for your procedure.</p>
+                    <p className="text-xs text-[#879d97] mt-0.5">Choose the ClearDent clinic location for your procedure.</p>
                   </div>
 
                   {/* Location Grid Cards */}
@@ -1012,8 +1109,8 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
                         <div className="space-y-2">
                           <label className="block text-[0.62rem] font-extrabold uppercase tracking-wider text-[#879d97]">Select Payment Method</label>
-                          <div className="grid grid-cols-3 gap-2">
-                            {['Pay at Clinic', 'Credit Card', 'Insurance'].map((m) => {
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            {['Pay at Clinic', 'Credit Card', 'Insurance', 'Razorpay / Online Payment'].map((m) => {
                               const isSelected = paymentMethod === m;
                               return (
                                 <button
