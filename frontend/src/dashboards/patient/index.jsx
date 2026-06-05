@@ -816,7 +816,7 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
                           <div className="apt-body-cell">
                             <span className="apt-cell-label">Procedure Fee</span>
                             <span className="apt-cell-value price-highlight">{apt.price}</span>
-                            <span className="apt-cell-sub">{apt.paymentMethod || 'Pay at Clinic'}</span>
+                            <span className="apt-cell-sub">{apt.paymentMethod === 'Razorpay / Online Payment' ? 'Online' : apt.paymentMethod || 'Pay at Clinic'}</span>
                           </div>
                         </div>
 

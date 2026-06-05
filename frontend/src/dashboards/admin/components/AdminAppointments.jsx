@@ -89,8 +89,11 @@ function AdminAppointments({ appointments }) {
                         <span className="block text-[0.72rem] text-slate-500">{appt.timeSlot}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-6 font-semibold text-slate-600">
-                      {appt.price}
+                    <td className="py-4 px-6">
+                      <span className="block font-semibold text-slate-600">{appt.price}</span>
+                      <span className="inline-flex mt-1 text-[0.65rem] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-500 uppercase tracking-wider">
+                        {appt.paymentMethod === 'Razorpay / Online Payment' ? 'ONLINE' : appt.paymentMethod || 'AT CLINIC'}
+                      </span>
                     </td>
                     <td className="py-4 px-6">
                       <span className={`inline-block text-[0.72rem] font-bold px-2 py-0.5 rounded uppercase ${

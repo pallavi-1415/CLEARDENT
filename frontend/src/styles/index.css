@@ -99,3 +99,184 @@ html, body {
 img {
   max-width: 100%;
 }
+
+/* ── APPOINTMENT CARD (STRUCTURED CLEAN LAYOUT) ── */
+.apt-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Main Card Wrapper */
+.apt-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+}
+.apt-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 24px rgba(15,23,42,0.08);
+  transform: translateY(-1px);
+}
+
+/* Card Top Row: Doctor info + Status badge */
+.apt-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fafbfc;
+  gap: 16px;
+}
+.apt-card-doctor {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.apt-avatar-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+  background: #f1f5f9;
+}
+.apt-avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.apt-doctor-name-text {
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: block;
+  line-height: 1.2;
+}
+.apt-doctor-spec {
+  font-size: 0.74rem;
+  color: #64748b;
+  font-weight: 500;
+  display: block;
+  margin-top: 3px;
+}
+
+/* Status Badge - top right */
+.apt-status-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 5px 12px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.apt-status-badge.upcoming { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.apt-status-badge.approved { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+.apt-status-badge.completed { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.apt-status-badge.cancelled { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+/* Card Body: Treatment details + Date + Price in a structured row */
+.apt-card-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+@media (max-width: 640px) {
+  .apt-card-body { grid-template-columns: 1fr; }
+}
+
+.apt-body-cell {
+  padding: 16px 22px;
+  border-right: 1px solid #f1f5f9;
+}
+.apt-body-cell:last-child {
+  border-right: none;
+}
+@media (max-width: 640px) {
+  .apt-body-cell { border-right: none; border-bottom: 1px solid #f1f5f9; }
+  .apt-body-cell:last-child { border-bottom: none; }
+}
+
+.apt-cell-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  display: block;
+  margin-bottom: 5px;
+}
+.apt-cell-value {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: block;
+}
+.apt-cell-value.price-highlight {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+.apt-cell-sub {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Card Footer: location, payment, actions */
+.apt-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 22px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.apt-footer-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.apt-footer-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+}
+.apt-footer-icon {
+  color: #94a3b8;
+}
+
+/* Cancel action button */
+.cancel-btn-action {
+  background: transparent;
+  border: 1.5px solid #fca5a5;
+  color: #ef4444;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.cancel-btn-action:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+}

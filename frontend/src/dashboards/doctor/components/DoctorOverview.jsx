@@ -105,10 +105,13 @@ function DoctorOverview({ stats, appointments, profile, actionLoading, handleSta
                       </div>
 
                       {/* Scheduled Date & Slot Capsule */}
-                      <div className="flex items-center gap-1.5 self-start sm:self-auto">
+                      <div className="flex flex-col items-start gap-1.5 self-start sm:self-auto">
                         <span className="bg-indigo-50 border border-indigo-100 text-[#5F7EF7] text-[0.75rem] font-bold py-1.5 px-4 rounded-full flex items-center gap-1.5">
                           <Clock size={11} />
                           {appt.appointmentDate} • {appt.timeSlot}
+                        </span>
+                        <span className="text-[0.65rem] text-slate-400 font-bold uppercase tracking-wider pl-1 mt-0.5">
+                          {appt.paymentMethod === 'Razorpay / Online Payment' ? 'Online' : appt.paymentMethod || 'At Clinic'}
                         </span>
                       </div>
 

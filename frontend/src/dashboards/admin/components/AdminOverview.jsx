@@ -131,7 +131,7 @@ function AdminOverview({ stats, doctors, appointments, actionLoading, handleAppr
                     </div>
                     <div className="text-right">
                       <span className="block font-semibold text-blue-600">{appt.appointmentDate}</span>
-                      <span className="block text-slate-500 text-[0.72rem]">{appt.timeSlot}</span>
+                      <span className="block text-slate-500 text-[0.72rem]">{appt.timeSlot} • {appt.paymentMethod === 'Razorpay / Online Payment' ? 'Online' : appt.paymentMethod || 'At Clinic'}</span>
                       <span className={`inline-block text-[0.6rem] font-bold px-1.5 py-0.5 rounded mt-1 uppercase ${
                         appt.status === 'Upcoming' 
                           ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' 
