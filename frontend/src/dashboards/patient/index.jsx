@@ -179,398 +179,8 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
     setConfirmDialog({ isOpen: false, aptId: null });
   };
 
-
-
   return (
     <>
-      <style>{`
-        .portal-layout {
-          display: grid;
-          grid-template-columns: 260px 1fr;
-          min-height: 80vh;
-          width: 100%;
-          max-width: 1300px;
-          margin: 0 auto;
-          gap: 2rem;
-          padding: 2rem;
-          box-sizing: border-box;
-        }
-        @media (max-width: 900px) {
-          .portal-layout { grid-template-columns: 1fr; padding: 1rem; }
-        }
-
-        /* ── SIDEBAR NAVIGATION ── */
-        .portal-sidebar {
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 20px;
-          padding: 1.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          height: fit-content;
-          box-shadow: 0 4px 15px rgba(15,23,42,0.01);
-        }
-        @media (max-width: 900px) {
-          .portal-sidebar { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
-        }
-        .portal-sidebar-title {
-          font-size: 0.72rem;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: #94a3b8;
-          font-weight: 700;
-          padding: 6px 12px 12px;
-        }
-        @media (max-width: 900px) { .portal-sidebar-title { display: none; } }
-
-        .sidebar-nav-btn {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 16px;
-          border: none;
-          background: transparent;
-          color: #475569;
-          font-size: 0.88rem;
-          font-weight: 600;
-          border-radius: 12px;
-          cursor: pointer;
-          transition: all 0.2s;
-          text-align: left;
-          font-family: inherit;
-        }
-        .sidebar-nav-btn:hover {
-          background: #f1f5f9;
-          color: #0f172a;
-        }
-        .sidebar-nav-btn.active {
-          background: #0f172a;
-          color: #ffffff;
-        }
-        .sidebar-divider {
-          height: 1px;
-          background: #e2e8f0;
-          margin: 12px 0;
-        }
-        @media (max-width: 900px) { .sidebar-divider { display: none; } }
-
-        /* ── PORTAL VIEW CONTAINER ── */
-        .portal-view-container {
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 24px;
-          padding: 2.5rem;
-          box-shadow: 0 4px 20px rgba(15,23,42,0.015);
-          display: flex;
-          flex-direction: column;
-          min-height: 500px;
-        }
-        @media (max-width: 640px) { .portal-view-container { padding: 1.5rem; } }
-
-        /* Welcome Section */
-        .welcome-header {
-          margin-bottom: 2rem;
-        }
-        .welcome-title {
-          font-size: 1.6rem;
-          font-weight: 800;
-          color: #0f172a;
-          margin: 0 0 6px;
-          letter-spacing: -0.02em;
-        }
-        .welcome-subtitle {
-          font-size: 0.88rem;
-          color: #64748b;
-          margin: 0;
-          line-height: 1.5;
-        }
-
-        /* ── APPOINTMENT CARD (STRUCTURED CLEAN LAYOUT) ── */
-        .apt-list-container {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        /* Main Card Wrapper */
-        .apt-card {
-          background: #ffffff;
-          border: 1.5px solid #e2e8f0;
-          border-radius: 20px;
-          overflow: hidden;
-          transition: all 0.2s ease;
-          box-shadow: 0 2px 8px rgba(15,23,42,0.04);
-        }
-        .apt-card:hover {
-          border-color: #cbd5e1;
-          box-shadow: 0 6px 24px rgba(15,23,42,0.08);
-          transform: translateY(-1px);
-        }
-
-        /* Card Top Row: Doctor info + Status badge */
-        .apt-card-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 18px 22px;
-          border-bottom: 1px solid #f1f5f9;
-          background: #fafbfc;
-          gap: 16px;
-        }
-        .apt-card-doctor {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-        .apt-avatar-wrap {
-          width: 48px;
-          height: 48px;
-          border-radius: 14px;
-          overflow: hidden;
-          border: 2px solid #e2e8f0;
-          flex-shrink: 0;
-          background: #f1f5f9;
-        }
-        .apt-avatar-wrap img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .apt-doctor-info {}
-        .apt-doctor-name-text {
-          font-size: 0.97rem;
-          font-weight: 700;
-          color: #0f172a;
-          display: block;
-          line-height: 1.2;
-        }
-        .apt-doctor-spec {
-          font-size: 0.74rem;
-          color: #64748b;
-          font-weight: 500;
-          display: block;
-          margin-top: 3px;
-        }
-
-        /* Status Badge - top right */
-        .apt-status-badge {
-          font-size: 0.68rem;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 0.07em;
-          padding: 5px 12px;
-          border-radius: 999px;
-          flex-shrink: 0;
-        }
-        .apt-status-badge.upcoming { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
-        .apt-status-badge.approved { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
-        .apt-status-badge.completed { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-        .apt-status-badge.cancelled { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-
-        /* Card Body: Treatment details + Date + Price in a structured row */
-        .apt-card-body {
-          display: grid;
-          grid-template-columns: 1fr 1fr 1fr;
-          gap: 0;
-          border-bottom: 1px solid #f1f5f9;
-        }
-        @media (max-width: 640px) {
-          .apt-card-body { grid-template-columns: 1fr; }
-        }
-
-        .apt-body-cell {
-          padding: 16px 22px;
-          border-right: 1px solid #f1f5f9;
-        }
-        .apt-body-cell:last-child {
-          border-right: none;
-        }
-        @media (max-width: 640px) {
-          .apt-body-cell { border-right: none; border-bottom: 1px solid #f1f5f9; }
-          .apt-body-cell:last-child { border-bottom: none; }
-        }
-
-        .apt-cell-label {
-          font-size: 0.65rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: #94a3b8;
-          display: block;
-          margin-bottom: 5px;
-        }
-        .apt-cell-value {
-          font-size: 0.88rem;
-          font-weight: 700;
-          color: #0f172a;
-          display: block;
-        }
-        .apt-cell-value.price-highlight {
-          font-size: 1rem;
-          font-weight: 800;
-          color: #0f172a;
-        }
-        .apt-cell-sub {
-          font-size: 0.72rem;
-          color: #64748b;
-          font-weight: 500;
-          display: block;
-          margin-top: 2px;
-        }
-
-        /* Card Footer: location, payment, actions */
-        .apt-card-footer {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 13px 22px;
-          gap: 16px;
-          flex-wrap: wrap;
-        }
-        .apt-footer-meta {
-          display: flex;
-          align-items: center;
-          gap: 18px;
-          flex-wrap: wrap;
-        }
-        .apt-footer-item {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          font-size: 0.72rem;
-          color: #64748b;
-          font-weight: 500;
-        }
-        .apt-footer-icon {
-          color: #94a3b8;
-        }
-
-        /* Cancel action button */
-        .cancel-btn-action {
-          background: transparent;
-          border: 1.5px solid #fca5a5;
-          color: #ef4444;
-          height: 32px;
-          padding: 0 14px;
-          border-radius: 8px;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 0.72rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: all 0.2s;
-          white-space: nowrap;
-        }
-        .cancel-btn-action:hover {
-          background: #fef2f2;
-          border-color: #ef4444;
-        }
-
-        /* ── PROFILE VIEW ── */
-        .profile-card-layout {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-        }
-        @media (max-width: 768px) { .profile-card-layout { grid-template-columns: 1fr; } }
-        
-        .profile-field-box {
-          border: 1px solid #e2e8f0;
-          background: #f8fafc;
-          border-radius: 14px;
-          padding: 16px 20px;
-        }
-        .profile-field-label {
-          font-size: 0.72rem;
-          font-weight: 700;
-          color: #94a3b8;
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          margin-bottom: 4px;
-        }
-        .profile-field-val {
-          font-size: 0.95rem;
-          font-weight: 700;
-          color: #0f172a;
-        }
-
-        .portal-helper-card {
-          background: #eff6ff;
-          border: 1px solid #bfdbfe;
-          border-radius: 16px;
-          padding: 20px;
-          display: flex;
-          gap: 14px;
-          align-items: flex-start;
-          margin-top: 1.5rem;
-        }
-        .helper-icon {
-          color: #2563eb;
-          margin-top: 2px;
-        }
-        .helper-title {
-          font-size: 0.9rem;
-          font-weight: 700;
-          color: #1e3a8a;
-          margin: 0 0 4px;
-        }
-        .helper-desc {
-          font-size: 0.78rem;
-          color: #2563eb;
-          line-height: 1.5;
-          margin: 0;
-        }
-
-        /* Loading / Error states */
-        .portal-loader-box {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 4rem 0;
-          gap: 12px;
-          color: #64748b;
-        }
-        .portal-spinner {
-          animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        .no-data-box {
-          text-align: center;
-          padding: 3rem 1rem;
-          border: 1.5px dashed #cbd5e1;
-          border-radius: 18px;
-          color: #64748b;
-        }
-        .no-data-title {
-          font-size: 1.05rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin: 0 0 6px;
-        }
-        .no-data-desc {
-          font-size: 0.82rem;
-          margin: 0 0 16px;
-        }
-        .book-cta-btn {
-          border: none;
-          background: #0f172a;
-          color: white;
-          font-size: 0.8rem;
-          font-weight: 700;
-          padding: 10px 20px;
-          border-radius: 20px;
-          cursor: pointer;
-          transition: all 0.2s;
-        }
-        .book-cta-btn:hover {
-          background: #1e293b;
-        }
-      `}</style>
-
       <ConfirmModal 
         isOpen={confirmDialog.isOpen}
         title="Cancel Appointment"
@@ -671,14 +281,16 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
         </div>
       </div>
 
-      <div className="portal-layout">
+      <div className="grid grid-cols-[260px_1fr] min-h-[80vh] w-full max-w-[1300px] mx-auto gap-8 p-8 box-border max-[900px]:grid-cols-1 max-[900px]:p-4">
         
         {/* Left Sidebar */}
-        <aside className="portal-sidebar">
-          <span className="portal-sidebar-title">Menu Navigation</span>
+        <aside className="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col gap-1.5 h-fit shadow-[0_4px_15px_rgba(15,23,42,0.01)] max-[900px]:flex-row max-[900px]:overflow-x-auto no-scrollbar">
+          <span className="text-[0.72rem] uppercase tracking-[0.08em] text-[#94a3b8] font-bold px-3 pt-1.5 pb-3 max-[900px]:hidden">Menu Navigation</span>
           
           <button
-            className={`sidebar-nav-btn${currentTab === 'appointments' ? ' active' : ''}`}
+            className={`flex items-center gap-3 px-4 py-3 border-none text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900 ${
+              currentTab === 'appointments' ? 'bg-slate-900 text-white' : 'bg-transparent text-[#475569]'
+            }`}
             onClick={() => setPortalSubTab('appointments')}
           >
             <Calendar size={16} />
@@ -686,17 +298,19 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
           </button>
           
           <button
-            className={`sidebar-nav-btn${currentTab === 'profile' ? ' active' : ''}`}
+            className={`flex items-center gap-3 px-4 py-3 border-none text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900 ${
+              currentTab === 'profile' ? 'bg-slate-900 text-white' : 'bg-transparent text-[#475569]'
+            }`}
             onClick={() => setPortalSubTab('profile')}
           >
             <User size={16} />
             <span>My Profile</span>
           </button>
 
-          <div className="sidebar-divider" />
+          <div className="h-[1px] bg-slate-200 my-3 max-[900px]:hidden" />
 
           <button
-            className="sidebar-nav-btn"
+            className="flex items-center gap-3 px-4 py-3 border-none bg-transparent text-[#475569] text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900"
             onClick={() => setActiveTab('website')}
           >
             <ArrowLeft size={16} />
@@ -705,51 +319,31 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
         </aside>
 
         {/* Right Dashboard Window */}
-        <main className="portal-view-container">
+        <main className="bg-white border border-slate-200 rounded-[24px] p-10 shadow-[0_4px_20px_rgba(15,23,42,0.015)] flex flex-col min-h-[500px] max-[640px]:p-6">
           
           {/* Header */}
-          <header className="welcome-header" style={{ display: 'flex', justifyItems: 'center', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #f1f5f9', paddingBottom: '16px', marginBottom: '24px' }}>
+          <header className="flex justify-between items-center border-b border-[#f1f5f9] pb-4 mb-6">
             <div>
-              <h1 className="welcome-title" style={{ margin: 0 }}>
+              <h1 className="text-[1.6rem] font-extrabold text-slate-900 m-0 mb-1.5 tracking-[-0.02em]">
                 {currentTab === 'appointments' && 'Appointment History'}
                 {currentTab === 'profile' && 'Patient Profile Details'}
               </h1>
-              <p className="welcome-subtitle" style={{ margin: '4px 0 0' }}>
+              <p className="text-[0.88rem] text-slate-500 m-0 mt-1 leading-[1.5]">
                 {currentTab === 'appointments' && 'Manage your clinical appointments and view history details.'}
                 {currentTab === 'profile' && 'Review your patient profile information stored in our secure EHR network.'}
               </p>
             </div>
 
             {/* Notification Bell */}
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div className="relative flex items-center">
               <button 
                 onClick={() => setNotifOpen(true)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '8px',
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: '50%',
-                  transition: 'all 0.2s'
-                }}
+                className="bg-transparent border-none cursor-pointer p-2 relative flex items-center justify-center rounded-full transition-all duration-200"
                 title="Notifications Drawer"
               >
                 <Bell size={20} className="text-slate-500 hover:text-slate-800" />
                 {notifications.length > 0 && (
-                  <span style={{
-                    position: 'absolute',
-                    top: '6px',
-                    right: '6px',
-                    width: '8px',
-                    height: '8px',
-                    background: '#ef4444',
-                    borderRadius: '50%',
-                    border: '1.5px solid #ffffff'
-                  }} />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-[1.5px] border-white" />
                 )}
               </button>
             </div>
@@ -761,84 +355,91 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
           {currentTab === 'appointments' && (
             <div>
               {loading ? (
-                <div className="portal-loader-box">
-                  <Loader className="portal-spinner" size={24} />
+                <div className="flex flex-col items-center justify-center py-16 gap-3 text-slate-500">
+                  <Loader className="animate-spin" size={24} />
                   <span>Loading appointment history...</span>
                 </div>
               ) : errorMsg ? (
-                <div className="no-data-box" style={{ borderStyle: 'solid', borderColor: '#fca5a5', background: '#fef2f2' }}>
-                  <span className="no-data-title" style={{ color: '#b91c1c' }}>Database Connection Offline</span>
-                  <p className="no-data-desc">{errorMsg}</p>
+                <div className="text-center px-4 py-12 border-[1.5px] border-solid border-red-300 rounded-[18px] text-red-500 bg-red-50">
+                  <span className="text-[1.05rem] font-bold text-red-900 m-0 mb-1.5 block">Database Connection Offline</span>
+                  <p className="text-[0.82rem] m-0 mb-4">{errorMsg}</p>
                 </div>
               ) : appointments.length === 0 ? (
-                <div className="no-data-box">
-                  <span className="no-data-title">No appointments found</span>
-                  <p className="no-data-desc">You haven't booked any dental appointments yet.</p>
-                  <button className="book-cta-btn" onClick={() => { setActiveTab('website'); window.location.hash = '#/services'; }}>
+                <div className="text-center px-4 py-12 border-[1.5px] border-dashed border-slate-300 rounded-[18px] text-slate-500">
+                  <span className="text-[1.05rem] font-bold text-slate-900 m-0 mb-1.5 block">No appointments found</span>
+                  <p className="text-[0.82rem] m-0 mb-4">You haven't booked any dental appointments yet.</p>
+                  <button className="border-none bg-slate-900 text-white text-[0.8rem] font-bold px-5 py-2.5 rounded-full cursor-pointer transition-all duration-200 hover:bg-slate-800" onClick={() => { setActiveTab('website'); window.location.hash = '#/services'; }}>
                     Book Your First Appointment
                   </button>
                 </div>
               ) : (
-                <div className="apt-list-container">
+                <div className="flex flex-col gap-4">
                   {appointments.map((apt) => {
                     const avatar = DOCTOR_AVATARS[apt.doctorName] || 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=150&q=80';
+                    
+                    let badgeColorClasses = "";
+                    if (apt.status === "Upcoming") badgeColorClasses = "bg-amber-50 text-amber-800 border border-amber-200";
+                    else if (apt.status === "Approved") badgeColorClasses = "bg-emerald-50 text-emerald-700 border border-emerald-200";
+                    else if (apt.status === "Completed") badgeColorClasses = "bg-blue-50 text-blue-700 border border-blue-200";
+                    else if (apt.status === "Cancelled") badgeColorClasses = "bg-red-50 text-red-700 border border-red-200";
+
                     return (
-                      <div key={apt._id} className="apt-card">
+                      <div key={apt._id} className="bg-white border-[1.5px] border-slate-200 rounded-[20px] overflow-hidden transition-all duration-200 shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:border-[#cbd5e1] hover:shadow-[0_6px_24px_rgba(15,23,42,0.08)] hover:-translate-y-[1px]">
 
                         {/* ─── HEADER: Doctor + Status ─── */}
-                        <div className="apt-card-header">
-                          <div className="apt-card-doctor">
-                            <div className="apt-avatar-wrap">
-                              <img src={avatar} alt={apt.doctorName} />
+                        <div className="flex items-center justify-between px-[22px] py-[18px] border-b border-slate-100 bg-[#fafbfc] gap-4">
+                          <div className="flex items-center gap-3.5">
+                            <div className="w-12 h-12 rounded-[14px] overflow-hidden border-2 border-slate-200 shrink-0 bg-slate-100">
+                              <img src={avatar} alt={apt.doctorName} className="w-full h-full object-cover" />
                             </div>
-                            <div className="apt-doctor-info">
-                              <span className="apt-doctor-name-text">{apt.doctorName}</span>
-                              <span className="apt-doctor-spec">{apt.treatmentCategory}</span>
+                            <div>
+                              <span className="text-[0.97rem] font-bold text-slate-900 block leading-[1.2]">{apt.doctorName}</span>
+                              <span className="text-[0.74rem] text-slate-500 font-medium block mt-[3px]">{apt.treatmentCategory}</span>
                             </div>
                           </div>
-                          <span className={`apt-status-badge ${apt.status.toLowerCase()}`}>
+                          <span className={`text-[0.68rem] font-extrabold uppercase tracking-[0.07em] px-3 py-1.5 rounded-full shrink-0 ${badgeColorClasses}`}>
                             {apt.status}
                           </span>
                         </div>
 
                         {/* ─── BODY: Treatment | Schedule | Price ─── */}
-                        <div className="apt-card-body">
-                          <div className="apt-body-cell">
-                            <span className="apt-cell-label">Treatment</span>
-                            <span className="apt-cell-value">{apt.treatmentName}</span>
-                            <span className="apt-cell-sub">{apt.treatmentCategory}</span>
+                        <div className="grid grid-cols-3 gap-0 border-b border-slate-100 max-[640px]:grid-cols-1">
+                          <div className="px-[22px] py-[16px] border-r border-slate-100 last:border-r-0 max-[640px]:border-r-0 max-[640px]:border-b max-[640px]:border-slate-100 max-[640px]:last:border-b-0">
+                            <span className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[#94a3b8] block mb-1.25">Treatment</span>
+                            <span className="text-[0.88rem] font-bold text-slate-900 block">{apt.treatmentName}</span>
+                            <span className="text-[0.72rem] text-slate-500 font-medium block mt-0.5">{apt.treatmentCategory}</span>
                           </div>
-                          <div className="apt-body-cell">
-                            <span className="apt-cell-label">Schedule</span>
-                            <span className="apt-cell-value">{apt.appointmentDate}</span>
-                            <span className="apt-cell-sub">{apt.timeSlot}</span>
+                          <div className="px-[22px] py-[16px] border-r border-slate-100 last:border-r-0 max-[640px]:border-r-0 max-[640px]:border-b max-[640px]:border-slate-100 max-[640px]:last:border-b-0">
+                            <span className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[#94a3b8] block mb-1.25">Schedule</span>
+                            <span className="text-[0.88rem] font-bold text-slate-900 block">{apt.appointmentDate}</span>
+                            <span className="text-[0.72rem] text-slate-500 font-medium block mt-0.5">{apt.timeSlot}</span>
                           </div>
-                          <div className="apt-body-cell">
-                            <span className="apt-cell-label">Procedure Fee</span>
-                            <span className="apt-cell-value price-highlight">{apt.price}</span>
-                            <span className="apt-cell-sub">{apt.paymentMethod === 'Razorpay / Online Payment' ? 'Online' : apt.paymentMethod || 'Pay at Clinic'}</span>
+                          <div className="px-[22px] py-[16px] border-r border-slate-100 last:border-r-0 max-[640px]:border-r-0 max-[640px]:border-b max-[640px]:border-slate-100 max-[640px]:last:border-b-0">
+                            <span className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[#94a3b8] block mb-1.25">Procedure Fee</span>
+                            <span className="text-[1rem] font-extrabold text-slate-900 block">{apt.price}</span>
+                            <span className="text-[0.72rem] text-slate-500 font-medium block mt-0.5">{apt.paymentMethod === 'Razorpay / Online Payment' ? 'Online' : apt.paymentMethod || 'Pay at Clinic'}</span>
                           </div>
                         </div>
 
                         {/* ─── FOOTER: Location + Notes + Cancel ─── */}
-                        <div className="apt-card-footer">
-                          <div className="apt-footer-meta">
+                        <div className="flex items-center justify-between px-[22px] py-[13px] gap-4 flex-wrap">
+                          <div className="flex items-center gap-4.5 flex-wrap">
                             {apt.location && (
-                              <span className="apt-footer-item">
-                                <svg className="apt-footer-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                              <span className="flex items-center gap-1.25 text-[0.72rem] text-slate-500 font-medium">
+                                <svg className="text-slate-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                                 {apt.location}
                               </span>
                             )}
                             {apt.notes && (
-                              <span className="apt-footer-item">
-                                <svg className="apt-footer-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                              <span className="flex items-center gap-1.25 text-[0.72rem] text-slate-500 font-medium">
+                                <svg className="text-slate-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                                 {apt.notes.length > 50 ? apt.notes.substring(0, 50) + '...' : apt.notes}
                               </span>
                             )}
                           </div>
                           {apt.status === 'Upcoming' && (
                             <button
-                              className="cancel-btn-action"
+                              className="bg-transparent border-[1.5px] border-red-300 text-[#ef4444] h-8 px-3.5 rounded-lg inline-flex items-center gap-1.5 text-[0.72rem] font-bold cursor-pointer transition-all duration-200 whitespace-nowrap hover:bg-red-50 hover:border-red-500"
                               onClick={() => handleCancelClick(apt._id)}
                               disabled={actionLoading}
                               title="Cancel Appointment"
@@ -860,37 +461,37 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
           {/* ── CASE 3: PATIENT PROFILE ── */}
           {currentTab === 'profile' && (
             <div>
-              <div className="profile-card-layout">
-                <div className="profile-field-box">
-                  <div className="profile-field-label">Full Name</div>
-                  <div className="profile-field-val">{currentUser?.name || 'Alex Mercer'}</div>
+              <div className="grid grid-cols-2 gap-6 max-[768px]:grid-cols-1">
+                <div className="border border-slate-200 bg-slate-50 rounded-[14px] px-5 py-4">
+                  <div className="text-[0.72rem] font-bold text-[#94a3b8] uppercase tracking-[0.06em] mb-1">Full Name</div>
+                  <div className="text-[0.95rem] font-bold text-slate-900">{currentUser?.name || 'Alex Mercer'}</div>
                 </div>
 
-                <div className="profile-field-box">
-                  <div className="profile-field-label">Email Address</div>
-                  <div className="profile-field-val">{currentUser?.email || 'alex.mercer@gmail.com'}</div>
+                <div className="border border-slate-200 bg-slate-50 rounded-[14px] px-5 py-4">
+                  <div className="text-[0.72rem] font-bold text-[#94a3b8] uppercase tracking-[0.06em] mb-1">Email Address</div>
+                  <div className="text-[0.95rem] font-bold text-slate-900">{currentUser?.email || 'alex.mercer@gmail.com'}</div>
                 </div>
 
-                <div className="profile-field-box">
-                  <div className="profile-field-label">Date of Birth</div>
-                  <div className="profile-field-val">
+                <div className="border border-slate-200 bg-slate-50 rounded-[14px] px-5 py-4">
+                  <div className="text-[0.72rem] font-bold text-[#94a3b8] uppercase tracking-[0.06em] mb-1">Date of Birth</div>
+                  <div className="text-[0.95rem] font-bold text-slate-900">
                     {currentUser?.dob
                       ? new Date(currentUser.dob).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
                       : 'October 14, 1994'}
                   </div>
                 </div>
 
-                <div className="profile-field-box">
-                  <div className="profile-field-label">Care Account Tier</div>
-                  <div className="profile-field-val" style={{ color: '#f97316' }}>Premium VIP Member</div>
+                <div className="border border-slate-200 bg-slate-50 rounded-[14px] px-5 py-4">
+                  <div className="text-[0.72rem] font-bold text-[#94a3b8] uppercase tracking-[0.06em] mb-1">Care Account Tier</div>
+                  <div className="text-[0.95rem] font-bold text-orange-500">Premium VIP Member</div>
                 </div>
               </div>
 
-              <div className="portal-helper-card">
-                <Award className="helper-icon" size={20} />
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 flex gap-3.5 items-start mt-6">
+                <Award className="text-blue-600 mt-0.5" size={20} />
                 <div>
-                  <h4 className="helper-title">Membership Rewards Activated</h4>
-                  <p className="helper-desc">
+                  <h4 className="text-[0.9rem] font-bold text-blue-900 m-0 mb-1">Membership Rewards Activated</h4>
+                  <p className="text-[0.78rem] text-blue-600 leading-[1.5] m-0">
                     Your ClearDent VIP profile grants you 10% off orthodontic reviews, free digital 3D Smile alignments, and priority scheduling fast-track support.
                   </p>
                 </div>

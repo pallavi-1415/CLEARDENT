@@ -86,7 +86,7 @@ function DoctorAppointments({ appointments, actionLoading, handleStatusUpdate })
                   <div className="apt-card-header">
                     <div className="apt-card-doctor">
                       <div className="apt-avatar-wrap">
-                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f4ff', color: '#5F7EF7', fontWeight: 'bold', fontSize: '14px' }}>
+                        <div className="w-full h-full flex items-center justify-center bg-doctor-primary-light text-doctor-primary font-bold text-sm">
                           {patientInitials}
                         </div>
                       </div>
@@ -137,22 +137,20 @@ function DoctorAppointments({ appointments, actionLoading, handleStatusUpdate })
                     </div>
                     
                     {/* Action Buttons */}
-                    <div style={{ display: 'flex', gap: '8px' }}>
+                    <div className="flex gap-2">
                       {appt.status === 'Upcoming' && (
                         <>
                           <button
                             onClick={() => handleStatusUpdate(appt._id, 'Approved')}
                             disabled={actionLoading}
-                            className="cancel-btn-action"
-                            style={{ background: '#ecfdf5', color: '#059669', borderColor: '#a7f3d0' }}
+                            className="h-8 px-3.5 rounded-lg inline-flex items-center gap-1.5 text-[0.72rem] font-bold whitespace-nowrap transition-all duration-200 border border-emerald-200 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:border-emerald-300 cursor-pointer"
                           >
                             Approve
                           </button>
                           <button
                             onClick={() => handleStatusUpdate(appt._id, 'Cancelled')}
                             disabled={actionLoading}
-                            className="cancel-btn-action"
-                            style={{ background: '#fef2f2', color: '#dc2626', borderColor: '#fecaca' }}
+                            className="h-8 px-3.5 rounded-lg inline-flex items-center gap-1.5 text-[0.72rem] font-bold whitespace-nowrap transition-all duration-200 border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-300 cursor-pointer"
                           >
                             Decline
                           </button>
@@ -162,8 +160,7 @@ function DoctorAppointments({ appointments, actionLoading, handleStatusUpdate })
                         <button
                           onClick={() => handleStatusUpdate(appt._id, 'Completed')}
                           disabled={actionLoading}
-                          className="cancel-btn-action"
-                          style={{ background: '#eff6ff', color: '#3b82f6', borderColor: '#bfdbfe' }}
+                          className="h-8 px-3.5 rounded-lg inline-flex items-center gap-1.5 text-[0.72rem] font-bold whitespace-nowrap transition-all duration-200 border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:border-blue-300 cursor-pointer"
                         >
                           Mark Done
                         </button>

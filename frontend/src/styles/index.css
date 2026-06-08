@@ -22,6 +22,30 @@
   --border-light: #e2e8f0;     /* Cool Gray Border */
   --border-focus: #2563eb;     /* Blue Focus Border */
   
+  /* Brand Green / Booking Modal Theme Colors */
+  --brand-green: #1A907C;
+  --brand-green-alt: #0e8374;
+  --brand-green-hover: #137563;
+  --brand-green-light: #f0fdfa;
+  --brand-green-glow: rgba(26, 144, 124, 0.1);
+  --brand-green-glow-strong: rgba(26, 144, 124, 0.2);
+  --brand-green-glow-stronger: rgba(26, 144, 124, 0.3);
+  --brand-green-bg: rgba(26, 144, 124, 0.03);
+  --brand-green-bg-alt: rgba(26, 144, 124, 0.04);
+  --brand-green-bg-select: rgba(26, 144, 124, 0.05);
+  --brand-green-gradient-1: rgba(144, 224, 203, 0.4);
+  --brand-green-gradient-2: rgba(144, 224, 203, 0.3);
+  
+  --brand-green-scroll-track: #e2eae7;
+  --brand-green-scroll-thumb: #cbdad5;
+  --brand-green-scroll-thumb-hover: #a2cebf;
+
+  /* Doctor Primary Theme Colors */
+  --doctor-primary: #5F7EF7;
+  --doctor-primary-hover: #4E6DF5;
+  --doctor-primary-light: #f0f4ff;
+  --doctor-primary-bg-glow: rgba(95, 126, 247, 0.05);
+
   --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.015);
   --shadow-luxury: 0 20px 50px rgba(37, 99, 235, 0.04), 0 4px 12px rgba(0, 0, 0, 0.01);
   

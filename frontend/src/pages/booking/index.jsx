@@ -598,34 +598,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
   return (
     <>
-      <style>{`
-        .custom-page-bg {
-          background: linear-gradient(135deg, #e2ece9 0%, #f0f4f3 50%, #e4eff1 100%);
-        }
-
-        .micro-logo-icon {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 4px;
-        }
-
-        .scrollable-dates::-webkit-scrollbar {
-          height: 6px;
-        }
-        .scrollable-dates::-webkit-scrollbar-track {
-          background: #e2eae7;
-          border-radius: 10px;
-        }
-        .scrollable-dates::-webkit-scrollbar-thumb {
-          background: #cbdad5;
-          border-radius: 10px;
-        }
-        .scrollable-dates::-webkit-scrollbar-thumb:hover {
-          background: #a2cebf;
-        }
-      `}</style>
-
-      <div className="min-h-screen custom-page-bg flex flex-col font-sans select-none relative overflow-x-hidden">
+      <div className="min-h-screen bg-[linear-gradient(135deg,#e2ece9_0%,#f0f4f3_50%,#e4eff1_100%)] flex flex-col font-sans select-none relative overflow-x-hidden">
         
         {/* Soft atmospheric gradient glows matching the image context */}
         <div className="absolute top-0 right-0 w-[450px] h-[450px] rounded-full bg-teal-250/20 blur-[130px] pointer-events-none z-0" />
@@ -651,7 +624,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
               <div className="space-y-10 relative z-10">
                 {/* Logo and Brand */}
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 micro-logo-icon shrink-0">
+                  <div className="w-9 h-9 grid grid-cols-2 gap-1 shrink-0">
                     <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center"><div className="w-1 h-1 rounded-full bg-white"></div></div>
                     <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-70"><div className="w-1 h-1 rounded-full bg-white"></div></div>
                     <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-80"><div className="w-1 h-1 rounded-full bg-white"></div></div>
@@ -1036,11 +1009,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                   {/* Glassmorphic Selected Date Bar (SAME TO SAME PIXEL FORMAT) */}
                   {selectedDate && selectedTimeSlot && (
                     <div 
-                      className="rounded-xl p-4 flex items-center gap-3 text-slate-800 shadow-xs"
-                      style={{
-                        background: 'rgba(14, 131, 116, 0.08)',
-                        border: '1px solid rgba(14, 131, 116, 0.15)'
-                      }}
+                      className="rounded-xl p-4 flex items-center gap-3 text-slate-800 shadow-xs bg-[#0e8374]/[0.08] border border-[#0e8374]/[0.15]"
                     >
                       <Clock size={15} className="text-[#0e8374] shrink-0" />
                       <div className="text-[0.72rem]">

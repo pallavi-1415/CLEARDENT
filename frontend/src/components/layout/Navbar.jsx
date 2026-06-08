@@ -61,19 +61,13 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
                     >
                         Our Doctors
                     </span>
-                    <a
-                        href="/#faq"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navigate('home');
-                            setTimeout(() => {
-                                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-                            }, 100);
-                        }}
+                    <span
+                        onClick={() => navigate('faq')}
+                        style={{ cursor: 'pointer' }}
                         className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans"
                     >
                         FAQ
-                    </a>
+                    </span>
                 </nav>
             )}
 

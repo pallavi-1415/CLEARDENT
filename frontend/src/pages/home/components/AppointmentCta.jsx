@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-import Input from '../../../components/ui/Input';
+import React from 'react';
 import Button from '../../../components/ui/Button';
 
 function AppointmentCta({ navigate, isLoggedIn, setActiveTab }) {
-  const [ctaName, setCtaName] = useState('');
-  const [ctaPhone, setCtaPhone] = useState('');
-
   return (
     <section className="py-20 px-24 max-lg:px-12 max-lg:py-16 max-md:px-6 max-md:py-12 max-sm:px-4 max-sm:py-10 flex justify-center box-border bg-[#f5f4f0]">
       <div className="bg-gradient-to-br from-[#dceefc] to-[#cde7fc] rounded-[32px] max-md:rounded-[24px] max-sm:rounded-[20px] p-[4.5rem_5rem] max-lg:p-[3.5rem_3rem] max-md:p-[2.5rem_1.8rem] max-sm:p-[2rem_1.2rem] grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] items-center gap-16 max-lg:gap-12 max-md:gap-10 max-sm:gap-8 relative overflow-hidden max-w-[1500px] w-full">
@@ -21,38 +17,14 @@ function AppointmentCta({ navigate, isLoggedIn, setActiveTab }) {
 
           {/* Form fields */}
           <div className="flex flex-col gap-4 mt-4 w-full max-w-[420px]">
-            <div className="flex flex-col md:flex-row gap-4 w-full">
-              <Input
-                type="text"
-                placeholder="Your name"
-                value={ctaName}
-                onChange={(e) => setCtaName(e.target.value)}
-                className="flex-1"
-              />
-              <Input
-                type="text"
-                placeholder="Your phone"
-                value={ctaPhone}
-                onChange={(e) => setCtaPhone(e.target.value)}
-                className="flex-1"
-              />
-            </div>
-
             <Button
               onClick={() => {
-                if (!ctaName || !ctaPhone) {
-                  window.showError?.('Please fill in both name and phone number fields.');
-                  return;
-                }
-                window.showToast?.(`Thank you, ${ctaName}! Opening booking form for you…`);
-                setCtaName('');
-                setCtaPhone('');
-                if (window.openBookingModal) window.openBookingModal();
+                window.location.href = 'mailto:info@cleardent.com';
               }}
               variant="navy"
               className="w-full rounded-full p-[0.65rem_0.65rem_0.65rem_2rem] text-[0.95rem] flex items-center justify-between shadow-[0_8px_25px_rgba(22,40,78,0.15)] font-sans"
             >
-              <span>Book Appointment</span>
+              <span>Contact Us</span>
               <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="13 17 18 12 13 7" />

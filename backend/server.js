@@ -26,12 +26,14 @@ const appointmentRoutes = require('./routes/appointments');
 const adminRoutes = require('./routes/admin');
 const doctorRoutes = require('./routes/doctor');
 const paymentRoutes = require('./routes/payment');
+const contactRoutes = require('./routes/contact');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/doctor', doctorRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/contact', contactRoutes);
 
 const http = require('http');
 const server = http.createServer(app);

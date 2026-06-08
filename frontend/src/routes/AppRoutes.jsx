@@ -7,6 +7,8 @@ import BookingPage from '../pages/booking';
 import AdminDashboard from '../dashboards/admin';
 import DoctorDashboard from '../dashboards/doctor';
 import OurDoctors from '../pages/doctor';
+import ContactUs from '../pages/contact';
+import FaqPage from '../pages/faq';
 import ToothLoader from '../components/ui/ToothLoader';
 import BookingModal from '../components/ui/BookingModal';
 import { useAuth } from '../context/AuthContext';
@@ -31,6 +33,8 @@ function AppRoutes() {
     if (path === '/services') return 'services';
     if (path === '/doctors') return 'doctors';
     if (path === '/booking') return 'booking';
+    if (path === '/contact') return 'contact';
+    if (path === '/faq') return 'faq';
     if (path === '/admin-dashboard') return 'admin-dashboard';
     if (path === '/doctor-dashboard') return 'doctor-dashboard';
     return 'home'; // default landing page
@@ -62,6 +66,10 @@ function AppRoutes() {
         setRoute('services');
       } else if (path === '/doctors') {
         setRoute('doctors');
+      } else if (path === '/contact') {
+        setRoute('contact');
+      } else if (path === '/faq') {
+        setRoute('faq');
       } else if (path === '/booking') {
         if (!isAuth) {
           setRedirectTo('booking');
@@ -193,6 +201,18 @@ function AppRoutes() {
           setPortalSubTab={setPortalSubTab}
         />
       )}
+      {renderedRoute === 'contact' && (
+        <ContactUs
+          navigate={navigate}
+          isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          portalSubTab={portalSubTab}
+          setPortalSubTab={setPortalSubTab}
+        />
+      )}
       {renderedRoute === 'booking' && (
         <BookingPage
           navigate={navigate}
@@ -207,6 +227,18 @@ function AppRoutes() {
       )}
       {renderedRoute === 'home' && (
         <Home
+          navigate={navigate}
+          isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          portalSubTab={portalSubTab}
+          setPortalSubTab={setPortalSubTab}
+        />
+      )}
+      {renderedRoute === 'faq' && (
+        <FaqPage
           navigate={navigate}
           isLoggedIn={isLoggedIn}
           currentUser={currentUser}
