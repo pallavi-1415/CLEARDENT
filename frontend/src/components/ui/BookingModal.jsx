@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createAppointment } from '../../services/appointments';
 import { fetchApprovedDoctors } from '../../services/login';
 import { TREATMENTS_DATA } from '../../constants/treatments';
+import { API_BASE_URL } from '../../config';
 import { io } from 'socket.io-client';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -264,7 +265,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
   /* ── Socket.io real-time slots ── */
   useEffect(() => {
     if (!isOpen) return;
-    const socket = io('http://localhost:5000');
+    const socket = io(API_BASE_URL);
     socket.on('availabilityUpdated', (data) => {
       setDbDoctors(prev => prev.map(doc =>
         doc.name.toLowerCase() === data.doctorName.toLowerCase()
@@ -295,7 +296,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       if (!selectedDoctor || !selectedDate) { setBookedSlots([]); return; }
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:5000/api/appointments/booked?doctorName=${encodeURIComponent(selectedDoctor.name)}&date=${encodeURIComponent(selectedDate.fullDateString)}`, {
+        const res = await fetch(`${API_BASE_URL}/api/appointments/booked?doctorName=${encodeURIComponent(selectedDoctor.name)}&date=${encodeURIComponent(selectedDate.fullDateString)}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -467,7 +468,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
         let numericPrice = selectedTreatment.price.replace(/[^0-9.]/g, '');
         if (!numericPrice) numericPrice = '500'; // fallback
         
-        const orderResponse = await fetch('http://localhost:5000/api/payment/order', {
+        const orderResponse = await fetch(`${API_BASE_URL}/api/payment/order`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -492,7 +493,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
           order_id: orderData.orderId,
           handler: async function (response) {
             try {
-              const verifyRes = await fetch('http://localhost:5000/api/payment/verify', {
+              const verifyRes = await fetch(`${API_BASE_URL}/api/payment/verify`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

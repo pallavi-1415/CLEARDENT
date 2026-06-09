@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, UserCheck, FileCheck, Clock, CheckCircle, FileText, Check, X } from 'lucide-react';
+import { API_BASE_URL } from '../../../config';
 
 function AdminOverview({ stats, doctors, appointments, actionLoading, handleApprove, handleReject, setActiveSubTab }) {
   const pendingDoctors = doctors.filter(d => !d.isApproved);
@@ -81,7 +82,7 @@ function AdminOverview({ stats, doctors, appointments, actionLoading, handleAppr
                   <div className="flex items-center gap-3">
                     {doc.licenseUrl && (
                       <a 
-                        href={`http://localhost:5000${doc.licenseUrl}`}
+                        href={`${API_BASE_URL}${doc.licenseUrl}`}
                         target="_blank" 
                         rel="noreferrer"
                         className="inline-flex items-center gap-1.5 text-[0.75rem] font-semibold text-blue-400 hover:text-blue-300 border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer"

@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:5000/api/doctor';
+import { API_BASE_URL } from '../config';
+const API_URL = `${API_BASE_URL}/api/doctor`;
 
 const getHeaders = (token) => ({
   'Content-Type': 'application/json',

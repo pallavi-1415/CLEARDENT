@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
+import { API_BASE_URL } from '../../config';
 
 
 
@@ -51,7 +52,7 @@ function ContactUs({ navigate, isLoggedIn, currentUser, onLogout, activeTab, set
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

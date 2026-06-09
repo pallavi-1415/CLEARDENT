@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, CheckCircle, Clock, FileText } from 'lucide-react';
+import { API_BASE_URL } from '../../../config';
 
 function ManageDoctors({ doctors, actionLoading, handleApprove, handleReject }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -97,7 +98,7 @@ function ManageDoctors({ doctors, actionLoading, handleApprove, handleReject }) 
                     <td className="py-4 px-6">
                       {doc.licenseUrl ? (
                         <a
-                          href={`http://localhost:5000${doc.licenseUrl}`}
+                          href={`${API_BASE_URL}${doc.licenseUrl}`}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-blue-400 hover:text-blue-300 font-semibold text-[0.78rem]"

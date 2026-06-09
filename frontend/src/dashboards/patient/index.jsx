@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { getMyAppointments, cancelAppointment } from '../../services/appointments';
+import { API_BASE_URL } from '../../config';
 import {
   Calendar,
   User,
@@ -70,7 +71,7 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
 
   useEffect(() => {
     // Connect to backend socket server
-    const socket = io('http://localhost:5000');
+    const socket = io(API_BASE_URL);
 
     socket.on('connect', () => {
       console.log('🔌 Connected to patient real-time notification socket');

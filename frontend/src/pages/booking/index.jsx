@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
+import { API_BASE_URL } from '../../config';
 import { createAppointment } from '../../services/appointments';
 import { fetchApprovedDoctors } from '../../services/login';
 import { TREATMENTS_DATA } from '../../constants/treatments';
@@ -108,7 +109,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
   // Establish Socket.io connection for real-time slot sync
   useEffect(() => {
-    const socket = io('http://localhost:5000');
+    const socket = io(API_BASE_URL);
 
     socket.on('connect', () => {
       console.log('🔌 Connected to patient booking real-time notification socket');
@@ -173,7 +174,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
       }
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/appointments/booked?doctorName=${encodeURIComponent(selectedDoctor.name)}&date=${encodeURIComponent(selectedDate.fullDateString)}`, {
+        const response = await fetch(`${API_BASE_URL}/api/appointments/booked?doctorName=${encodeURIComponent(selectedDoctor.name)}&date=${encodeURIComponent(selectedDate.fullDateString)}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -486,7 +487,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         let numericPrice = selectedTreatment.price.replace(/[^0-9.]/g, '');
         if (!numericPrice) numericPrice = '500'; // fallback
         
-        const orderResponse = await fetch('http://localhost:5000/api/payment/order', {
+        const orderResponse = await fetch(`${API_BASE_URL}/api/payment/order`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -511,7 +512,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
           order_id: orderData.orderId,
           handler: async function (response) {
             try {
-              const verifyRes = await fetch('http://localhost:5000/api/payment/verify', {
+              const verifyRes = await fetch(`${API_BASE_URL}/api/payment/verify`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

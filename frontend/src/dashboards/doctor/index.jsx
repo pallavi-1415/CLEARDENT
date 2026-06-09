@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
+import { API_BASE_URL } from '../../config';
 import { 
   Users, 
   Calendar, 
@@ -100,7 +101,7 @@ function DoctorDashboard({ navigate, onLogout, onLoginSuccess }) {
 
   useEffect(() => {
     // Establish connection to backend socket.io server
-    const socket = io('http://localhost:5000');
+    const socket = io(API_BASE_URL);
 
     socket.on('connect', () => {
       console.log('🔌 Connected to doctor real-time notification socket');
