@@ -8,11 +8,11 @@ import FeatureBanner from './components/FeatureBanner';
 import FaqSection from './components/FaqSection';
 import AppointmentCta from './components/AppointmentCta';
 import Footer from '../../components/layout/Footer';
-import PortalDashboardView from './components/PortalDashboardView';
+import PortalDashboardView from '../../dashboards/patient';
 
 function Home({ navigate, isLoggedIn, onLogout, currentUser, activeTab, setActiveTab, portalSubTab, setPortalSubTab }) {
   return (
-    <div className="animate-fade-in min-h-screen bg-[#f8fafc] flex flex-col">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col">
       {/* Header Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -26,7 +26,7 @@ function Home({ navigate, isLoggedIn, onLogout, currentUser, activeTab, setActiv
 
       {/* Main Container */}
       {activeTab === 'website' ? (
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col animate-fade-in">
           {/* Hero Section */}
           <HeroSection
             navigate={navigate}
@@ -73,12 +73,14 @@ function Home({ navigate, isLoggedIn, onLogout, currentUser, activeTab, setActiv
         </div>
       ) : (
         /* Patient Portal Dashboard (Synchronized) */
-        <PortalDashboardView
-          setActiveTab={setActiveTab}
-          currentUser={currentUser}
-          portalSubTab={portalSubTab}
-          setPortalSubTab={setPortalSubTab}
-        />
+        <div className="flex-1 flex flex-col animate-fade-in">
+          <PortalDashboardView
+            setActiveTab={setActiveTab}
+            currentUser={currentUser}
+            portalSubTab={portalSubTab}
+            setPortalSubTab={setPortalSubTab}
+          />
+        </div>
       )}
     </div>
   );

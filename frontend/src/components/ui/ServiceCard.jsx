@@ -4,8 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 function ServiceCard({ name, price, desc, duration, icon: Icon, onBook }) {
   return (
     <div
-      className="group relative bg-white border border-[#e2e8f0] rounded-2xl p-6 flex flex-col gap-4 cursor-pointer transition-all duration-300 hover:bg-[#e0f2fe] hover:border-[#7dd3fc] hover:shadow-[0_8px_32px_rgba(56,189,248,0.15)] hover:-translate-y-1 overflow-hidden"
-      style={{ minHeight: '210px' }}
+      className="group relative bg-white border border-[#e2e8f0] rounded-2xl p-6 flex flex-col gap-4 cursor-pointer transition-all duration-300 hover:bg-[#e0f2fe] hover:border-[#7dd3fc] hover:shadow-[0_8px_32px_rgba(56,189,248,0.15)] hover:-translate-y-1 overflow-hidden min-h-[210px]"
     >
       {/* Icon — always blue */}
       <div className="w-11 h-11 rounded-xl flex items-center justify-center text-white shrink-0 transition-all duration-300 group-hover:scale-110 bg-[#2563eb]">

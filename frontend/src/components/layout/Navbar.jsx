@@ -49,31 +49,22 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
                 <nav className="hidden md:flex items-center gap-10">
                     <span
                         onClick={() => navigate('services')}
-                        style={{ cursor: 'pointer' }}
-                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans"
+                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans cursor-pointer"
                     >
                         Services
                     </span>
                     <span
                         onClick={() => navigate('doctors')}
-                        style={{ cursor: 'pointer' }}
-                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans"
+                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans cursor-pointer"
                     >
                         Our Doctors
                     </span>
-                    <a
-                        href="/#faq"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            navigate('home');
-                            setTimeout(() => {
-                                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-                            }, 100);
-                        }}
-                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans"
+                    <span
+                        onClick={() => navigate('faq')}
+                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans cursor-pointer"
                     >
                         FAQ
-                    </a>
+                    </span>
                 </nav>
             )}
 

@@ -18,6 +18,13 @@ module.exports = {
         'text-muted': 'var(--text-muted)',
         'border-light': 'var(--border-light)',
         'border-focus': 'var(--border-focus)',
+        'brand-green': 'var(--brand-green)',
+        'brand-green-alt': 'var(--brand-green-alt)',
+        'brand-green-hover': 'var(--brand-green-hover)',
+        'brand-green-light': 'var(--brand-green-light)',
+        'doctor-primary': 'var(--doctor-primary)',
+        'doctor-primary-hover': 'var(--doctor-primary-hover)',
+        'doctor-primary-light': 'var(--doctor-primary-light)',
       },
       fontFamily: {
         serif: ['var(--font-serif)', 'serif'],
@@ -26,6 +33,9 @@ module.exports = {
       boxShadow: {
         'subtle': 'var(--shadow-subtle)',
         'luxury': 'var(--shadow-luxury)',
+      },
+      backgroundImage: {
+        'luxury-medical': "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.15)), url('./assets/luxury_medical_blue.png')",
       }
     },
   },

@@ -3,7 +3,7 @@ import { Mail, Phone, ArrowRight } from 'lucide-react';
 
 function Footer({ navigate }) {
     return (
-        <footer className="bg-[#f5f4f0] text-black pt-16 pb-8 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
+        <footer className="bg-white text-black pt-16 pb-8 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
             <div className="w-full max-w-[1200px] flex flex-col gap-12">
 
                 {/* Upper Grid Layout */}
@@ -12,7 +12,7 @@ function Footer({ navigate }) {
                     {/* Left Column: Branding & Newsletter */}
                     <div className="flex flex-col gap-8 max-w-[400px]">
                         <div className="flex flex-col gap-2">
-                            <h2 
+                            <h2
                                 className="text-[2.2rem] font-bold italic tracking-tight m-0 cursor-pointer"
                                 onClick={() => navigate?.('home')}
                             >
@@ -60,19 +60,13 @@ function Footer({ navigate }) {
                             <div className="flex flex-col gap-4">
                                 <h5 className="text-[0.78rem] font-bold text-black/50 uppercase tracking-widest m-0">Quick Link</h5>
                                 <div className="flex flex-col gap-2.5 text-[0.85rem] text-black/70">
-                                    <span 
-                                        onClick={() => {
-                                            if (navigate) {
-                                                navigate('home');
-                                                setTimeout(() => {
-                                                    document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-                                                }, 100);
-                                            }
-                                        }} 
+                                    <span
+                                        onClick={() => navigate?.('faq')}
                                         className="hover:text-black cursor-pointer transition-colors"
                                     >
                                         FAQs
                                     </span>
+                                    <span onClick={() => navigate?.('contact')} className="hover:text-black cursor-pointer transition-colors">Contact Us</span>
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Privacy</span>
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Terms & Conditions</span>
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Refund Policy</span>

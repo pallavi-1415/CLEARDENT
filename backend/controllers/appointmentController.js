@@ -21,7 +21,7 @@ exports.createAppointment = async (req, res) => {
       appointmentDate,
       timeSlot,
       notes,
-      location: location || 'Lumina Smile Studio - Downtown',
+      location: location || 'ClearDent Smile Studio - Downtown',
       paymentMethod: paymentMethod || 'Pay at Clinic',
       status: 'Upcoming'
     });

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createAppointment } from '../../services/appointments';
 import { fetchApprovedDoctors } from '../../services/login';
 import { TREATMENTS_DATA } from '../../constants/treatments';
+import { API_BASE_URL } from '../../config';
 import { io } from 'socket.io-client';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -44,9 +45,9 @@ const getDoctorPhoto = (name, index) => {
 };
 
 const CLINIC_LOCATIONS = [
-  { id: 'mumbai', name: 'Lumina Dental — Mumbai', address: 'Bandra West, Link Road, Mumbai, MH 400050', hours: '8:00 AM – 8:00 PM', phone: '+91 98765 43210', mapUrl: 'https://maps.google.com/?q=Bandra+West,Mumbai' },
-  { id: 'delhi', name: 'Lumina Dental — Delhi', address: 'Connaught Place, Block C, New Delhi, DL 110001', hours: '9:00 AM – 7:00 PM', phone: '+91 91234 56789', mapUrl: 'https://maps.google.com/?q=Connaught+Place,Delhi' },
-  { id: 'bangalore', name: 'Lumina Dental — Bangalore', address: 'Indiranagar 100ft Road, Bangalore, KA 560038', hours: '8:30 AM – 7:30 PM', phone: '+91 99887 76655', mapUrl: 'https://maps.google.com/?q=Indiranagar,Bangalore' }
+  { id: 'mumbai', name: 'ClearDent — Mumbai', address: 'Bandra West, Link Road, Mumbai, MH 400050', hours: '8:00 AM – 8:00 PM', phone: '+91 98765 43210', mapUrl: 'https://maps.google.com/?q=Bandra+West,Mumbai' },
+  { id: 'delhi', name: 'ClearDent — Delhi', address: 'Connaught Place, Block C, New Delhi, DL 110001', hours: '9:00 AM – 7:00 PM', phone: '+91 91234 56789', mapUrl: 'https://maps.google.com/?q=Connaught+Place,Delhi' },
+  { id: 'bangalore', name: 'ClearDent — Bangalore', address: 'Indiranagar 100ft Road, Bangalore, KA 560038', hours: '8:30 AM – 7:30 PM', phone: '+91 99887 76655', mapUrl: 'https://maps.google.com/?q=Indiranagar,Bangalore' }
 ];
 
 const STEPS = [
@@ -82,7 +83,7 @@ const getSlotDurationText = (startTimeStr) => {
 };
 
 /* ─── Custom Select Component ───────────────────────────────────── */
-const CustomSelect = ({ options, value, onChange, placeholder, icon }) => {
+const CustomSelect = ({ options, value, onChange, placeholder, icon, hasError }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -99,37 +100,46 @@ const CustomSelect = ({ options, value, onChange, placeholder, icon }) => {
   const selectedOption = options.find(opt => opt.value === value);
 
   return (
-    <div className="bm-custom-select" ref={dropdownRef}>
+    <div className="relative w-full select-none" ref={dropdownRef}>
       <div 
-        className={`bm-select-header ${isOpen ? 'open' : ''} ${selectedOption ? 'has-value' : ''}`} 
+        className={`flex items-center w-full border-[1.5px] rounded-lg p-[14px_16px] cursor-pointer transition-all duration-200 ${
+          isOpen ? 'border-[var(--brand-green)] bg-white' : 'border-[#d1d5db] bg-[#f9fafb] hover:border-[var(--brand-green)] hover:bg-white'
+        } ${hasError ? 'border-[#ef4444] bg-[#fef2f2]' : ''} ${
+          isOpen ? (hasError ? 'shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'shadow-[0_0_0_4px_var(--brand-green-glow)]') : ''
+        }`} 
         onClick={() => setIsOpen(!isOpen)}
       >
-        {icon && <span className="bm-select-icon">{icon}</span>}
-        <span className="bm-select-value">
+        {icon && (
+          <span className={`mr-3 flex items-center transition-colors duration-200 ${(selectedOption || isOpen) ? 'text-[var(--brand-green)]' : 'text-[#9ca3af]'}`}>
+            {icon}
+          </span>
+        )}
+        <span className={`flex-1 text-[0.95rem] transition-colors duration-200 ${selectedOption ? 'text-[#111827] font-medium' : 'text-[#6b7280] font-normal'}`}>
           {selectedOption ? selectedOption.label : placeholder}
         </span>
         <ChevronRight 
           size={18} 
-          className="bm-select-arrow" 
-          style={{ transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} 
+          className={`text-[#9ca3af] transition-transform duration-200 ${isOpen ? 'rotate-90' : 'rotate-0'}`} 
         />
       </div>
       {isOpen && (
-        <div className="bm-select-options">
+        <div className="absolute top-[calc(100%+8px)] left-0 w-full bg-white border border-[#e5e7eb] rounded-lg shadow-[0_10px_25px_rgba(0,0,0,0.1)] z-[100] max-h-[250px] overflow-y-auto animate-[bmOptionsIn_0.2s_cubic-bezier(0.16,1,0.3,1)]">
           {options.length > 0 ? options.map((opt) => (
             <div 
               key={opt.value}
-              className={`bm-select-option ${value === opt.value ? 'selected' : ''}`}
+              className={`p-[12px_16px] text-[0.95rem] cursor-pointer flex items-center justify-between transition-colors duration-100 ${
+                value === opt.value ? 'bg-[var(--brand-green-bg-select)] text-[var(--brand-green)] font-semibold' : 'text-[#374151] hover:bg-[#f3f4f6] hover:text-[#111827]'
+              }`}
               onClick={() => {
                 onChange(opt.value);
                 setIsOpen(false);
               }}
             >
               {opt.label}
-              {value === opt.value && <Check size={16} className="bm-select-check" />}
+              {value === opt.value && <Check size={16} className="text-[var(--brand-green)]" />}
             </div>
           )) : (
-            <div className="bm-select-option disabled">No options available</div>
+            <div className="p-[12px_16px] text-[0.95rem] text-slate-400 cursor-not-allowed">No options available</div>
           )}
         </div>
       )}
@@ -162,6 +172,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
   const [loading, setLoading] = useState(false);
   const [bookingSuccessData, setBookingSuccessData] = useState(null);
   const [showAllSlots, setShowAllSlots] = useState(false);
+  const [errors, setErrors] = useState({});
   const prevCategory = useRef(selectedCategory);
   const contentRef = useRef(null);
   const receiptRef = useRef(null);
@@ -254,7 +265,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
   /* ── Socket.io real-time slots ── */
   useEffect(() => {
     if (!isOpen) return;
-    const socket = io('http://localhost:5000');
+    const socket = io(API_BASE_URL);
     socket.on('availabilityUpdated', (data) => {
       setDbDoctors(prev => prev.map(doc =>
         doc.name.toLowerCase() === data.doctorName.toLowerCase()
@@ -285,7 +296,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       if (!selectedDoctor || !selectedDate) { setBookedSlots([]); return; }
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch(`http://localhost:5000/api/appointments/booked?doctorName=${encodeURIComponent(selectedDoctor.name)}&date=${encodeURIComponent(selectedDate.fullDateString)}`, {
+        const res = await fetch(`${API_BASE_URL}/api/appointments/booked?doctorName=${encodeURIComponent(selectedDoctor.name)}&date=${encodeURIComponent(selectedDate.fullDateString)}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -357,18 +368,50 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
 
   const allDoctorSlots = getDoctorSlotsForSelectedDate();
 
-  /* ── Step navigation ── */
+  /* ── Step navigation & Validation ── */
+  const validateStep = (step) => {
+    const newErrors = {};
+    if (step === 1) {
+      if (!selectedCategory) newErrors.category = 'Please select a category';
+      if (!selectedTreatment) newErrors.treatment = 'Please select a procedure';
+      if (!selectedDoctor) newErrors.doctor = 'Please select a dentist';
+    }
+    if (step === 2) {
+      if (!patientName.trim()) {
+        newErrors.name = 'Full name is required';
+      } else if (patientName.trim().length < 2) {
+        newErrors.name = 'Name must be at least 2 characters';
+      }
+      
+      const phoneRegex = /^\d{10}$/;
+      if (!patientPhone.trim()) {
+        newErrors.phone = 'Phone number is required';
+      } else if (!phoneRegex.test(patientPhone)) {
+        newErrors.phone = 'Please enter exactly 10 digits';
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!patientEmail.trim()) {
+        newErrors.email = 'Email address is required';
+      } else if (!emailRegex.test(patientEmail)) {
+        newErrors.email = 'Please enter a valid email address';
+      }
+    }
+    if (step === 3) {
+      if (!selectedLocation) newErrors.location = 'Please select a clinic location';
+    }
+    if (step === 4) {
+      if (!selectedDate) newErrors.date = 'Please select an appointment date';
+      if (!selectedTimeSlot) newErrors.timeSlot = 'Please select a time slot';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleNextStep = () => {
-    if (currentStep === 1) {
-      if (!selectedTreatment) { window.showError?.('Please select a service.'); return; }
-      if (!selectedDoctor) { window.showError?.('Please choose a doctor.'); return; }
-    }
-    if (currentStep === 2) {
-      if (!patientName.trim()) { window.showError?.('Please enter your full name.'); return; }
-      if (!patientPhone.trim()) { window.showError?.('Please enter your contact phone number.'); return; }
-    }
-    if (currentStep === 4 && (!selectedDoctor || !selectedDate || !selectedTimeSlot)) {
-      window.showError?.('Please select a Date and Time Slot.'); return;
+    if (!validateStep(currentStep)) {
+      window.showError?.('Please fix the errors before continuing.');
+      return;
     }
     if (currentStep === 5) {
       const token = localStorage.getItem('token');
@@ -382,9 +425,19 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
     setCurrentStep(prev => prev + 1);
     setTimeout(() => contentRef.current?.scrollTo({ top: 0, behavior: 'smooth' }), 50);
   };
-  const handleBackStep = () => { setCurrentStep(prev => Math.max(1, prev - 1)); };
+  const handleBackStep = () => { setErrors({}); setCurrentStep(prev => Math.max(1, prev - 1)); };
 
   /* ── Submit ── */
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const handleBookingSubmit = async () => {
     if (!selectedTreatment || !selectedDoctor || !selectedDate || !selectedTimeSlot) {
       window.showError?.('Please complete all required booking details.'); return;
@@ -403,6 +456,92 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
         location: selectedLocation.name,
         paymentMethod
       };
+
+      if (paymentMethod === 'Razorpay / Online Payment') {
+        const scriptLoaded = await loadRazorpayScript();
+        if (!scriptLoaded) {
+          window.showError?.('Razorpay SDK failed to load. Are you online?');
+          setLoading(false);
+          return;
+        }
+
+        let numericPrice = selectedTreatment.price.replace(/[^0-9.]/g, '');
+        if (!numericPrice) numericPrice = '500'; // fallback
+        
+        const orderResponse = await fetch(`${API_BASE_URL}/api/payment/order`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ amount: numericPrice })
+        });
+        const orderData = await orderResponse.json();
+        if (!orderData.success) {
+           window.showError?.(orderData.message || 'Failed to create payment order.');
+           setLoading(false);
+           return;
+        }
+
+        const options = {
+          key: 'rzp_test_SxtsLJgL1kjYsy', // Your actual Razorpay Key ID
+          amount: orderData.amount,
+          currency: orderData.currency,
+          name: 'ClearDent Studio',
+          description: `Payment for ${selectedTreatment.name}`,
+          image: 'https://cdn-icons-png.flaticon.com/512/2966/2966327.png',
+          order_id: orderData.orderId,
+          handler: async function (response) {
+            try {
+              const verifyRes = await fetch(`${API_BASE_URL}/api/payment/verify`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+              const verifyData = await verifyRes.json();
+              if (verifyData.success) {
+                const result = await createAppointment(appointmentData, token);
+                setBookingSuccessData(result.appointment);
+                window.showToast?.('Payment successful & Appointment booked!');
+                setCurrentStep(6);
+              } else {
+                window.showError?.('Payment verification failed!');
+              }
+            } catch (err) {
+              console.error(err);
+              window.showError?.('Server error during payment verification.');
+            } finally {
+              setLoading(false);
+            }
+          },
+          prefill: {
+            name: patientName,
+            email: patientEmail,
+            contact: patientPhone
+          },
+          theme: {
+            color: '#0e8374'
+          },
+          modal: {
+            ondismiss: function() {
+               setLoading(false);
+               window.showToast?.('Payment process was cancelled.');
+            }
+          }
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+        return;
+      }
+
       const result = await createAppointment(appointmentData, token);
       setBookingSuccessData(result.appointment);
       window.showToast?.('Appointment booked successfully!');
@@ -411,7 +550,9 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       console.error(err);
       window.showError?.(err.message || 'Failed to book appointment. Please try again.');
     } finally {
-      setLoading(false);
+      if (paymentMethod !== 'Razorpay / Online Payment') {
+        setLoading(false);
+      }
     }
   };
 
@@ -425,7 +566,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Lumina_Receipt_${bookingSuccessData?._id?.slice(-6) || 'Booking'}.pdf`);
+      pdf.save(`ClearDent_Receipt_${bookingSuccessData?._id?.slice(-6) || 'Booking'}.pdf`);
     } catch (err) {
       console.error('Failed to generate PDF', err);
     }
@@ -444,6 +585,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
     setPaymentMethod('Pay at Clinic');
     setBookingSuccessData(null);
     setShowAllSlots(false);
+    setErrors({});
     setCurrentMonthDate(new Date());
     prevCategory.current = TREATMENTS_DATA[0];
   };
@@ -468,289 +610,67 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
 
   return (
     <>
-      <style>{`
-        .bm-overlay {
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.4);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
-          z-index: 99999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 16px;
-          animation: bmOverlayIn 0.2s ease forwards;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-        @keyframes bmOverlayIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .bm-card {
-          background: #f4f7f6;
-          border-radius: 16px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-          width: 100%;
-          max-width: 1000px;
-          height: 600px;
-          display: flex;
-          overflow: hidden;
-          position: relative;
-          animation: bmCardIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .bm-card::before {
-          content: ''; position: absolute; bottom: -100px; left: -100px; width: 400px; height: 400px;
-          background: radial-gradient(circle, rgba(144, 224, 203, 0.4) 0%, transparent 70%); pointer-events: none; z-index: 0;
-        }
-        .bm-card::after {
-          content: ''; position: absolute; top: -50px; right: -50px; width: 300px; height: 300px;
-          background: radial-gradient(circle, rgba(144, 224, 203, 0.3) 0%, transparent 70%); pointer-events: none; z-index: 0;
-        }
-        @keyframes bmCardIn {
-          from { opacity: 0; transform: translateY(20px) scale(0.98); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        .bm-layout { display: flex; flex: 1; width: 100%; z-index: 1; }
-
-        /* Sidebar */
-        .bm-sidebar { width: 280px; flex-shrink: 0; padding: 40px 30px; display: flex; flex-direction: column; border-right: 1px solid rgba(0,0,0,0.04); }
-        .bm-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 50px; }
-        .bm-brand svg { color: #1A907C; width: 28px; height: 28px; }
-        .bm-brand-text { font-size: 1.25rem; font-weight: 700; color: #111827; letter-spacing: -0.01em; }
-
-        /* Stepper */
-        .bm-stepper { display: flex; flex-direction: column; flex: 1; position: relative; }
-        .bm-step-item { display: flex; align-items: flex-start; gap: 16px; position: relative; padding-bottom: 30px; }
-        .bm-step-item:last-child { padding-bottom: 0; }
-        .bm-step-item:not(:last-child)::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 8px; width: 1.5px; background: #d1d5db; }
-        .bm-step-item.done:not(:last-child)::after { background: #1A907C; }
-        
-        .bm-step-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 600; flex-shrink: 0; position: relative; z-index: 2; background: #f4f7f6; }
-        .bm-step-dot.done { border: 1.5px solid #1A907C; color: #1A907C; }
-        .bm-step-dot.active { background: #1A907C; border: 1.5px solid #1A907C; color: #ffffff; }
-        .bm-step-dot.pending { border: 1.5px solid #d1d5db; color: #9ca3af; }
-        .bm-step-label { font-size: 0.95rem; font-weight: 500; margin-top: 6px; }
-        .bm-step-label.active { color: #111827; font-weight: 600; }
-        .bm-step-label.done { color: #4b5563; }
-        .bm-step-label.pending { color: #9ca3af; }
-
-        /* Content Area */
-        .bm-content-wrapper { flex: 1; display: flex; flex-direction: column; padding: 40px; }
-        .bm-content-card { background: #ffffff; border: 1px solid rgba(229, 231, 235, 0.5); border-radius: 12px; padding: 30px; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
-
-        .bm-step-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .bm-step-title { font-size: 1.45rem; font-weight: 700; color: #1f2937; margin: 0; }
-
-        /* Custom Select UI */
-        .bm-custom-select { position: relative; width: 100%; user-select: none; }
-        .bm-select-header {
-          display: flex;
-          align-items: center;
-          width: 100%;
-          border: 1.5px solid #d1d5db;
-          border-radius: 8px;
-          padding: 14px 16px;
-          background: #f9fafb;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        .bm-select-header:hover, .bm-select-header.open {
-          border-color: #1A907C;
-          background: #ffffff;
-        }
-        .bm-select-header.open {
-          box-shadow: 0 0 0 4px rgba(26, 144, 124, 0.1);
-        }
-        .bm-select-icon {
-          color: #9ca3af;
-          margin-right: 12px;
-          display: flex;
-          align-items: center;
-        }
-        .bm-select-header.has-value .bm-select-icon, .bm-select-header.open .bm-select-icon {
-          color: #1A907C;
-        }
-        .bm-select-value {
-          flex: 1;
-          font-size: 0.95rem;
-          color: #111827;
-          font-weight: 500;
-        }
-        .bm-select-header:not(.has-value) .bm-select-value {
-          color: #6b7280;
-          font-weight: 400;
-        }
-        .bm-select-arrow {
-          color: #9ca3af;
-        }
-        .bm-select-options {
-          position: absolute;
-          top: calc(100% + 8px);
-          left: 0;
-          width: 100%;
-          background: #ffffff;
-          border: 1px solid #e5e7eb;
-          border-radius: 8px;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-          z-index: 100;
-          max-height: 250px;
-          overflow-y: auto;
-          animation: bmOptionsIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes bmOptionsIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .bm-select-option {
-          padding: 12px 16px;
-          font-size: 0.95rem;
-          color: #374151;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          transition: background 0.1s;
-        }
-        .bm-select-option:hover {
-          background: #f3f4f6;
-          color: #111827;
-        }
-        .bm-select-option.selected {
-          background: rgba(26, 144, 124, 0.05);
-          color: #1A907C;
-          font-weight: 600;
-        }
-        .bm-select-check {
-          color: #1A907C;
-        }
-
-        /* Inputs & Textareas */
-        .bm-input-wrap { position: relative; margin-bottom: 24px; }
-        .bm-label { font-size: 0.85rem; font-weight: 600; color: #4b5563; margin-bottom: 8px; display: block; }
-        .bm-input, .bm-textarea {
-          width: 100%; border: 1.5px solid #d1d5db; border-radius: 8px; padding: 14px 16px; padding-left: 42px; font-size: 0.95rem; color: #111827; background: #f9fafb; outline: none; transition: all 0.2s ease; font-family: inherit;
-        }
-        .bm-input:focus, .bm-textarea:focus { border-color: #1A907C; background: #ffffff; box-shadow: 0 0 0 4px rgba(26, 144, 124, 0.1); }
-        .bm-input-icon { position: absolute; left: 14px; top: 38px; color: #9ca3af; pointer-events: none; transition: color 0.2s; }
-        .bm-input:focus ~ .bm-input-icon { color: #1A907C; }
-        .bm-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-        /* Action Buttons */
-        .bm-actions { display: flex; justify-content: flex-end; gap: 16px; margin-top: auto; }
-        .bm-btn-back { padding: 12px 32px; border: 1px solid #d1d5db; border-radius: 8px; background: transparent; color: #4b5563; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .bm-btn-back:hover { background: #f3f4f6; color: #111827; }
-        .bm-btn-next { padding: 12px 40px; border: none; border-radius: 8px; background: #1A907C; color: #ffffff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(26, 144, 124, 0.2); }
-        .bm-btn-next:hover { background: #137563; box-shadow: 0 6px 16px rgba(26, 144, 124, 0.3); }
-        .bm-btn-next:disabled { opacity: 0.6; cursor: not-allowed; }
-
-        /* Other Styles Keep Intact... */
-        .bm-location-card { border: 2px solid transparent; border-radius: 12px; padding: 20px; margin-bottom: 16px; cursor: pointer; background: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; align-items: flex-start; gap: 16px; transition: all 0.2s; }
-        .bm-location-card:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.06); }
-        .bm-location-card.selected { border-color: #1A907C; background: rgba(26,144,124,0.03); }
-        .bm-loc-icon-wrap { width: 48px; height: 48px; border-radius: 12px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #6b7280; }
-        .bm-location-card.selected .bm-loc-icon-wrap { background: #1A907C; color: #ffffff; }
-        .bm-location-name { font-weight: 700; color: #111827; margin-bottom: 6px; font-size: 1.05rem; }
-        .bm-location-addr { font-size: 0.9rem; color: #4b5563; margin-bottom: 12px; line-height: 1.4; }
-        .bm-location-meta { display: flex; gap: 16px; font-size: 0.8rem; color: #6b7280; font-weight: 500; }
-        .bm-map-btn { margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #1A907C; font-weight: 600; text-decoration: none; }
-        .bm-map-btn:hover { text-decoration: underline; }
-
-        .bm-payment-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-        .bm-payment-card { border: 2px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; background: #ffffff; transition: all 0.2s; }
-        .bm-payment-card:hover { border-color: #d1d5db; background: #f9fafb; }
-        .bm-payment-card.selected { border-color: #1A907C; background: rgba(26, 144, 124, 0.04); box-shadow: 0 4px 12px rgba(26, 144, 124, 0.1); }
-        .bm-payment-icon { width: 44px; height: 44px; border-radius: 10px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #4b5563; }
-        .bm-payment-card.selected .bm-payment-icon { background: #1A907C; color: #ffffff; }
-        .bm-payment-info { flex: 1; }
-        .bm-payment-name { font-weight: 700; color: #111827; font-size: 1rem; margin-bottom: 4px; }
-        .bm-payment-desc { font-size: 0.85rem; color: #6b7280; }
-        .bm-payment-radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #d1d5db; display: flex; align-items: center; justify-content: center; }
-        .bm-payment-card.selected .bm-payment-radio { border-color: #1A907C; background: #1A907C; }
-        .bm-payment-card.selected .bm-payment-radio::after { content: ''; width: 8px; height: 8px; background: #fff; border-radius: 50%; }
-
-        .bm-month-selector { display: flex; align-items: center; gap: 12px; padding: 8px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.9rem; font-weight: 600; color: #374151; }
-        .bm-month-btn { background: none; border: none; cursor: pointer; color: #9ca3af; padding: 0; }
-        .bm-month-btn:hover { color: #111827; }
-        .bm-date-row { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #e5e7eb; padding-bottom: 16px; margin-bottom: 24px; }
-        .bm-date-nav { color: #9ca3af; background: none; border: none; cursor: pointer; padding: 4px; }
-        .bm-date-nav:hover { color: #111827; }
-        .bm-date-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; min-width: 60px; position: relative; }
-        .bm-date-day { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
-        .bm-date-num { font-size: 1.15rem; color: #374151; font-weight: 500; }
-        .bm-date-item.active .bm-date-day, .bm-date-item.active .bm-date-num { color: #111827; font-weight: 700; }
-        .bm-date-item.active::after { content: ''; position: absolute; bottom: -17px; left: 0; right: 0; height: 3px; background: #111827; border-radius: 3px 3px 0 0; }
-
-        .bm-slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 16px; }
-        .bm-slot-btn { padding: 12px 10px; background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; color: #374151; transition: all 0.2s; text-align: center; }
-        .bm-slot-btn:hover:not(:disabled):not(.selected) { border-color: #1A907C; color: #1A907C; background: #f0fdfa; }
-        .bm-slot-btn.selected { background: #1A907C; border-color: #1A907C; color: #ffffff; box-shadow: 0 4px 10px rgba(26, 144, 124, 0.2); }
-        .bm-slot-btn:disabled { opacity: 0.4; cursor: not-allowed; background: #f3f4f6; text-decoration: line-through; }
-
-        @media print {
-          body * { visibility: hidden; }
-          .bm-overlay { background: transparent !important; backdrop-filter: none !important; }
-          .bm-card { box-shadow: none !important; margin: 0 !important; width: 100% !important; height: auto !important; max-width: none !important; }
-          .bm-sidebar { display: none !important; }
-          .bm-content-wrapper, .bm-content-wrapper * { visibility: visible !important; }
-          .bm-content-wrapper { position: absolute; left: 0; top: 0; padding: 20px !important; width: 100% !important; }
-          .bm-btn-next, .bm-btn-back, .no-print { display: none !important; }
-          .bm-content-card { border: none !important; box-shadow: none !important; }
-        }
-      `}</style>
-
-      <div className="bm-overlay" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}>
-        <div className="bm-card">
-          <div className="bm-layout">
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-[4px] z-[99999] flex items-center justify-center p-4 animate-[bmOverlayIn_0.2s_ease_forwards] font-sans" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}>
+        <div className="bg-[#f4f7f6] rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] w-full max-w-[1000px] h-[600px] flex overflow-hidden relative animate-[bmCardIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] before:content-[''] before:absolute before:-bottom-[100px] before:-left-[100px] before:w-[400px] before:h-[400px] before:bg-[radial-gradient(circle,_var(--brand-green-gradient-1)_0%,_transparent_70%)] before:pointer-events-none before:z-0 after:content-[''] after:absolute after:-top-[50px] after:-right-[50px] after:w-[300px] after:h-[300px] after:bg-[radial-gradient(circle,_var(--brand-green-gradient-2)_0%,_transparent_70%)] after:pointer-events-none after:z-0">
+          <div className="flex flex-1 w-full z-[1]">
             
             {/* ─── SIDEBAR ─── */}
-            <div className="bm-sidebar">
-              <div className="bm-brand">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="8" cy="8" r="3" />
-                  <circle cx="16" cy="8" r="3" />
-                  <circle cx="8" cy="16" r="3" />
-                  <circle cx="16" cy="16" r="3" />
-                  <path d="M10.5 8h3 M8 10.5v3" opacity="0.5" />
+            <div className="w-[280px] shrink-0 p-[40px_30px] flex flex-col border-r border-black/[0.04]">
+              <div className="flex items-center gap-2.5 mb-[50px]">
+                <svg className="text-[var(--brand-green)] w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                  <path d="M12 6a3.5 3.5 0 0 0-3.5 3.5c0 3.5 3.5 6.5 3.5 6.5s3.5-3 3.5-6.5A3.5 3.5 0 0 0 12 6z" />
                 </svg>
-                <span className="bm-brand-text">Lumina</span>
+                <span className="text-xl font-bold text-[#111827] tracking-[-0.01em]">ClearDent</span>
               </div>
-
-              <nav className="bm-stepper">
+ 
+              <nav className="flex flex-col flex-1 relative">
                 {STEPS.map((step) => {
                   const isDone = currentStep > step.number;
                   const isActive = currentStep === step.number;
+                  
+                  const dotStatusClass = isDone 
+                    ? 'border-[1.5px] border-[var(--brand-green)] text-[var(--brand-green)]' 
+                    : isActive 
+                      ? 'bg-[var(--brand-green)] border-[1.5px] border-[var(--brand-green)] text-white' 
+                      : 'border-[1.5px] border-[#d1d5db] text-[#9ca3af]';
+
+                  const labelStatusClass = isDone
+                    ? 'text-[#4b5563]'
+                    : isActive
+                      ? 'text-[#111827] font-semibold'
+                      : 'text-[#9ca3af]';
+
                   return (
-                    <div key={step.number} className={`bm-step-item ${isDone ? 'done' : ''}`}>
-                      <div className={`bm-step-dot ${isDone ? 'done' : isActive ? 'active' : 'pending'}`}>
+                    <div key={step.number} className={`flex items-start gap-4 relative pb-[30px] last:pb-0 after:content-[''] after:absolute after:left-[15px] after:top-8 after:bottom-2 after:w-[1.5px] ${isDone ? 'after:bg-[var(--brand-green)]' : 'after:bg-[#d1d5db]'} last:after:hidden`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[0.85rem] font-semibold shrink-0 relative z-[2] bg-[#f4f7f6] ${dotStatusClass}`}>
                         {isDone ? <Check size={16} strokeWidth={3} /> : step.number}
                       </div>
-                      <span className={`bm-step-label ${isDone ? 'done' : isActive ? 'active' : 'pending'}`}>
+                      <span className={`text-[0.95rem] font-medium mt-1.5 ${labelStatusClass}`}>
                         {step.name}
                       </span>
                     </div>
                   );
                 })}
               </nav>
-              <div className="bm-sidebar-footer">
+              <div className="flex items-center gap-2 text-[0.85rem] text-[#4b5563] mt-auto font-medium">
                 <HelpCircle size={16} />
                 Need help with booking?
               </div>
             </div>
-
+ 
             {/* ─── CONTENT AREA ─── */}
-            <div className="bm-content-wrapper">
+            <div className="flex-1 flex flex-col p-10">
               
               {/* STEP 1: Service */}
               {currentStep === 1 && (
-                <div style={{ flex: 1, overflowY: 'auto' }}>
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Select Service</h2>
+                <div className="flex-1 overflow-y-auto">
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Select Service</h2>
                   </div>
-                  <div className="bm-content-card">
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Category</span>
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Category</span>
                       <CustomSelect 
                         options={categoryOptions}
                         value={selectedCategory?.id || ''}
@@ -758,70 +678,95 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                           const cat = TREATMENTS_DATA.find(c => c.id === val);
                           setSelectedCategory(cat); 
                           setSelectedTreatment(null);
+                          setErrors(prev => ({ ...prev, category: null, treatment: null }));
                         }}
                         placeholder="Select a category"
                         icon={<Activity size={18} />}
+                        hasError={!!errors.category}
                       />
+                      {errors.category && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.category}</div>}
                     </div>
-
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Procedure</span>
+ 
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Procedure</span>
                       <CustomSelect 
                         options={procedureOptions}
                         value={selectedTreatment?.name || ''}
                         onChange={(val) => {
                           const t = selectedCategory?.items.find(i => i.name === val);
                           setSelectedTreatment(t || null);
+                          setErrors(prev => ({ ...prev, treatment: null }));
                         }}
                         placeholder="— Select a procedure —"
                         icon={<HeartPulse size={18} />}
+                        hasError={!!errors.treatment}
                       />
+                      {errors.treatment && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.treatment}</div>}
                     </div>
-
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Assigned Dentist</span>
+ 
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Assigned Dentist</span>
                       <CustomSelect 
                         options={dentistOptions}
                         value={selectedDoctor?.name || ''}
                         onChange={(val) => {
                           const doc = dbDoctors.find(d => d.name === val);
                           setSelectedDoctor(doc || null);
+                          setErrors(prev => ({ ...prev, doctor: null }));
                         }}
                         placeholder="— Select a dentist —"
                         icon={<Stethoscope size={18} />}
+                        hasError={!!errors.doctor}
                       />
+                      {errors.doctor && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.doctor}</div>}
                     </div>
                   </div>
                 </div>
               )}
-
+ 
               {/* STEP 2: Personal Details */}
               {currentStep === 2 && (
-                <div style={{ flex: 1, overflowY: 'auto' }}>
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Personal Details</h2>
+                <div className="flex-1 overflow-y-auto">
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Personal Details</h2>
                   </div>
-                  <div className="bm-content-card">
-                    <div className="bm-grid-2">
-                      <div className="bm-input-wrap">
-                        <span className="bm-label">Full Name</span>
-                        <input className="bm-input" type="text" placeholder="John Doe" value={patientName} onChange={(e) => setPatientName(e.target.value)} />
-                        <User className="bm-input-icon" size={18} style={{ top: '39px' }} />
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="relative mb-6">
+                        <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Full Name</span>
+                        <input className={`peer w-full border-[1.5px] rounded-lg p-[14px_16px] pl-[42px] text-[0.95rem] text-[#111827] outline-none transition-all duration-200 font-sans focus:bg-white ${errors.name ? 'border-[#ef4444] bg-[#fef2f2] focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'border-[#d1d5db] bg-[#f9fafb] focus:border-[var(--brand-green)] focus:shadow-[0_0_0_4px_var(--brand-green-glow)]'}`} type="text" placeholder="John Doe" value={patientName} onChange={(e) => { setPatientName(e.target.value); setErrors(prev => ({...prev, name: null})); }} />
+                        <User className={`absolute left-3.5 top-[39px] pointer-events-none transition-colors duration-200 peer-focus:text-[var(--brand-green)] ${errors.name ? 'text-[#ef4444]' : 'text-[#9ca3af]'}`} size={18} />
+                        {errors.name && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.name}</div>}
                       </div>
-                      <div className="bm-input-wrap">
-                        <span className="bm-label">Phone Number</span>
-                        <input className="bm-input" type="tel" placeholder="+91 98765 43210" value={patientPhone} onChange={(e) => setPatientPhone(e.target.value)} />
-                        <Phone className="bm-input-icon" size={18} style={{ top: '39px' }} />
+                      <div className="relative mb-6">
+                        <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Phone Number</span>
+                        <input 
+                          className={`peer w-full border-[1.5px] rounded-lg p-[14px_16px] pl-[42px] text-[0.95rem] text-[#111827] outline-none transition-all duration-200 font-sans focus:bg-white ${errors.phone ? 'border-[#ef4444] bg-[#fef2f2] focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'border-[#d1d5db] bg-[#f9fafb] focus:border-[var(--brand-green)] focus:shadow-[0_0_0_4px_var(--brand-green-glow)]'}`} 
+                          type="tel" 
+                          placeholder="9876543210" 
+                          maxLength={10}
+                          value={patientPhone} 
+                          onChange={(e) => { 
+                            const val = e.target.value.replace(/\D/g, '');
+                            if (val.length <= 10) {
+                              setPatientPhone(val); 
+                              setErrors(prev => ({...prev, phone: null})); 
+                            }
+                          }} 
+                        />
+                        <Phone className={`absolute left-3.5 top-[39px] pointer-events-none transition-colors duration-200 peer-focus:text-[var(--brand-green)] ${errors.phone ? 'text-[#ef4444]' : 'text-[#9ca3af]'}`} size={18} />
+                        {errors.phone && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.phone}</div>}
                       </div>
                     </div>
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Email Address</span>
-                      <input className="bm-input" type="email" placeholder="john@example.com" value={patientEmail} onChange={(e) => setPatientEmail(e.target.value)} />
-                      <Mail className="bm-input-icon" size={18} style={{ top: '39px' }} />
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Email Address</span>
+                      <input className={`peer w-full border-[1.5px] rounded-lg p-[14px_16px] pl-[42px] text-[0.95rem] text-[#111827] outline-none transition-all duration-200 font-sans focus:bg-white ${errors.email ? 'border-[#ef4444] bg-[#fef2f2] focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'border-[#d1d5db] bg-[#f9fafb] focus:border-[var(--brand-green)] focus:shadow-[0_0_0_4px_var(--brand-green-glow)]'}`} type="email" placeholder="john@example.com" value={patientEmail} onChange={(e) => { setPatientEmail(e.target.value); setErrors(prev => ({...prev, email: null})); }} />
+                      <Mail className={`absolute left-3.5 top-[39px] pointer-events-none transition-colors duration-200 peer-focus:text-[var(--brand-green)] ${errors.email ? 'text-[#ef4444]' : 'text-[#9ca3af]'}`} size={18} />
+                      {errors.email && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.email}</div>}
                     </div>
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Notes (Optional)</span>
-                      <textarea className="bm-textarea" style={{ paddingLeft: '16px' }} placeholder="Any specific requirements..." rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Notes (Optional)</span>
+                      <textarea className="w-full border-[1.5px] border-[#d1d5db] rounded-lg p-[14px_16px] pl-4 text-[0.95rem] text-[#111827] bg-[#f9fafb] outline-none transition-all duration-200 font-sans focus:border-[var(--brand-green)] focus:bg-white focus:shadow-[0_0_0_4px_var(--brand-green-glow)]" placeholder="Any specific requirements..." rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
                     </div>
                   </div>
                 </div>
@@ -829,28 +774,28 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
 
               {/* STEP 3: Location */}
               {currentStep === 3 && (
-                <div style={{ flex: 1, overflowY: 'auto' }}>
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Clinic Location</h2>
+                <div className="flex-1 overflow-y-auto">
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Clinic Location</h2>
                   </div>
-                  <div className="bm-content-card" style={{ padding: '20px' }}>
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-5 mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     {CLINIC_LOCATIONS.map((loc) => (
                       <div
                         key={loc.id}
-                        className={`bm-location-card ${selectedLocation?.id === loc.id ? 'selected' : ''}`}
+                        className={`border-2 rounded-xl p-5 mb-4 cursor-pointer bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-start gap-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_12px_rgba(0,0,0,0.06)] ${selectedLocation?.id === loc.id ? 'border-[var(--brand-green)] bg-[var(--brand-green-bg)]' : 'border-transparent'}`}
                         onClick={() => setSelectedLocation(loc)}
                       >
-                        <div className="bm-loc-icon-wrap">
-                          <MapPin size={24} />
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-200 ${selectedLocation?.id === loc.id ? 'bg-[var(--brand-green)] text-white' : 'bg-[#f3f4f6] text-[#6b7280]'}`}>
+                           <MapPin size={24} />
                         </div>
-                        <div style={{ flex: 1 }}>
-                          <div className="bm-location-name">{loc.name}</div>
-                          <div className="bm-location-addr">{loc.address}</div>
-                          <div className="bm-location-meta">
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Clock size={14} /> {loc.hours}</span>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><Phone size={14} /> {loc.phone}</span>
+                        <div className="flex-1">
+                          <div className="font-bold text-[#111827] mb-1.5 text-[1.05rem]">{loc.name}</div>
+                          <div className="text-[0.9rem] text-[#4b5563] mb-3 leading-[1.4]">{loc.address}</div>
+                          <div className="flex gap-4 text-[0.8rem] text-[#6b7280] font-medium">
+                            <span className="flex items-center gap-1"><Clock size={14} /> {loc.hours}</span>
+                            <span className="flex items-center gap-1"><Phone size={14} /> {loc.phone}</span>
                           </div>
-                          <a href={loc.mapUrl} target="_blank" rel="noreferrer" className="bm-map-btn" onClick={(e) => e.stopPropagation()}>
+                          <a href={loc.mapUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[0.85rem] text-[var(--brand-green)] font-semibold no-underline hover:underline" onClick={(e) => e.stopPropagation()}>
                             <Map size={14} /> View on Google Maps
                           </a>
                         </div>
@@ -859,62 +804,78 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   </div>
                 </div>
               )}
-
+ 
               {/* STEP 4: Appointment (Date/Time) */}
               {currentStep === 4 && (
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <div className="bm-content-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
+                <div className="flex-1 flex flex-col">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex-1 flex flex-col mb-5">
                     
-                    <div className="bm-step-title-row">
-                      <h2 className="bm-step-title">Select Date and Time</h2>
-                      <div className="bm-month-selector">
-                        <button className="bm-month-btn" onClick={handlePrevMonth}><ChevronLeft size={18} /></button>
+                    <div className="flex justify-between items-center mb-[30px]">
+                      <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Select Date and Time</h2>
+                      <div className="flex items-center gap-3 p-[8px_16px] border border-[#e5e7eb] rounded-md text-[0.9rem] font-semibold text-[#374151]">
+                        <button className="bg-none border-none cursor-pointer text-[#9ca3af] p-0 hover:text-[#111827]" onClick={handlePrevMonth}><ChevronLeft size={18} /></button>
                         <span>{currentMonthDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}</span>
-                        <button className="bm-month-btn" onClick={handleNextMonth}><ChevronRight size={18} /></button>
+                        <button className="bg-none border-none cursor-pointer text-[#9ca3af] p-0 hover:text-[#111827]" onClick={handleNextMonth}><ChevronRight size={18} /></button>
                       </div>
                     </div>
-
-                    <div className="bm-date-row">
-                      <button className="bm-date-nav"><ChevronLeft size={20} /></button>
+ 
+                    <div className="flex items-center justify-between border-b border-[#e5e7eb] pb-4 mb-6">
+                      <button className="text-[#9ca3af] bg-none border-none cursor-pointer p-1 hover:text-[#111827]"><ChevronLeft size={20} /></button>
                       {datesList.slice(0, 7).map((d, i) => {
                         let label = d.dayName;
                         if (i === 0) label = 'Today';
                         else if (i === 1) label = 'Tomorrow';
+                        const isSelected = selectedDate?.isoString === d.isoString;
                         return (
                           <div 
                             key={d.isoString} 
-                            className={`bm-date-item ${selectedDate?.isoString === d.isoString ? 'active' : ''}`}
+                            className={`flex flex-col items-center gap-2 cursor-pointer min-width-[60px] relative after:content-[''] after:absolute after:-bottom-[17px] after:left-0 after:right-0 after:h-[3px] after:rounded-t-[3px] ${isSelected ? 'after:bg-[#111827]' : 'after:bg-transparent'}`}
                             onClick={() => { setSelectedDate(d); setSelectedTimeSlot(null); }}
                           >
-                            <span className="bm-date-day">{label}</span>
-                            <span className="bm-date-num">{d.dayNum}</span>
+                            <span className={`text-[0.85rem] font-medium ${isSelected ? 'text-[#111827] font-bold' : 'text-[#6b7280]'}`}>{label}</span>
+                            <span className={`text-[1.15rem] font-medium ${isSelected ? 'text-[#111827] font-bold' : 'text-[#374151]'}`}>{d.dayNum}</span>
                           </div>
                         );
                       })}
-                      <button className="bm-date-nav"><ChevronRight size={20} /></button>
+                      <button className="text-[#9ca3af] bg-none border-none cursor-pointer p-1 hover:text-[#111827]"><ChevronRight size={20} /></button>
                     </div>
-
-                    <div className="bm-slots-grid">
+ 
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-3 mb-2">
                       {(showAllSlots ? allDoctorSlots : allDoctorSlots.slice(0, 12)).map((slot) => {
                         const isBooked = bookedSlots.includes(slot);
+                        const isSelected = selectedTimeSlot === slot;
+                        const btnClass = `p-[12px_10px] rounded-lg text-[0.85rem] font-semibold transition-all duration-200 text-center ` +
+                          (isBooked 
+                            ? 'opacity-40 cursor-not-allowed bg-[#f3f4f6] line-through border border-[#d1d5db] text-[#374151]' 
+                            : isSelected 
+                              ? 'bg-[var(--brand-green)] border border-[var(--brand-green)] text-white shadow-[0_4px_10px_var(--brand-green-glow-strong)]' 
+                              : errors.timeSlot 
+                                ? 'border border-[#ef4444] bg-[#fef2f2] text-[#ef4444]' 
+                                : 'bg-white border border-[#d1d5db] text-[#374151] hover:border-[var(--brand-green)] hover:text-[var(--brand-green)] hover:bg-[var(--brand-green-light)]');
                         return (
                           <button
                             key={slot}
-                            className={`bm-slot-btn ${selectedTimeSlot === slot ? 'selected' : ''}`}
+                            className={btnClass}
                             disabled={isBooked}
-                            onClick={() => !isBooked && setSelectedTimeSlot(slot)}
+                            onClick={() => {
+                              if (!isBooked) {
+                                setSelectedTimeSlot(slot);
+                                setErrors(prev => ({ ...prev, timeSlot: null }));
+                              }
+                            }}
                           >
                             {slot}
                           </button>
                         );
                       })}
                     </div>
+                    {errors.timeSlot && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1 mb-4"><span>⚠</span> {errors.timeSlot}</div>}
                     
                     {allDoctorSlots.length > 12 && (
-                      <div style={{ marginTop: 'auto', paddingTop: '10px' }}>
-                        <button className="bm-more-slots" onClick={() => setShowAllSlots(p => !p)}>
+                      <div className="mt-auto pt-2.5">
+                        <button className="flex items-center gap-1 bg-none border-none cursor-pointer text-[var(--brand-green)] text-[0.85rem] font-semibold p-0" onClick={() => setShowAllSlots(p => !p)}>
                           Show {showAllSlots ? 'fewer' : 'more'} slots
-                          <ChevronRight size={16} style={{ transform: showAllSlots ? 'rotate(-90deg)' : 'rotate(90deg)', transition: 'transform 0.2s' }} />
+                          <ChevronRight size={16} className={`transition-transform duration-200 ${showAllSlots ? '-rotate-90' : 'rotate-90'}`} />
                           <span>({Math.max(0, allDoctorSlots.length - bookedSlots.length)} available)</span>
                         </button>
                       </div>
@@ -922,35 +883,37 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   </div>
                 </div>
               )}
-
+ 
               {/* STEP 5: Payment */}
               {currentStep === 5 && (
-                <div style={{ flex: 1, overflowY: 'auto' }}>
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Payment Method</h2>
+                <div className="flex-1 overflow-y-auto">
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Payment Method</h2>
                   </div>
-                  <div className="bm-content-card">
-                    <div className="bm-payment-grid">
-                      {['Pay at Clinic', 'Online Card Payment', 'Health Insurance'].map((method) => {
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div className="grid grid-cols-1 gap-4">
+                      {['Pay at Clinic', 'Razorpay / Online Payment', 'Health Insurance'].map((method) => {
                         const isSelected = paymentMethod === method;
                         return (
                           <div
                             key={method}
-                            className={`bm-payment-card ${isSelected ? 'selected' : ''}`}
+                            className={`border-2 rounded-xl p-[18px_20px] flex items-center gap-4 cursor-pointer bg-white transition-all duration-200 ${isSelected ? 'border-[var(--brand-green)] bg-[var(--brand-green-bg-alt)] shadow-[0_4px_12px_var(--brand-green-glow)]' : 'border-[#e5e7eb] hover:border-[#d1d5db] hover:bg-[#f9fafb]'}`}
                             onClick={() => setPaymentMethod(method)}
                           >
-                            <div className="bm-payment-icon">
+                            <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors duration-200 ${isSelected ? 'bg-[var(--brand-green)] text-white' : 'bg-[#f3f4f6] text-[#4b5563]'}`}>
                               {method === 'Pay at Clinic' && <Banknote size={24} />}
-                              {method === 'Online Card Payment' && <CreditCard size={24} />}
+                              {method === 'Razorpay / Online Payment' && <CreditCard size={24} />}
                               {method === 'Health Insurance' && <ShieldCheck size={24} />}
                             </div>
-                            <div className="bm-payment-info">
-                              <div className="bm-payment-name">{method}</div>
-                              <div className="bm-payment-desc">
-                                {method === 'Pay at Clinic' ? 'Pay cash, UPI, or card at the reception.' : method === 'Online Card Payment' ? 'Secure online transaction using Razorpay.' : 'Submit your policy details at the clinic.'}
+                            <div className="flex-1">
+                              <div className="font-bold text-[#111827] text-base mb-1">{method}</div>
+                              <div className="text-[0.85rem] text-[#6b7280]">
+                                {method === 'Pay at Clinic' ? 'Pay cash, UPI, or card at the reception.' : method === 'Razorpay / Online Payment' ? 'Secure online transaction using Razorpay.' : 'Submit your policy details at the clinic.'}
                               </div>
                             </div>
-                            <div className="bm-payment-radio"></div>
+                            <div className={`w-[22px] h-[22px] rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[var(--brand-green)] bg-[var(--brand-green)]' : 'border-[#d1d5db]'}`}>
+                              {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                            </div>
                           </div>
                         );
                       })}
@@ -961,63 +924,62 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
 
               {/* STEP 6: Confirmation */}
               {currentStep === 6 && (
-                <div style={{ flex: 1, overflowY: 'auto' }}>
-                  <div className="bm-content-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', margin: '0' }}>
-                    <div className="bm-success-content" style={{ width: '100%', maxWidth: '500px' }}>
-                      <div className="bm-success-icon no-print" style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-                        <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981' }}>
+                <div className="flex-1 overflow-y-auto">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center py-10 px-5 !m-0">
+                    <div className="w-full max-w-[500px]">
+                      <div className="no-print flex justify-center mb-4">
+                        <div className="w-[60px] h-[60px] rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">
                           <Check size={36} strokeWidth={3} />
                         </div>
                       </div>
-                      <h2 className="bm-step-title" style={{ marginBottom: '8px', textAlign: 'center' }}>Booking Confirmed!</h2>
-                      <p style={{ color: '#6b7280', marginBottom: '32px', textAlign: 'center' }} className="no-print">
-                        Thank you for choosing Lumina Dental.
+                      <h2 className="text-[1.45rem] font-bold text-[#1f2937] mb-2 text-center">Booking Confirmed!</h2>
+                      <p className="text-slate-500 mb-8 text-center no-print">
+                        Thank you for choosing ClearDent.
                       </p>
-
+ 
                       {/* Receipt Block */}
-                      <div ref={receiptRef} style={{ textAlign: 'left', background: '#f9fafb', border: '1px solid #e5e7eb', borderRadius: '12px', padding: '32px', marginBottom: '30px' }}>
-                        <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#111827', margin: '0 0 20px', borderBottom: '1px solid #e5e7eb', paddingBottom: '10px' }}>Appointment Receipt</h3>
+                      <div ref={receiptRef} className="text-left bg-slate-50 border border-slate-200 rounded-xl p-8 mb-7">
+                        <h3 className="text-[1.1rem] font-bold text-slate-900 m-0 mb-5 border-b border-slate-200 pb-2.5">Appointment Receipt</h3>
                         
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px', fontSize: '0.9rem', marginBottom: '8px' }}>
-                          <span style={{ color: '#6b7280', fontWeight: '500' }}>Reference ID</span>
-                          <span style={{ color: '#111827', fontWeight: '700' }}>LUM-{(bookingSuccessData?._id || '7A8B9C').slice(-6).toUpperCase()}</span>
+                        <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mb-2">
+                          <span className="text-slate-500 font-medium">Reference ID</span>
+                          <span className="text-slate-900 font-bold">LUM-{(bookingSuccessData?._id || '7A8B9C').slice(-6).toUpperCase()}</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px', fontSize: '0.9rem', marginBottom: '8px' }}>
-                          <span style={{ color: '#6b7280', fontWeight: '500' }}>Patient Name</span>
-                          <span style={{ color: '#111827', fontWeight: '600' }}>{patientName}</span>
+                        <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mb-2">
+                          <span className="text-slate-500 font-medium">Patient Name</span>
+                          <span className="text-slate-900 font-semibold">{patientName}</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px', fontSize: '0.9rem', marginBottom: '8px' }}>
-                          <span style={{ color: '#6b7280', fontWeight: '500' }}>Procedure</span>
-                          <span style={{ color: '#111827', fontWeight: '600' }}>{bookingSuccessData?.treatmentName || selectedTreatment?.name}</span>
+                        <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mb-2">
+                          <span className="text-slate-500 font-medium">Procedure</span>
+                          <span className="text-slate-900 font-semibold">{bookingSuccessData?.treatmentName || selectedTreatment?.name}</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px', fontSize: '0.9rem', marginBottom: '8px' }}>
-                          <span style={{ color: '#6b7280', fontWeight: '500' }}>Dentist</span>
-                          <span style={{ color: '#111827', fontWeight: '600' }}>{bookingSuccessData?.doctorName || selectedDoctor?.name}</span>
+                        <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mb-2">
+                          <span className="text-slate-500 font-medium">Dentist</span>
+                          <span className="text-slate-900 font-semibold">{bookingSuccessData?.doctorName || selectedDoctor?.name}</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px', fontSize: '0.9rem', marginBottom: '8px' }}>
-                          <span style={{ color: '#6b7280', fontWeight: '500' }}>Date & Time</span>
-                          <span style={{ color: '#111827', fontWeight: '600' }}>{bookingSuccessData?.appointmentDate} | {bookingSuccessData?.timeSlot}</span>
+                        <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mb-2">
+                          <span className="text-slate-500 font-medium">Date & Time</span>
+                          <span className="text-slate-900 font-semibold">{bookingSuccessData?.appointmentDate} | {bookingSuccessData?.timeSlot}</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px', fontSize: '0.9rem', marginBottom: '8px' }}>
-                          <span style={{ color: '#6b7280', fontWeight: '500' }}>Location</span>
-                          <span style={{ color: '#111827', fontWeight: '600' }}>{bookingSuccessData?.location || selectedLocation?.name}</span>
+                        <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mb-2">
+                          <span className="text-slate-500 font-medium">Location</span>
+                          <span className="text-slate-900 font-semibold">{bookingSuccessData?.location || selectedLocation?.name}</span>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px', fontSize: '0.9rem', marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e5e7eb' }}>
-                          <span style={{ color: '#111827', fontWeight: '700', fontSize: '1rem' }}>Total Amount</span>
-                          <span style={{ color: '#1A907C', fontWeight: '800', fontSize: '1.1rem' }}>{selectedTreatment?.price}</span>
+                        <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mt-4 pt-4 border-t border-slate-200">
+                          <span className="text-slate-900 font-bold text-[1rem]">Total Amount</span>
+                          <span className="text-[var(--brand-green)] font-extrabold text-[1.1rem]">{selectedTreatment?.price}</span>
                         </div>
                       </div>
-
-                      <div className="no-print" style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+ 
+                      <div className="no-print flex gap-4 justify-center">
                         <button 
-                          className="bm-btn-back" 
+                          className="p-[12px_32px] border border-[#d1d5db] rounded-lg bg-transparent text-[#4b5563] text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#f3f4f6] hover:text-[#111827] flex items-center gap-2" 
                           onClick={handleDownloadPDF}
-                          style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                         >
                           <Download size={18} />
                           Download Receipt
                         </button>
-                        <button className="bm-btn-next" onClick={handleClose}>
+                        <button className="p-[12px_40px] border-none rounded-lg bg-[var(--brand-green)] text-white text-base font-semibold cursor-pointer transition-all duration-200 shadow-[0_4px_12px_var(--brand-green-glow-strong)] hover:bg-[var(--brand-green-hover)] hover:shadow-[0_6px_16px_var(--brand-green-glow-stronger)] disabled:opacity-60 disabled:cursor-not-allowed" onClick={handleClose}>
                           Done
                         </button>
                       </div>
@@ -1025,19 +987,19 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   </div>
                 </div>
               )}
-
+ 
               {/* Actions Footer */}
               {currentStep < 6 && (
-                <div className="bm-actions">
-                  <button className="bm-btn-back" onClick={currentStep === 1 ? handleClose : handleBackStep}>
+                <div className="flex justify-end gap-4 mt-auto">
+                  <button className="p-[12px_32px] border border-[#d1d5db] rounded-lg bg-transparent text-[#4b5563] text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#f3f4f6] hover:text-[#111827]" onClick={currentStep === 1 ? handleClose : handleBackStep}>
                     {currentStep === 1 ? 'Cancel' : 'Back'}
                   </button>
                   {currentStep < 5 ? (
-                    <button className="bm-btn-next" onClick={handleNextStep}>
+                    <button className="p-[12px_40px] border-none rounded-lg bg-[var(--brand-green)] text-white text-base font-semibold cursor-pointer transition-all duration-200 shadow-[0_4px_12px_var(--brand-green-glow-strong)] hover:bg-[var(--brand-green-hover)] hover:shadow-[0_6px_16px_var(--brand-green-glow-stronger)] disabled:opacity-60 disabled:cursor-not-allowed" onClick={handleNextStep}>
                       Next Step
                     </button>
                   ) : (
-                    <button className="bm-btn-next" onClick={handleBookingSubmit} disabled={loading}>
+                    <button className="p-[12px_40px] border-none rounded-lg bg-[var(--brand-green)] text-white text-base font-semibold cursor-pointer transition-all duration-200 shadow-[0_4px_12px_var(--brand-green-glow-strong)] hover:bg-[var(--brand-green-hover)] hover:shadow-[0_6px_16px_var(--brand-green-glow-stronger)] disabled:opacity-60 disabled:cursor-not-allowed" onClick={handleBookingSubmit} disabled={loading}>
                       {loading ? 'Processing...' : 'Confirm Appointment'}
                     </button>
                   )}

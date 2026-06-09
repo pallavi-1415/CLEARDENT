@@ -65,7 +65,7 @@ function OurDoctors({ navigate, isLoggedIn, currentUser, onLogout, activeTab, se
           specialization: d.specialization || 'Dental Specialist',
           bio: d.bio || 'Experienced clinical specialist dedicated to patient health and dental wellbeing.',
           phone: d.phone || '+1 (555) 789-0123',
-          email: d.email || `${d.name.toLowerCase().replace(/\s+/g, '')}@lumina.com`,
+          email: d.email || `${d.name.toLowerCase().replace(/\s+/g, '')}@cleardent.com`,
           timeSlots: d.timeSlots || ['9:00 AM', '10:30 AM', '1:30 PM', '3:00 PM', '4:30 PM'],
           availability: d.availability || [
             { day: 'Monday', slots: [{ start: '9:00 AM', end: '12:00 PM' }, { start: '1:30 PM', end: '5:00 PM' }] },
