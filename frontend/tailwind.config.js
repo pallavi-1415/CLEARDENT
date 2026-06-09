@@ -33,6 +33,9 @@ module.exports = {
       boxShadow: {
         'subtle': 'var(--shadow-subtle)',
         'luxury': 'var(--shadow-luxury)',
+      },
+      backgroundImage: {
+        'luxury-medical': "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.15)), url('./assets/luxury_medical_blue.png')",
       }
     },
   },

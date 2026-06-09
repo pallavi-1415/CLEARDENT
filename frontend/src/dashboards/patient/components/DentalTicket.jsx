@@ -13,7 +13,7 @@ function DentalTicket({
 }) {
   return (
     <div className="ticket-preview-panel">
-      <div className="form-section-label" style={{ marginBottom: '8px' }}>Dental Pass Ticket</div>
+      <div className="form-section-label mb-2">Dental Pass Ticket</div>
 
       <div className="dental-ticket-card">
         <div className="ticket-header-block">
@@ -25,7 +25,7 @@ function DentalTicket({
           <div className="ticket-detail-item">
             <span className="ticket-label-text">Patient Name</span>
             <span className="ticket-val-text">
-              <User size={12} style={{ color: '#4f46e5' }} />
+              <User size={12} className="text-[#4f46e5]" />
               {currentUser?.name || 'Guest Patient'}
             </span>
           </div>
@@ -34,7 +34,7 @@ function DentalTicket({
             <span className="ticket-label-text">Clinical Service</span>
             {selectedTreatment ? (
               <span className="ticket-val-text">
-                <FileText size={12} style={{ color: '#4f46e5' }} />
+                <FileText size={12} className="text-[#4f46e5]" />
                 {selectedTreatment.name}
               </span>
             ) : (
@@ -46,7 +46,7 @@ function DentalTicket({
             <span className="ticket-label-text">Attending Specialist</span>
             {selectedDoctor ? (
               <span className="ticket-val-text">
-                <Star size={12} style={{ color: '#fbbf24' }} />
+                <Star size={12} className="text-[#fbbf24]" />
                 {selectedDoctor.name} ({selectedDoctor.specialty.split(' ')[0]})
               </span>
             ) : (
@@ -58,7 +58,7 @@ function DentalTicket({
             <span className="ticket-label-text">Appointment Timing</span>
             {selectedDate && selectedTimeSlot ? (
               <span className="ticket-val-text">
-                <Calendar size={12} style={{ color: '#4f46e5' }} />
+                <Calendar size={12} className="text-[#4f46e5]" />
                 {selectedDate.month} {selectedDate.dayNum} at {selectedTimeSlot.time}
               </span>
             ) : (
@@ -66,7 +66,7 @@ function DentalTicket({
             )}
           </div>
 
-          <div className="ticket-detail-item" style={{ marginTop: '4px' }}>
+          <div className="ticket-detail-item mt-1">
             <span className="ticket-label-text">Est. Cost</span>
             <span className="ticket-val-price">
               {selectedTreatment ? selectedTreatment.price : '₹0'}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Calendar, CheckCircle, Check, X } from 'lucide-react';
+import { Search, Calendar } from 'lucide-react';
 
 function DoctorAppointments({ appointments, actionLoading, handleStatusUpdate }) {
   const [statusFilter, setStatusFilter] = useState('all');
@@ -74,63 +74,72 @@ function DoctorAppointments({ appointments, actionLoading, handleStatusUpdate })
             </div>
           </div>
         ) : (
-          <div className="apt-list-container">
+          <div className="flex flex-col gap-4">
             {filteredAppointments.map(appt => {
               const patientName = appt.userId?.name || 'Guest User';
               const patientInitials = patientName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
 
+              const statusBadgeClasses = {
+                upcoming: 'bg-[#fffbeb] text-[#92400e] border border-[#fde68a]',
+                approved: 'bg-[#ecfdf5] text-[#047857] border border-[#a7f3d0]',
+                completed: 'bg-[#eff6ff] text-[#1d4ed8] border border-[#bfdbfe]',
+                cancelled: 'bg-[#fef2f2] text-[#b91c1c] border border-[#fecaca]',
+                declined: 'bg-[#fef2f2] text-[#b91c1c] border border-[#fecaca]'
+              };
+              const badgeClass = statusBadgeClasses[appt.status.toLowerCase()] || 'bg-slate-100 text-slate-700 border border-slate-200';
+
               return (
-                <div key={appt._id} className="apt-card">
+                <div key={appt._id} className="bg-white border-[1.5px] border-slate-200 rounded-[20px] overflow-hidden transition-all duration-200 shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:border-slate-300 hover:shadow-[0_6px_24px_rgba(15,23,42,0.08)] hover:-translate-y-[1px]">
                   
                   {/* ─── HEADER: Patient + Status ─── */}
-                  <div className="apt-card-header">
-                    <div className="apt-card-doctor">
-                      <div className="apt-avatar-wrap">
+                  <div className="flex items-center justify-between p-[18px_22px] border-b border-slate-100 bg-[#fafbfc] gap-4">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-[14px] overflow-hidden border-2 border-slate-200 shrink-0 bg-slate-100">
                         <div className="w-full h-full flex items-center justify-center bg-doctor-primary-light text-doctor-primary font-bold text-sm">
                           {patientInitials}
                         </div>
                       </div>
-                      <div className="apt-doctor-info">
-                        <span className="apt-doctor-name-text">{patientName}</span>
-                        <span className="apt-doctor-spec">{appt.userId?.email || 'No email provided'}</span>
+                      <div>
+                        <span className="text-[0.97rem] font-bold text-slate-900 block leading-[1.2]">{patientName}</span>
+                        <span className="text-[0.74rem] text-slate-500 font-medium block mt-0.75">{appt.userId?.email || 'No email provided'}</span>
                       </div>
                     </div>
-                    <span className={`apt-status-badge ${appt.status.toLowerCase()}`}>
+                    <span className={`text-[0.68rem] font-extrabold uppercase tracking-[0.07em] py-1 px-3 rounded-full shrink-0 ${badgeClass}`}>
                       {appt.status}
                     </span>
                   </div>
 
                   {/* ─── BODY: Treatment | Schedule | Procedure Fee ─── */}
-                  <div className="apt-card-body">
-                    <div className="apt-body-cell">
-                      <span className="apt-cell-label">Treatment</span>
-                      <span className="apt-cell-value">{appt.treatmentName}</span>
-                      <span className="apt-cell-sub">{appt.treatmentCategory}</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 border-b border-slate-100">
+                    <div className="p-[16px_22px] border-b border-[#f1f5f9] sm:border-b-0 sm:border-r sm:border-[#f1f5f9] last:border-none sm:last:border-none">
+                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-slate-400 block mb-1.25">Treatment</span>
+                      <span className="text-[0.88rem] font-bold text-slate-900 block">{appt.treatmentName}</span>
+                      <span className="text-[0.72rem] text-slate-500 font-medium block mt-0.5">{appt.treatmentCategory}</span>
                     </div>
-                    <div className="apt-body-cell">
-                      <span className="apt-cell-label">Schedule</span>
-                      <span className="apt-cell-value">{appt.appointmentDate}</span>
-                      <span className="apt-cell-sub">{appt.timeSlot}</span>
+                    <div className="p-[16px_22px] border-b border-[#f1f5f9] sm:border-b-0 sm:border-r sm:border-[#f1f5f9] last:border-none sm:last:border-none">
+                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-slate-400 block mb-1.25">Schedule</span>
+                      <span className="text-[0.88rem] font-bold text-slate-900 block">{appt.appointmentDate}</span>
+                      <span className="text-[0.72rem] text-slate-500 font-medium block mt-0.5">{appt.timeSlot}</span>
                     </div>
-                    <div className="apt-body-cell">
-                      <span className="apt-cell-label">Procedure Fee</span>
-                      <span className="apt-cell-value price-highlight">{appt.price || 'Standard Fee'}</span>
-                      <span className="apt-cell-sub">
+                    <div className="p-[16px_22px] border-b border-[#f1f5f9] sm:border-b-0 sm:border-r sm:border-[#f1f5f9] last:border-none sm:last:border-none">
+                      <span className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-slate-400 block mb-1.25">Procedure Fee</span>
+                      <span className="text-[1rem] font-extrabold text-slate-900 block">{appt.price || 'Standard Fee'}</span>
+                      <span className="text-[0.72rem] text-slate-500 font-medium block mt-0.5">
                         {appt.paymentMethod === 'Razorpay / Online Payment' ? 'Online' : appt.paymentMethod || 'Pay at Clinic'}
                       </span>
                     </div>
                   </div>
 
                   {/* ─── FOOTER: Location + Notes + Actions ─── */}
-                  <div className="apt-card-footer">
-                    <div className="apt-footer-meta">
-                      <span className="apt-footer-item">
-                        <svg className="apt-footer-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <div className="flex items-center justify-between p-[13px_22px] gap-4 flex-wrap">
+                    <div className="flex items-center gap-4.5 flex-wrap">
+                      <span className="flex items-center gap-1.25 text-[0.72rem] text-slate-500 font-medium">
+                        <svg className="text-slate-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         {appt.location || 'ClearDent — Clinic'}
                       </span>
                       {appt.notes && (
-                        <span className="apt-footer-item">
-                          <svg className="apt-footer-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        <span className="flex items-center gap-1.25 text-[0.72rem] text-slate-500 font-medium">
+                          <svg className="text-slate-400" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                           {appt.notes}
                         </span>
                       )}

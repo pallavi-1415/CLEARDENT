@@ -82,7 +82,7 @@ const getSlotDurationText = (startTimeStr) => {
 };
 
 /* ─── Custom Select Component ───────────────────────────────────── */
-const CustomSelect = ({ options, value, onChange, placeholder, icon }) => {
+const CustomSelect = ({ options, value, onChange, placeholder, icon, hasError }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -99,36 +99,46 @@ const CustomSelect = ({ options, value, onChange, placeholder, icon }) => {
   const selectedOption = options.find(opt => opt.value === value);
 
   return (
-    <div className="bm-custom-select" ref={dropdownRef}>
+    <div className="relative w-full select-none" ref={dropdownRef}>
       <div 
-        className={`bm-select-header ${isOpen ? 'open' : ''} ${selectedOption ? 'has-value' : ''}`} 
+        className={`flex items-center w-full border-[1.5px] rounded-lg p-[14px_16px] cursor-pointer transition-all duration-200 ${
+          isOpen ? 'border-[var(--brand-green)] bg-white' : 'border-[#d1d5db] bg-[#f9fafb] hover:border-[var(--brand-green)] hover:bg-white'
+        } ${hasError ? 'border-[#ef4444] bg-[#fef2f2]' : ''} ${
+          isOpen ? (hasError ? 'shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'shadow-[0_0_0_4px_var(--brand-green-glow)]') : ''
+        }`} 
         onClick={() => setIsOpen(!isOpen)}
       >
-        {icon && <span className="bm-select-icon">{icon}</span>}
-        <span className="bm-select-value">
+        {icon && (
+          <span className={`mr-3 flex items-center transition-colors duration-200 ${(selectedOption || isOpen) ? 'text-[var(--brand-green)]' : 'text-[#9ca3af]'}`}>
+            {icon}
+          </span>
+        )}
+        <span className={`flex-1 text-[0.95rem] transition-colors duration-200 ${selectedOption ? 'text-[#111827] font-medium' : 'text-[#6b7280] font-normal'}`}>
           {selectedOption ? selectedOption.label : placeholder}
         </span>
         <ChevronRight 
           size={18} 
-          className={`bm-select-arrow transition-transform duration-200 ${isOpen ? 'rotate-90' : 'rotate-0'}`} 
+          className={`text-[#9ca3af] transition-transform duration-200 ${isOpen ? 'rotate-90' : 'rotate-0'}`} 
         />
       </div>
       {isOpen && (
-        <div className="bm-select-options">
+        <div className="absolute top-[calc(100%+8px)] left-0 w-full bg-white border border-[#e5e7eb] rounded-lg shadow-[0_10px_25px_rgba(0,0,0,0.1)] z-[100] max-h-[250px] overflow-y-auto animate-[bmOptionsIn_0.2s_cubic-bezier(0.16,1,0.3,1)]">
           {options.length > 0 ? options.map((opt) => (
             <div 
               key={opt.value}
-              className={`bm-select-option ${value === opt.value ? 'selected' : ''}`}
+              className={`p-[12px_16px] text-[0.95rem] cursor-pointer flex items-center justify-between transition-colors duration-100 ${
+                value === opt.value ? 'bg-[var(--brand-green-bg-select)] text-[var(--brand-green)] font-semibold' : 'text-[#374151] hover:bg-[#f3f4f6] hover:text-[#111827]'
+              }`}
               onClick={() => {
                 onChange(opt.value);
                 setIsOpen(false);
               }}
             >
               {opt.label}
-              {value === opt.value && <Check size={16} className="bm-select-check" />}
+              {value === opt.value && <Check size={16} className="text-[var(--brand-green)]" />}
             </div>
           )) : (
-            <div className="bm-select-option disabled">No options available</div>
+            <div className="p-[12px_16px] text-[0.95rem] text-slate-400 cursor-not-allowed">No options available</div>
           )}
         </div>
       )}
@@ -599,54 +609,67 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
 
   return (
     <>
-      <div className="bm-overlay" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}>
-        <div className="bm-card">
-          <div className="bm-layout">
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-[4px] z-[99999] flex items-center justify-center p-4 animate-[bmOverlayIn_0.2s_ease_forwards] font-sans" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}>
+        <div className="bg-[#f4f7f6] rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] w-full max-w-[1000px] h-[600px] flex overflow-hidden relative animate-[bmCardIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] before:content-[''] before:absolute before:-bottom-[100px] before:-left-[100px] before:w-[400px] before:h-[400px] before:bg-[radial-gradient(circle,_var(--brand-green-gradient-1)_0%,_transparent_70%)] before:pointer-events-none before:z-0 after:content-[''] after:absolute after:-top-[50px] after:-right-[50px] after:w-[300px] after:h-[300px] after:bg-[radial-gradient(circle,_var(--brand-green-gradient-2)_0%,_transparent_70%)] after:pointer-events-none after:z-0">
+          <div className="flex flex-1 w-full z-[1]">
             
             {/* ─── SIDEBAR ─── */}
-            <div className="bm-sidebar">
-              <div className="bm-brand">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-[280px] shrink-0 p-[40px_30px] flex flex-col border-r border-black/[0.04]">
+              <div className="flex items-center gap-2.5 mb-[50px]">
+                <svg className="text-[var(--brand-green)] w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
                   <path d="M12 6a3.5 3.5 0 0 0-3.5 3.5c0 3.5 3.5 6.5 3.5 6.5s3.5-3 3.5-6.5A3.5 3.5 0 0 0 12 6z" />
                 </svg>
-                <span className="bm-brand-text">ClearDent</span>
+                <span className="text-xl font-bold text-[#111827] tracking-[-0.01em]">ClearDent</span>
               </div>
-
-              <nav className="bm-stepper">
+ 
+              <nav className="flex flex-col flex-1 relative">
                 {STEPS.map((step) => {
                   const isDone = currentStep > step.number;
                   const isActive = currentStep === step.number;
+                  
+                  const dotStatusClass = isDone 
+                    ? 'border-[1.5px] border-[var(--brand-green)] text-[var(--brand-green)]' 
+                    : isActive 
+                      ? 'bg-[var(--brand-green)] border-[1.5px] border-[var(--brand-green)] text-white' 
+                      : 'border-[1.5px] border-[#d1d5db] text-[#9ca3af]';
+
+                  const labelStatusClass = isDone
+                    ? 'text-[#4b5563]'
+                    : isActive
+                      ? 'text-[#111827] font-semibold'
+                      : 'text-[#9ca3af]';
+
                   return (
-                    <div key={step.number} className={`bm-step-item ${isDone ? 'done' : ''}`}>
-                      <div className={`bm-step-dot ${isDone ? 'done' : isActive ? 'active' : 'pending'}`}>
+                    <div key={step.number} className={`flex items-start gap-4 relative pb-[30px] last:pb-0 after:content-[''] after:absolute after:left-[15px] after:top-8 after:bottom-2 after:w-[1.5px] ${isDone ? 'after:bg-[var(--brand-green)]' : 'after:bg-[#d1d5db]'} last:after:hidden`}>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[0.85rem] font-semibold shrink-0 relative z-[2] bg-[#f4f7f6] ${dotStatusClass}`}>
                         {isDone ? <Check size={16} strokeWidth={3} /> : step.number}
                       </div>
-                      <span className={`bm-step-label ${isDone ? 'done' : isActive ? 'active' : 'pending'}`}>
+                      <span className={`text-[0.95rem] font-medium mt-1.5 ${labelStatusClass}`}>
                         {step.name}
                       </span>
                     </div>
                   );
                 })}
               </nav>
-              <div className="bm-sidebar-footer">
+              <div className="flex items-center gap-2 text-[0.85rem] text-[#4b5563] mt-auto font-medium">
                 <HelpCircle size={16} />
                 Need help with booking?
               </div>
             </div>
-
+ 
             {/* ─── CONTENT AREA ─── */}
-            <div className="bm-content-wrapper">
+            <div className="flex-1 flex flex-col p-10">
               
               {/* STEP 1: Service */}
               {currentStep === 1 && (
                 <div className="flex-1 overflow-y-auto">
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Select Service</h2>
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Select Service</h2>
                   </div>
-                  <div className="bm-content-card">
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Category</span>
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Category</span>
                       <CustomSelect 
                         options={categoryOptions}
                         value={selectedCategory?.id || ''}
@@ -658,67 +681,66 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                         }}
                         placeholder="Select a category"
                         icon={<Activity size={18} />}
+                        hasError={!!errors.category}
                       />
-                      {errors.category && <div className="bm-error-text"><span>⚠</span> {errors.category}</div>}
+                      {errors.category && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.category}</div>}
                     </div>
-
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Procedure</span>
-                      <div className={`bm-custom-select ${errors.treatment ? 'error' : ''}`}>
-                        <CustomSelect 
-                          options={procedureOptions}
-                          value={selectedTreatment?.name || ''}
-                          onChange={(val) => {
-                            const t = selectedCategory?.items.find(i => i.name === val);
-                            setSelectedTreatment(t || null);
-                            setErrors(prev => ({ ...prev, treatment: null }));
-                          }}
-                          placeholder="— Select a procedure —"
-                          icon={<HeartPulse size={18} />}
-                        />
-                      </div>
-                      {errors.treatment && <div className="bm-error-text"><span>⚠</span> {errors.treatment}</div>}
+ 
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Procedure</span>
+                      <CustomSelect 
+                        options={procedureOptions}
+                        value={selectedTreatment?.name || ''}
+                        onChange={(val) => {
+                          const t = selectedCategory?.items.find(i => i.name === val);
+                          setSelectedTreatment(t || null);
+                          setErrors(prev => ({ ...prev, treatment: null }));
+                        }}
+                        placeholder="— Select a procedure —"
+                        icon={<HeartPulse size={18} />}
+                        hasError={!!errors.treatment}
+                      />
+                      {errors.treatment && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.treatment}</div>}
                     </div>
-
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Assigned Dentist</span>
-                      <div className={`bm-custom-select ${errors.doctor ? 'error' : ''}`}>
-                        <CustomSelect 
-                          options={dentistOptions}
-                          value={selectedDoctor?.name || ''}
-                          onChange={(val) => {
-                            const doc = dbDoctors.find(d => d.name === val);
-                            setSelectedDoctor(doc || null);
-                            setErrors(prev => ({ ...prev, doctor: null }));
-                          }}
-                          placeholder="— Select a dentist —"
-                          icon={<Stethoscope size={18} />}
-                        />
-                      </div>
-                      {errors.doctor && <div className="bm-error-text"><span>⚠</span> {errors.doctor}</div>}
+ 
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Assigned Dentist</span>
+                      <CustomSelect 
+                        options={dentistOptions}
+                        value={selectedDoctor?.name || ''}
+                        onChange={(val) => {
+                          const doc = dbDoctors.find(d => d.name === val);
+                          setSelectedDoctor(doc || null);
+                          setErrors(prev => ({ ...prev, doctor: null }));
+                        }}
+                        placeholder="— Select a dentist —"
+                        icon={<Stethoscope size={18} />}
+                        hasError={!!errors.doctor}
+                      />
+                      {errors.doctor && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.doctor}</div>}
                     </div>
                   </div>
                 </div>
               )}
-
+ 
               {/* STEP 2: Personal Details */}
               {currentStep === 2 && (
                 <div className="flex-1 overflow-y-auto">
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Personal Details</h2>
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Personal Details</h2>
                   </div>
-                  <div className="bm-content-card">
-                    <div className="bm-grid-2">
-                      <div className="bm-input-wrap">
-                        <span className="bm-label">Full Name</span>
-                        <input className={`bm-input ${errors.name ? 'error' : ''}`} type="text" placeholder="John Doe" value={patientName} onChange={(e) => { setPatientName(e.target.value); setErrors(prev => ({...prev, name: null})); }} />
-                        <User className="bm-input-icon !top-[39px]" size={18} />
-                        {errors.name && <div className="bm-error-text"><span>⚠</span> {errors.name}</div>}
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div className="relative mb-6">
+                        <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Full Name</span>
+                        <input className={`peer w-full border-[1.5px] rounded-lg p-[14px_16px] pl-[42px] text-[0.95rem] text-[#111827] outline-none transition-all duration-200 font-sans focus:bg-white ${errors.name ? 'border-[#ef4444] bg-[#fef2f2] focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'border-[#d1d5db] bg-[#f9fafb] focus:border-[var(--brand-green)] focus:shadow-[0_0_0_4px_var(--brand-green-glow)]'}`} type="text" placeholder="John Doe" value={patientName} onChange={(e) => { setPatientName(e.target.value); setErrors(prev => ({...prev, name: null})); }} />
+                        <User className={`absolute left-3.5 top-[39px] pointer-events-none transition-colors duration-200 peer-focus:text-[var(--brand-green)] ${errors.name ? 'text-[#ef4444]' : 'text-[#9ca3af]'}`} size={18} />
+                        {errors.name && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.name}</div>}
                       </div>
-                      <div className="bm-input-wrap">
-                        <span className="bm-label">Phone Number</span>
+                      <div className="relative mb-6">
+                        <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Phone Number</span>
                         <input 
-                          className={`bm-input ${errors.phone ? 'error' : ''}`} 
+                          className={`peer w-full border-[1.5px] rounded-lg p-[14px_16px] pl-[42px] text-[0.95rem] text-[#111827] outline-none transition-all duration-200 font-sans focus:bg-white ${errors.phone ? 'border-[#ef4444] bg-[#fef2f2] focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'border-[#d1d5db] bg-[#f9fafb] focus:border-[var(--brand-green)] focus:shadow-[0_0_0_4px_var(--brand-green-glow)]'}`} 
                           type="tel" 
                           placeholder="9876543210" 
                           maxLength={10}
@@ -731,19 +753,19 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                             }
                           }} 
                         />
-                        <Phone className="bm-input-icon !top-[39px]" size={18} />
-                        {errors.phone && <div className="bm-error-text"><span>⚠</span> {errors.phone}</div>}
+                        <Phone className={`absolute left-3.5 top-[39px] pointer-events-none transition-colors duration-200 peer-focus:text-[var(--brand-green)] ${errors.phone ? 'text-[#ef4444]' : 'text-[#9ca3af]'}`} size={18} />
+                        {errors.phone && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.phone}</div>}
                       </div>
                     </div>
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Email Address</span>
-                      <input className={`bm-input ${errors.email ? 'error' : ''}`} type="email" placeholder="john@example.com" value={patientEmail} onChange={(e) => { setPatientEmail(e.target.value); setErrors(prev => ({...prev, email: null})); }} />
-                      <Mail className="bm-input-icon !top-[39px]" size={18} />
-                      {errors.email && <div className="bm-error-text"><span>⚠</span> {errors.email}</div>}
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Email Address</span>
+                      <input className={`peer w-full border-[1.5px] rounded-lg p-[14px_16px] pl-[42px] text-[0.95rem] text-[#111827] outline-none transition-all duration-200 font-sans focus:bg-white ${errors.email ? 'border-[#ef4444] bg-[#fef2f2] focus:shadow-[0_0_0_4px_rgba(239,68,68,0.1)]' : 'border-[#d1d5db] bg-[#f9fafb] focus:border-[var(--brand-green)] focus:shadow-[0_0_0_4px_var(--brand-green-glow)]'}`} type="email" placeholder="john@example.com" value={patientEmail} onChange={(e) => { setPatientEmail(e.target.value); setErrors(prev => ({...prev, email: null})); }} />
+                      <Mail className={`absolute left-3.5 top-[39px] pointer-events-none transition-colors duration-200 peer-focus:text-[var(--brand-green)] ${errors.email ? 'text-[#ef4444]' : 'text-[#9ca3af]'}`} size={18} />
+                      {errors.email && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1"><span>⚠</span> {errors.email}</div>}
                     </div>
-                    <div className="bm-input-wrap">
-                      <span className="bm-label">Notes (Optional)</span>
-                      <textarea className="bm-textarea !pl-4" placeholder="Any specific requirements..." rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
+                    <div className="relative mb-6">
+                      <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Notes (Optional)</span>
+                      <textarea className="w-full border-[1.5px] border-[#d1d5db] rounded-lg p-[14px_16px] pl-4 text-[0.95rem] text-[#111827] bg-[#f9fafb] outline-none transition-all duration-200 font-sans focus:border-[var(--brand-green)] focus:bg-white focus:shadow-[0_0_0_4px_var(--brand-green-glow)]" placeholder="Any specific requirements..." rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} />
                     </div>
                   </div>
                 </div>
@@ -752,27 +774,27 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
               {/* STEP 3: Location */}
               {currentStep === 3 && (
                 <div className="flex-1 overflow-y-auto">
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Clinic Location</h2>
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Clinic Location</h2>
                   </div>
-                  <div className="bm-content-card !p-5">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-5 mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     {CLINIC_LOCATIONS.map((loc) => (
                       <div
                         key={loc.id}
-                        className={`bm-location-card ${selectedLocation?.id === loc.id ? 'selected' : ''}`}
+                        className={`border-2 rounded-xl p-5 mb-4 cursor-pointer bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] flex items-start gap-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_12px_rgba(0,0,0,0.06)] ${selectedLocation?.id === loc.id ? 'border-[var(--brand-green)] bg-[var(--brand-green-bg)]' : 'border-transparent'}`}
                         onClick={() => setSelectedLocation(loc)}
                       >
-                        <div className="bm-loc-icon-wrap">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-200 ${selectedLocation?.id === loc.id ? 'bg-[var(--brand-green)] text-white' : 'bg-[#f3f4f6] text-[#6b7280]'}`}>
                            <MapPin size={24} />
                         </div>
                         <div className="flex-1">
-                          <div className="bm-location-name">{loc.name}</div>
-                          <div className="bm-location-addr">{loc.address}</div>
-                          <div className="bm-location-meta">
+                          <div className="font-bold text-[#111827] mb-1.5 text-[1.05rem]">{loc.name}</div>
+                          <div className="text-[0.9rem] text-[#4b5563] mb-3 leading-[1.4]">{loc.address}</div>
+                          <div className="flex gap-4 text-[0.8rem] text-[#6b7280] font-medium">
                             <span className="flex items-center gap-1"><Clock size={14} /> {loc.hours}</span>
                             <span className="flex items-center gap-1"><Phone size={14} /> {loc.phone}</span>
                           </div>
-                          <a href={loc.mapUrl} target="_blank" rel="noreferrer" className="bm-map-btn" onClick={(e) => e.stopPropagation()}>
+                          <a href={loc.mapUrl} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[0.85rem] text-[var(--brand-green)] font-semibold no-underline hover:underline" onClick={(e) => e.stopPropagation()}>
                             <Map size={14} /> View on Google Maps
                           </a>
                         </div>
@@ -781,48 +803,58 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   </div>
                 </div>
               )}
-
+ 
               {/* STEP 4: Appointment (Date/Time) */}
               {currentStep === 4 && (
                 <div className="flex-1 flex flex-col">
-                  <div className="bm-content-card flex-1 flex flex-col mb-5">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex-1 flex flex-col mb-5">
                     
-                    <div className="bm-step-title-row">
-                      <h2 className="bm-step-title">Select Date and Time</h2>
-                      <div className="bm-month-selector">
-                        <button className="bm-month-btn" onClick={handlePrevMonth}><ChevronLeft size={18} /></button>
+                    <div className="flex justify-between items-center mb-[30px]">
+                      <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Select Date and Time</h2>
+                      <div className="flex items-center gap-3 p-[8px_16px] border border-[#e5e7eb] rounded-md text-[0.9rem] font-semibold text-[#374151]">
+                        <button className="bg-none border-none cursor-pointer text-[#9ca3af] p-0 hover:text-[#111827]" onClick={handlePrevMonth}><ChevronLeft size={18} /></button>
                         <span>{currentMonthDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}</span>
-                        <button className="bm-month-btn" onClick={handleNextMonth}><ChevronRight size={18} /></button>
+                        <button className="bg-none border-none cursor-pointer text-[#9ca3af] p-0 hover:text-[#111827]" onClick={handleNextMonth}><ChevronRight size={18} /></button>
                       </div>
                     </div>
-
-                    <div className="bm-date-row">
-                      <button className="bm-date-nav"><ChevronLeft size={20} /></button>
+ 
+                    <div className="flex items-center justify-between border-b border-[#e5e7eb] pb-4 mb-6">
+                      <button className="text-[#9ca3af] bg-none border-none cursor-pointer p-1 hover:text-[#111827]"><ChevronLeft size={20} /></button>
                       {datesList.slice(0, 7).map((d, i) => {
                         let label = d.dayName;
                         if (i === 0) label = 'Today';
                         else if (i === 1) label = 'Tomorrow';
+                        const isSelected = selectedDate?.isoString === d.isoString;
                         return (
                           <div 
                             key={d.isoString} 
-                            className={`bm-date-item ${selectedDate?.isoString === d.isoString ? 'active' : ''}`}
+                            className={`flex flex-col items-center gap-2 cursor-pointer min-width-[60px] relative after:content-[''] after:absolute after:-bottom-[17px] after:left-0 after:right-0 after:h-[3px] after:rounded-t-[3px] ${isSelected ? 'after:bg-[#111827]' : 'after:bg-transparent'}`}
                             onClick={() => { setSelectedDate(d); setSelectedTimeSlot(null); }}
                           >
-                            <span className="bm-date-day">{label}</span>
-                            <span className="bm-date-num">{d.dayNum}</span>
+                            <span className={`text-[0.85rem] font-medium ${isSelected ? 'text-[#111827] font-bold' : 'text-[#6b7280]'}`}>{label}</span>
+                            <span className={`text-[1.15rem] font-medium ${isSelected ? 'text-[#111827] font-bold' : 'text-[#374151]'}`}>{d.dayNum}</span>
                           </div>
                         );
                       })}
-                      <button className="bm-date-nav"><ChevronRight size={20} /></button>
+                      <button className="text-[#9ca3af] bg-none border-none cursor-pointer p-1 hover:text-[#111827]"><ChevronRight size={20} /></button>
                     </div>
-
-                    <div className="bm-slots-grid">
+ 
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-3 mb-2">
                       {(showAllSlots ? allDoctorSlots : allDoctorSlots.slice(0, 12)).map((slot) => {
                         const isBooked = bookedSlots.includes(slot);
+                        const isSelected = selectedTimeSlot === slot;
+                        const btnClass = `p-[12px_10px] rounded-lg text-[0.85rem] font-semibold transition-all duration-200 text-center ` +
+                          (isBooked 
+                            ? 'opacity-40 cursor-not-allowed bg-[#f3f4f6] line-through border border-[#d1d5db] text-[#374151]' 
+                            : isSelected 
+                              ? 'bg-[var(--brand-green)] border border-[var(--brand-green)] text-white shadow-[0_4px_10px_var(--brand-green-glow-strong)]' 
+                              : errors.timeSlot 
+                                ? 'border border-[#ef4444] bg-[#fef2f2] text-[#ef4444]' 
+                                : 'bg-white border border-[#d1d5db] text-[#374151] hover:border-[var(--brand-green)] hover:text-[var(--brand-green)] hover:bg-[var(--brand-green-light)]');
                         return (
                           <button
                             key={slot}
-                            className={`bm-slot-btn ${selectedTimeSlot === slot ? 'selected' : ''} ${errors.timeSlot ? 'error' : ''}`}
+                            className={btnClass}
                             disabled={isBooked}
                             onClick={() => {
                               if (!isBooked) {
@@ -836,11 +868,11 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                         );
                       })}
                     </div>
-                    {errors.timeSlot && <div className="bm-error-text mb-4"><span>⚠</span> {errors.timeSlot}</div>}
+                    {errors.timeSlot && <div className="text-[#ef4444] text-[0.8rem] font-medium mt-1.5 flex items-center gap-1 mb-4"><span>⚠</span> {errors.timeSlot}</div>}
                     
                     {allDoctorSlots.length > 12 && (
                       <div className="mt-auto pt-2.5">
-                        <button className="bm-more-slots" onClick={() => setShowAllSlots(p => !p)}>
+                        <button className="flex items-center gap-1 bg-none border-none cursor-pointer text-[var(--brand-green)] text-[0.85rem] font-semibold p-0" onClick={() => setShowAllSlots(p => !p)}>
                           Show {showAllSlots ? 'fewer' : 'more'} slots
                           <ChevronRight size={16} className={`transition-transform duration-200 ${showAllSlots ? '-rotate-90' : 'rotate-90'}`} />
                           <span>({Math.max(0, allDoctorSlots.length - bookedSlots.length)} available)</span>
@@ -850,35 +882,37 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   </div>
                 </div>
               )}
-
+ 
               {/* STEP 5: Payment */}
               {currentStep === 5 && (
                 <div className="flex-1 overflow-y-auto">
-                  <div className="bm-step-title-row">
-                    <h2 className="bm-step-title">Payment Method</h2>
+                  <div className="flex justify-between items-center mb-[30px]">
+                    <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Payment Method</h2>
                   </div>
-                  <div className="bm-content-card">
-                    <div className="bm-payment-grid">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div className="grid grid-cols-1 gap-4">
                       {['Pay at Clinic', 'Razorpay / Online Payment', 'Health Insurance'].map((method) => {
                         const isSelected = paymentMethod === method;
                         return (
                           <div
                             key={method}
-                            className={`bm-payment-card ${isSelected ? 'selected' : ''}`}
+                            className={`border-2 rounded-xl p-[18px_20px] flex items-center gap-4 cursor-pointer bg-white transition-all duration-200 ${isSelected ? 'border-[var(--brand-green)] bg-[var(--brand-green-bg-alt)] shadow-[0_4px_12px_var(--brand-green-glow)]' : 'border-[#e5e7eb] hover:border-[#d1d5db] hover:bg-[#f9fafb]'}`}
                             onClick={() => setPaymentMethod(method)}
                           >
-                            <div className="bm-payment-icon">
+                            <div className={`w-11 h-11 rounded-lg flex items-center justify-center transition-colors duration-200 ${isSelected ? 'bg-[var(--brand-green)] text-white' : 'bg-[#f3f4f6] text-[#4b5563]'}`}>
                               {method === 'Pay at Clinic' && <Banknote size={24} />}
                               {method === 'Razorpay / Online Payment' && <CreditCard size={24} />}
                               {method === 'Health Insurance' && <ShieldCheck size={24} />}
                             </div>
-                            <div className="bm-payment-info">
-                              <div className="bm-payment-name">{method}</div>
-                              <div className="bm-payment-desc">
+                            <div className="flex-1">
+                              <div className="font-bold text-[#111827] text-base mb-1">{method}</div>
+                              <div className="text-[0.85rem] text-[#6b7280]">
                                 {method === 'Pay at Clinic' ? 'Pay cash, UPI, or card at the reception.' : method === 'Razorpay / Online Payment' ? 'Secure online transaction using Razorpay.' : 'Submit your policy details at the clinic.'}
                               </div>
                             </div>
-                            <div className="bm-payment-radio"></div>
+                            <div className={`w-[22px] h-[22px] rounded-full border-2 flex items-center justify-center transition-all duration-200 ${isSelected ? 'border-[var(--brand-green)] bg-[var(--brand-green)]' : 'border-[#d1d5db]'}`}>
+                              {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                            </div>
                           </div>
                         );
                       })}
@@ -890,18 +924,18 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
               {/* STEP 6: Confirmation */}
               {currentStep === 6 && (
                 <div className="flex-1 overflow-y-auto">
-                  <div className="bm-content-card flex flex-col items-center justify-center py-10 px-5 !m-0">
-                    <div className="bm-success-content w-full max-w-[500px]">
-                      <div className="bm-success-icon no-print flex justify-center mb-4">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center py-10 px-5 !m-0">
+                    <div className="w-full max-w-[500px]">
+                      <div className="no-print flex justify-center mb-4">
                         <div className="w-[60px] h-[60px] rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">
                           <Check size={36} strokeWidth={3} />
                         </div>
                       </div>
-                      <h2 className="bm-step-title mb-2 text-center">Booking Confirmed!</h2>
+                      <h2 className="text-[1.45rem] font-bold text-[#1f2937] mb-2 text-center">Booking Confirmed!</h2>
                       <p className="text-slate-500 mb-8 text-center no-print">
                         Thank you for choosing ClearDent.
                       </p>
-
+ 
                       {/* Receipt Block */}
                       <div ref={receiptRef} className="text-left bg-slate-50 border border-slate-200 rounded-xl p-8 mb-7">
                         <h3 className="text-[1.1rem] font-bold text-slate-900 m-0 mb-5 border-b border-slate-200 pb-2.5">Appointment Receipt</h3>
@@ -932,19 +966,19 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                         </div>
                         <div className="grid grid-cols-[1fr_2fr] gap-3 text-[0.9rem] mt-4 pt-4 border-t border-slate-200">
                           <span className="text-slate-900 font-bold text-[1rem]">Total Amount</span>
-                          <span className="text-brand-green font-extrabold text-[1.1rem]">{selectedTreatment?.price}</span>
+                          <span className="text-[var(--brand-green)] font-extrabold text-[1.1rem]">{selectedTreatment?.price}</span>
                         </div>
                       </div>
-
+ 
                       <div className="no-print flex gap-4 justify-center">
                         <button 
-                          className="bm-btn-back flex items-center gap-2" 
+                          className="p-[12px_32px] border border-[#d1d5db] rounded-lg bg-transparent text-[#4b5563] text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#f3f4f6] hover:text-[#111827] flex items-center gap-2" 
                           onClick={handleDownloadPDF}
                         >
                           <Download size={18} />
                           Download Receipt
                         </button>
-                        <button className="bm-btn-next" onClick={handleClose}>
+                        <button className="p-[12px_40px] border-none rounded-lg bg-[var(--brand-green)] text-white text-base font-semibold cursor-pointer transition-all duration-200 shadow-[0_4px_12px_var(--brand-green-glow-strong)] hover:bg-[var(--brand-green-hover)] hover:shadow-[0_6px_16px_var(--brand-green-glow-stronger)] disabled:opacity-60 disabled:cursor-not-allowed" onClick={handleClose}>
                           Done
                         </button>
                       </div>
@@ -952,19 +986,19 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   </div>
                 </div>
               )}
-
+ 
               {/* Actions Footer */}
               {currentStep < 6 && (
-                <div className="bm-actions">
-                  <button className="bm-btn-back" onClick={currentStep === 1 ? handleClose : handleBackStep}>
+                <div className="flex justify-end gap-4 mt-auto">
+                  <button className="p-[12px_32px] border border-[#d1d5db] rounded-lg bg-transparent text-[#4b5563] text-base font-semibold cursor-pointer transition-all duration-200 hover:bg-[#f3f4f6] hover:text-[#111827]" onClick={currentStep === 1 ? handleClose : handleBackStep}>
                     {currentStep === 1 ? 'Cancel' : 'Back'}
                   </button>
                   {currentStep < 5 ? (
-                    <button className="bm-btn-next" onClick={handleNextStep}>
+                    <button className="p-[12px_40px] border-none rounded-lg bg-[var(--brand-green)] text-white text-base font-semibold cursor-pointer transition-all duration-200 shadow-[0_4px_12px_var(--brand-green-glow-strong)] hover:bg-[var(--brand-green-hover)] hover:shadow-[0_6px_16px_var(--brand-green-glow-stronger)] disabled:opacity-60 disabled:cursor-not-allowed" onClick={handleNextStep}>
                       Next Step
                     </button>
                   ) : (
-                    <button className="bm-btn-next" onClick={handleBookingSubmit} disabled={loading}>
+                    <button className="p-[12px_40px] border-none rounded-lg bg-[var(--brand-green)] text-white text-base font-semibold cursor-pointer transition-all duration-200 shadow-[0_4px_12px_var(--brand-green-glow-strong)] hover:bg-[var(--brand-green-hover)] hover:shadow-[0_6px_16px_var(--brand-green-glow-stronger)] disabled:opacity-60 disabled:cursor-not-allowed" onClick={handleBookingSubmit} disabled={loading}>
                       {loading ? 'Processing...' : 'Confirm Appointment'}
                     </button>
                   )}

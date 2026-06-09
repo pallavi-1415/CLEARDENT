@@ -118,7 +118,7 @@ function ContactUs({ navigate, isLoggedIn, currentUser, onLogout, activeTab, set
         <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative z-10">
           
           {/* Left Column: Brand Messaging & Contact Cards */}
-          <div className="lg:col-span-5 flex flex-col justify-center animate-fade-up">
+          <div className="lg:col-span-5 flex flex-col justify-center animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards]">
             
             <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 w-max mb-6 shadow-sm">
               <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
@@ -128,7 +128,7 @@ function ContactUs({ navigate, isLoggedIn, currentUser, onLogout, activeTab, set
                 <Clock size={14} /> Est. reply: 10 mins
               </span>
             </div>
-
+ 
             <h1 className="text-3xl lg:text-5xl font-bold text-[#0F172A] leading-tight mb-4 tracking-tight">
               Let's perfect <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1653E0] to-blue-400">your smile.</span>
@@ -137,12 +137,12 @@ function ContactUs({ navigate, isLoggedIn, currentUser, onLogout, activeTab, set
             <p className="text-[#64748B] text-base mb-6 leading-relaxed max-w-md">
               Whether you need a routine checkup, advanced cosmetic care, or have a general inquiry, our concierge team is here to assist you instantly.
             </p>
-
+ 
             {/* Glassmorphic Contact Info Cards */}
             <div className="space-y-3 w-full max-w-md">
               
               <div 
-                className="bg-white/70 backdrop-blur-md border border-white/50 rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_20px_40px_-10px_rgba(22,83,224,0.1)] p-4 flex items-center gap-4 cursor-pointer group animate-fade-up stagger-1"
+                className="bg-white/70 backdrop-blur-md border border-white/50 rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_20px_40px_-10px_rgba(22,83,224,0.1)] p-4 flex items-center gap-4 cursor-pointer group animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] [animation-delay:0.1s] opacity-0"
                 onClick={() => handleCopy('+1 (800) 555-0199', 'Phone number')}
               >
                 <div className="w-10 h-10 rounded-full bg-[#EBF1FF] flex items-center justify-center text-[#1653E0] group-hover:scale-110 transition-transform shrink-0">
@@ -154,9 +154,9 @@ function ContactUs({ navigate, isLoggedIn, currentUser, onLogout, activeTab, set
                 </div>
                 <Copy size={16} className="text-[#64748B] opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-
+ 
               <div 
-                className="bg-white/70 backdrop-blur-md border border-white/50 rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_20px_40px_-10px_rgba(22,83,224,0.1)] p-4 flex items-center gap-4 cursor-pointer group animate-fade-up stagger-2"
+                className="bg-white/70 backdrop-blur-md border border-white/50 rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_20px_40px_-10px_rgba(22,83,224,0.1)] p-4 flex items-center gap-4 cursor-pointer group animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] [animation-delay:0.2s] opacity-0"
                 onClick={() => handleCopy('hello@cleardent.com', 'Email address')}
               >
                 <div className="w-10 h-10 rounded-full bg-[#EBF1FF] flex items-center justify-center text-[#1653E0] group-hover:scale-110 transition-transform shrink-0">
@@ -168,8 +168,8 @@ function ContactUs({ navigate, isLoggedIn, currentUser, onLogout, activeTab, set
                 </div>
                 <Copy size={16} className="text-[#64748B] opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-
-              <div className="bg-white/70 backdrop-blur-md border border-white/50 rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_20px_40px_-10px_rgba(22,83,224,0.1)] p-4 flex items-center gap-4 animate-fade-up stagger-3">
+ 
+              <div className="bg-white/70 backdrop-blur-md border border-white/50 rounded-[20px] transition-all duration-300 hover:-translate-y-1 hover:bg-white/90 hover:shadow-[0_20px_40px_-10px_rgba(22,83,224,0.1)] p-4 flex items-center gap-4 animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] [animation-delay:0.3s] opacity-0">
                 <div className="w-10 h-10 rounded-full bg-[#EBF1FF] flex items-center justify-center text-[#1653E0] shrink-0">
                   <MapPin size={18} className="fill-current" />
                 </div>
@@ -178,11 +178,11 @@ function ContactUs({ navigate, isLoggedIn, currentUser, onLogout, activeTab, set
                   <p className="text-sm font-medium text-[#0F172A]">1200 Healthway Drive, Suite 400<br/>San Francisco, CA 94103</p>
                 </div>
               </div>
-
+ 
             </div>
           </div>
-
-          <div className="lg:col-span-7 relative animate-fade-up stagger-4">
+ 
+          <div className="lg:col-span-7 relative animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_forwards] [animation-delay:0.4s] opacity-0">
             
             <div className="bg-white rounded-2xl p-6 lg:p-8 shadow-xl border border-gray-100 relative z-10 overflow-hidden min-h-[500px]">
               

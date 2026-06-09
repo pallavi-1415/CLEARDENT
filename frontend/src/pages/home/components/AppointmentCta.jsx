@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../../components/ui/Button';
+import dentalHeroArtworkImg from '../../../assets/dental_hero_artwork.png';
 
 function AppointmentCta({ navigate, isLoggedIn, setActiveTab }) {
   return (
@@ -80,7 +81,7 @@ function AppointmentCta({ navigate, isLoggedIn, setActiveTab }) {
             </div>
             <div className="relative w-[120px] h-[55px] bg-[#0c1938] rounded-[10px] overflow-hidden flex items-center justify-center">
               <img
-                src="/dental_hero_artwork.png"
+                src={dentalHeroArtworkImg}
                 alt="3D Scanning screen"
                 className="h-4/5 filter hue-rotate-180 brightness-150 contrast-110 object-contain"
               />

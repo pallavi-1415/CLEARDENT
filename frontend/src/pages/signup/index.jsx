@@ -143,8 +143,7 @@ function Signup({ navigate, onLoginSuccess }) {
 
         {/* Left Side: Brand & Visual Panel */}
         <div
-          className="hidden md:flex relative flex-col justify-between p-12 bg-cover bg-center text-white h-full"
-          style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.15)), url('/luxury_medical_blue.png')" }}
+          className="hidden md:flex relative flex-col justify-between p-12 bg-cover bg-center text-white h-full bg-luxury-medical"
         >
           {/* Top Logo */}
           <div className="flex items-center gap-3">

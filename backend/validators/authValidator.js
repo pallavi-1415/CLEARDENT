@@ -1,8 +1,16 @@
-exports.validateSignup = (req, res, next) => {
+const { validateEmail } = require('../utils/emailValidator');
+
+exports.validateSignup = async (req, res, next) => {
   const { name, email, password, role = 'patient' } = req.body;
 
   if (!name || !email || !password) {
     return res.status(400).json({ message: 'Name, email and password are required' });
+  }
+
+  // Perform strict email verification
+  const emailValidation = await validateEmail(email);
+  if (!emailValidation.valid) {
+    return res.status(400).json({ message: emailValidation.reason });
   }
 
   // Doctors must upload a license

@@ -49,22 +49,19 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
                 <nav className="hidden md:flex items-center gap-10">
                     <span
                         onClick={() => navigate('services')}
-                        style={{ cursor: 'pointer' }}
-                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans"
+                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans cursor-pointer"
                     >
                         Services
                     </span>
                     <span
                         onClick={() => navigate('doctors')}
-                        style={{ cursor: 'pointer' }}
-                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans"
+                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans cursor-pointer"
                     >
                         Our Doctors
                     </span>
                     <span
                         onClick={() => navigate('faq')}
-                        style={{ cursor: 'pointer' }}
-                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans"
+                        className="no-underline text-text-secondary text-[0.95rem] font-medium transition-colors duration-200 hover:text-gold font-sans cursor-pointer"
                     >
                         FAQ
                     </span>

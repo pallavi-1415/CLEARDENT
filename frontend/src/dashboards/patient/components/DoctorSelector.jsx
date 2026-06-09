@@ -23,12 +23,12 @@ function DoctorSelector({
         <div className="trigger-value-block">
           {selectedDoctor ? (
             <>
-              <div className="popover-doc-avatar" style={{ marginRight: '6px' }}>
+              <div className="popover-doc-avatar mr-1.5">
                 <img src={selectedDoctor.photo} alt={selectedDoctor.name} className="popover-doc-img" />
               </div>
               <div>
-                <div className="trigger-main-text" style={{ color: '#0f172a' }}>{selectedDoctor.name}</div>
-                <div className="trigger-sub-text" style={{ color: '#475569', fontWeight: '600' }}>
+                <div className="trigger-main-text text-[#0f172a]">{selectedDoctor.name}</div>
+                <div className="trigger-sub-text text-[#475569] font-semibold">
                   {selectedDoctor.specialty}
                 </div>
               </div>
@@ -46,8 +46,8 @@ function DoctorSelector({
       </button>
 
       {doctorDropdownOpen && (
-        <div className="interactive-popover-list" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+        <div className="interactive-popover-list max-h-[300px] overflow-y-auto">
+          <div className="flex flex-col gap-1.5">
             {dbDoctors.map((doc, index) => (
               <div
                 key={index}

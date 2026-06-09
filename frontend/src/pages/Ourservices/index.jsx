@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
+import laserImg from '../../assets/laser.jpg';
+import veneersImg from '../../assets/72e73c84e980e834943641d6f0a7e909.jpg';
+import pediatricImg from '../../assets/Gentle Pediatric Extractions.jpg';
 import {
   Sparkles,
   Activity,
@@ -38,7 +41,7 @@ const SERVICES_DATA = [
     tagline: 'Precision Diagnosis',
     description: 'Full digital scan and comprehensive diagnosis of teeth and gums.',
     extraInfo: 'Includes low-radiation digital X-rays, detailed gum health check, oral cancer screening, and a customized treatment plan.',
-    photo: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://images.unsplash.com/photo-1744829903372-6e6f254780bb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fENvbXByZWhlbnNpdmUlMjBFeGFtJTIwJTI2JTIwWC1SYXlzfGVufDB8MXwwfHx8MA%3D%3D',
     iconBg: '#ccfbf1',
     iconColor: '#0d9488'
   },
@@ -68,7 +71,7 @@ const SERVICES_DATA = [
     tagline: 'Invisible Restoration',
     description: 'Natural-looking, tooth-colored composite restorations.',
     extraInfo: 'Restores decayed or chipped teeth using high-grade composite resin, shaded to match your natural tooth color seamlessly.',
-    photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1626736985932-c0df2ae07a2e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHx8',
     iconBg: '#ccfbf1',
     iconColor: '#0d9488'
   },
@@ -85,7 +88,7 @@ const SERVICES_DATA = [
     tagline: 'Discreet Straightening',
     description: 'Virtually invisible aligners customized for comfortable straightening.',
     extraInfo: 'Includes advanced 3D scanning, customized clear aligner treatment plans, and step-by-step progress monitoring for a perfect smile.',
-    photo: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://plus.unsplash.com/premium_photo-1677174625851-508b71ac2df3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fENsZWFyJTIwQWxpZ25lciUyMFRoZXJhcHl8ZW58MHwxfDB8fHww',
     iconBg: '#e0e7ff',
     iconColor: '#4f46e5'
   },
@@ -100,7 +103,7 @@ const SERVICES_DATA = [
     tagline: 'Low-Profile Alignment',
     description: 'Discreet tooth-colored brackets to fix complex bite issues.',
     extraInfo: 'Offers durable, aesthetic ceramic brackets that blend with your teeth, providing effective alignment for complex orthodontic cases.',
-    photo: 'https://images.unsplash.com/photo-1513415277900-a62401e50853?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://plus.unsplash.com/premium_photo-1661436629100-ba3c5ea70514?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     iconBg: '#e0e7ff',
     iconColor: '#4f46e5'
   },
@@ -132,7 +135,7 @@ const SERVICES_DATA = [
     tagline: 'Natural Looking Replacement',
     description: 'Bio-compatible titanium post topped with a custom porcelain crown.',
     extraInfo: 'Provides a stable, lifelong solution to replace a single missing tooth, matching the strength and look of a natural tooth.',
-    photo: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://images.unsplash.com/photo-1660737216887-7bdf4402bc89?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2luZ2xlJTIwVG9vdGglMjBJbXBsYW50fGVufDB8MXwwfHx8MA%3D%3D',
     iconBg: '#ffe4e6',
     iconColor: '#e11d48'
   },
@@ -147,7 +150,7 @@ const SERVICES_DATA = [
     tagline: 'Complete Smile Rebuilding',
     description: 'Full-arch teeth replacement secured by four advanced implants.',
     extraInfo: 'Restores a complete arch of teeth with just four dental implants, offering immediate functionality and high aesthetic value.',
-    photo: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1664529845836-433c172142ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fEFsbC1vbi00JTIwRnVsbCUyMEFyY2glMjB0ZWV0aHxlbnwwfDF8MHx8fDA%3D',
     iconBg: '#ffe4e6',
     iconColor: '#e11d48'
   },
@@ -162,7 +165,7 @@ const SERVICES_DATA = [
     tagline: 'Foundation Rebuilding',
     description: 'Bone density enhancement to ensure solid implant integration.',
     extraInfo: 'Strengthens the jawbone when bone mass is insufficient to support a secure and long-lasting dental implant placement.',
-    photo: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&auto=format&fit=crop&q=60',
     iconBg: '#ffe4e6',
     iconColor: '#e11d48'
   },
@@ -179,7 +182,7 @@ const SERVICES_DATA = [
     tagline: 'Instant Brightness',
     description: 'Professional medical-grade bleaching up to 8 shades lighter.',
     extraInfo: 'Utilizes advanced, safe laser activation and professional-strength bleaching gels to safely lift stains and brightens teeth in one hour.',
-    photo: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=600&auto=format&fit=crop&q=60',
+    photo: laserImg,
     iconBg: '#f3e8ff',
     iconColor: '#9333ea'
   },
@@ -194,7 +197,7 @@ const SERVICES_DATA = [
     tagline: 'Hollywood Smile Transformation',
     description: 'Ultra-thin custom shells bonded to hide chips, gaps, or stains.',
     extraInfo: 'Individually sculpted custom porcelain veneers designed to fit over your teeth, transforming alignment, color, and spacing permanently.',
-    photo: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&auto=format&fit=crop&q=60',
+    photo: veneersImg,
     iconBg: '#f3e8ff',
     iconColor: '#9333ea'
   },
@@ -241,7 +244,7 @@ const SERVICES_DATA = [
     tagline: 'Lock Out Tooth Decay',
     description: 'Protective thin coatings on back molars to lock out decay.',
     extraInfo: 'Applied directly to the deep grooves of kids\' molars, creating a protective shield against bacteria and decay.',
-    photo: 'https://plus.unsplash.com/premium_photo-1661281397737-9b5d75b52606?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=600&auto=format&fit=crop&q=60',
     iconBg: '#fef3c7',
     iconColor: '#d97706'
   },
@@ -256,7 +259,7 @@ const SERVICES_DATA = [
     tagline: 'Painless Extractions',
     description: 'Comfortable, safe removal of troubled baby teeth.',
     extraInfo: 'Ensures the safe and pain-free removal of loose, damaged, or overcrowded baby teeth in a comforting environment.',
-    photo: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600&auto=format&fit=crop&q=60',
+    photo: pediatricImg,
     iconBg: '#fef3c7',
     iconColor: '#d97706'
   },
@@ -316,8 +319,32 @@ function ServicePhotoCard({ item, onBook }) {
   const [expanded, setExpanded] = useState(false);
   const Icon = item.icon;
 
+  const getTailwindBg = (hex) => {
+    const map = {
+      '#ccfbf1': 'bg-teal-100',
+      '#e0e7ff': 'bg-indigo-100',
+      '#ffe4e6': 'bg-rose-100',
+      '#f3e8ff': 'bg-purple-100',
+      '#fef3c7': 'bg-amber-100',
+      '#dcfce7': 'bg-green-100'
+    };
+    return map[hex] || 'bg-slate-100';
+  };
+
+  const getTailwindText = (hex) => {
+    const map = {
+      '#0d9488': 'text-teal-600',
+      '#4f46e5': 'text-indigo-600',
+      '#e11d48': 'text-rose-600',
+      '#9333ea': 'text-purple-600',
+      '#d97706': 'text-amber-600',
+      '#16a34a': 'text-green-600'
+    };
+    return map[hex] || 'text-slate-600';
+  };
+
   return (
-    <div 
+    <div
       className="group bg-white rounded-[24px] border border-slate-200/80 p-4 flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_35px_rgba(15,23,42,0.08)] hover:border-slate-300"
       onClick={() => setExpanded(!expanded)}
     >
@@ -332,11 +359,11 @@ function ServicePhotoCard({ item, onBook }) {
 
       {/* Title & Icon Header */}
       <div className="flex items-center gap-3 mb-3.5 px-1">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: item.iconBg, color: item.iconColor }}>
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${getTailwindBg(item.iconBg)} ${getTailwindText(item.iconColor)}`}>
           <Icon size={20} />
         </div>
         <div>
-          <span className="text-[0.68rem] font-extrabold uppercase tracking-wider" style={{ color: item.iconColor }}>
+          <span className={`text-[0.68rem] font-extrabold uppercase tracking-wider ${getTailwindText(item.iconColor)}`}>
             {item.category}
           </span>
           <h3 className="text-[1.15rem] font-bold text-slate-900 m-0 tracking-tight mt-0.5">{item.name}</h3>
@@ -431,7 +458,7 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
   return (
     <>
-      <div className="min-h-screen bg-slate-50 flex flex-col font-sans animate-fade-in">
+      <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
         <Navbar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -442,7 +469,8 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
           setPortalSubTab={setPortalSubTab}
         />
 
-        {/* ── HERO BANNER with Search ── */}
+        <div className="flex-1 flex flex-col animate-fade-in">
+          {/* ── HERO BANNER with Search ── */}
         <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-14 px-8 relative overflow-hidden flex justify-center items-center">
           {/* Grid background lines */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
@@ -469,8 +497,8 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
-                <button 
-                  className="bg-transparent border-none text-white/40 cursor-pointer flex items-center justify-center p-1 rounded-full transition-all duration-200 hover:bg-white/10 hover:text-white focus-within:text-slate-500 focus-within:hover:bg-slate-100 focus-within:hover:text-slate-900" 
+                <button
+                  className="bg-transparent border-none text-white/40 cursor-pointer flex items-center justify-center p-1 rounded-full transition-all duration-200 hover:bg-white/10 hover:text-white focus-within:text-slate-500 focus-within:hover:bg-slate-100 focus-within:hover:text-slate-900"
                   onClick={() => setSearchQuery('')}
                 >
                   <X size={16} />
@@ -484,11 +512,10 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         <div className="bg-white/85 backdrop-blur-md border-b border-slate-200 px-8 py-3 sticky top-[72px] z-40 flex justify-center overflow-x-auto no-scrollbar shadow-sm">
           <div className="flex gap-1.5 bg-slate-100 p-1 rounded-full border border-slate-200">
             <button
-              className={`border-none px-5 py-2 rounded-full text-[0.8rem] font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap ${
-                selectedCategory === 'all' 
-                  ? 'bg-slate-900 text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:bg-slate-900 hover:text-white' 
-                  : 'text-slate-500 bg-transparent hover:text-slate-900 hover:bg-black/5'
-              }`}
+              className={`border-none px-5 py-2 rounded-full text-[0.8rem] font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap ${selectedCategory === 'all'
+                ? 'bg-slate-900 text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:bg-slate-900 hover:text-white'
+                : 'text-slate-500 bg-transparent hover:text-slate-900 hover:bg-black/5'
+                }`}
               onClick={() => setSelectedCategory('all')}
             >
               All Services
@@ -496,11 +523,10 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
             {CATEGORIES_DATA.map(cat => (
               <button
                 key={cat.id}
-                className={`border-none px-5 py-2 rounded-full text-[0.8rem] font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap ${
-                  selectedCategory === cat.id 
-                    ? 'bg-slate-900 text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:bg-slate-900 hover:text-white' 
-                    : 'text-slate-500 bg-transparent hover:text-slate-900 hover:bg-black/5'
-                }`}
+                className={`border-none px-5 py-2 rounded-full text-[0.8rem] font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap ${selectedCategory === cat.id
+                  ? 'bg-slate-900 text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:bg-slate-900 hover:text-white'
+                  : 'text-slate-500 bg-transparent hover:text-slate-900 hover:bg-black/5'
+                  }`}
                 onClick={() => setSelectedCategory(cat.id)}
               >
                 {cat.category}
@@ -532,6 +558,7 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         </div>
 
         <Footer navigate={navigate} />
+        </div>
       </div>
     </>
   );

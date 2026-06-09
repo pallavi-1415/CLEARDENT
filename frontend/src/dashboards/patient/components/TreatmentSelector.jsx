@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stethoscope, ChevronUp, ChevronDown, Clock } from 'lucide-react';
-import { TREATMENTS_DATA } from '../../constants/treatments';
+import { TREATMENTS_DATA } from '../../../constants/treatments';
 
 function TreatmentSelector({
   selectedCategory,
@@ -43,29 +43,18 @@ function TreatmentSelector({
       </button>
 
       {treatmentDropdownOpen && (
-        <div className="interactive-popover-list" style={{ maxHeight: '360px', overflowY: 'auto' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div className="interactive-popover-list max-h-[360px] overflow-y-auto">
+          <div className="flex flex-col gap-2">
             {TREATMENTS_DATA.map((cat) => (
-              <div key={cat.id} style={{ display: 'flex', flexDirection: 'column' }}>
+              <div key={cat.id} className="flex flex-col">
                 {/* Category Header */}
                 <div
-                  style={{
-                    fontSize: '0.72rem',
-                    fontWeight: '800',
-                    color: '#4f46e5',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    padding: '8px 12px 4px',
-                    background: '#faf5ff',
-                    borderRadius: '8px',
-                    margin: '6px 0 4px',
-                    borderLeft: '3px solid #6366f1'
-                  }}
+                  className="text-[0.72rem] font-extrabold text-[#4f46e5] uppercase tracking-[0.12em] pt-2 px-3 pb-1 bg-[#faf5ff] rounded-lg mt-1.5 mb-1 border-l-[3px] border-[#6366f1]"
                 >
                   {cat.category}
                 </div>
                 {/* Procedures list */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div className="flex flex-col gap-1">
                   {cat.items.map((proc, index) => (
                     <div
                       key={index}

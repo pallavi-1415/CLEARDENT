@@ -202,8 +202,8 @@ function FaqPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, setAc
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         // Add a temporary glow effect
-        el.classList.add('glow-highlight');
-        setTimeout(() => el.classList.remove('glow-highlight'), 2000);
+        el.classList.add('animate-[glow-pulse_2s_ease-in-out]');
+        setTimeout(() => el.classList.remove('animate-[glow-pulse_2s_ease-in-out]'), 2000);
       }
     }, 100);
   };
@@ -239,8 +239,8 @@ function FaqPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, setAc
     <div className="min-h-screen bg-[#FFFFFF] text-[#0F172A] font-sans flex flex-col relative overflow-x-hidden">
       
       {/* Background layout layers */}
-      <div className="grid-bg absolute top-0 left-0 right-0 h-[600px] z-0 pointer-events-none">
-        <div className="sketch-grid-lines"></div>
+      <div className="absolute top-0 left-0 right-0 h-[600px] z-0 pointer-events-none bg-[radial-gradient(at_0%_0%,_rgba(22,83,224,0.04)_0px,_transparent_50%),_radial-gradient(at_100%_0%,_rgba(96,165,250,0.05)_0px,_transparent_50%),_linear-gradient(to_bottom,_#FFFFFF_0%,_#F8FAFC_100%)]">
+        <div className="absolute inset-0 bg-[size:40px_40px] bg-[linear-gradient(to_right,_rgba(0,0,0,0.015)_1px,_transparent_1px),_linear-gradient(to_bottom,_rgba(0,0,0,0.015)_1px,_transparent_1px)] [mask-image:linear-gradient(to_bottom,_black_40%,_transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,_black_40%,_transparent_100%)]"></div>
       </div>
 
       {/* Top Navbar */}

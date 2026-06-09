@@ -598,7 +598,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
   return (
     <>
-      <div className="min-h-screen bg-[linear-gradient(135deg,#e2ece9_0%,#f0f4f3_50%,#e4eff1_100%)] flex flex-col font-sans select-none relative overflow-x-hidden">
+      <div className="min-h-screen bg-[linear-gradient(135deg,#e2ece9_0%,#f0f4f3_50%,#e4eff1_100%)] flex flex-col font-sans select-none relative">
         
         {/* Soft atmospheric gradient glows matching the image context */}
         <div className="absolute top-0 right-0 w-[450px] h-[450px] rounded-full bg-teal-250/20 blur-[130px] pointer-events-none z-0" />

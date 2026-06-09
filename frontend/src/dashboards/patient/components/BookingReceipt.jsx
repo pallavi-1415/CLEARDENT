@@ -22,7 +22,7 @@ function BookingReceipt({
         <div className="receipt-ticket-title">Official Receipt Pass</div>
         <div className="receipt-item-row">
           <span className="receipt-item-label">Reference ID</span>
-          <span className="receipt-item-val" style={{ fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+          <span className="receipt-item-val font-mono tracking-[0.05em]">
             CD-{bookingSuccessData._id?.substring(0, 8).toUpperCase() || 'SUCCESS'}
           </span>
         </div>
@@ -42,9 +42,9 @@ function BookingReceipt({
           <span className="receipt-item-label">Time Slot</span>
           <span className="receipt-item-val">{bookingSuccessData.timeSlot}</span>
         </div>
-        <div className="receipt-item-row" style={{ borderBottom: 'none', marginTop: '6px', paddingTop: '12px', borderTop: '1px dashed #cbd5e1' }}>
-          <span className="receipt-item-label" style={{ color: '#0f172a' }}>Est. Pricing</span>
-          <span className="receipt-item-val" style={{ color: '#059669', fontSize: '1.05rem', fontStyle: 'normal', fontWeight: 800 }}>{bookingSuccessData.price}</span>
+        <div className="receipt-item-row border-b-0 mt-1.5 pt-3 border-t border-dashed border-t-[#cbd5e1]">
+          <span className="receipt-item-label text-[#0f172a]">Est. Pricing</span>
+          <span className="receipt-item-val text-[#059669] text-[1.05rem] not-italic font-extrabold">{bookingSuccessData.price}</span>
         </div>
       </div>
 
