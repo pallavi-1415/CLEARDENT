@@ -20,7 +20,7 @@ router.get('/users', async (req, res) => {
     res.json(users);
   } catch (err) {
     console.error('Fetch users error:', err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: err.message, stack: err.stack });
   }
 });
 
