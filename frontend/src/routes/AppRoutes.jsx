@@ -9,6 +9,8 @@ import DoctorDashboard from '../dashboards/doctor';
 import OurDoctors from '../pages/doctor';
 import ContactUs from '../pages/contact';
 import FaqPage from '../pages/faq';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import TermsConditions from '../pages/TermsConditions';
 import ToothLoader from '../components/ui/ToothLoader';
 import BookingModal from '../components/ui/BookingModal';
 import { useAuth } from '../context/AuthContext';
@@ -18,13 +20,18 @@ function AppRoutes() {
   const [activeTab, setActiveTab] = useState('website'); // 'website' or 'portal'
   const [portalSubTab, setPortalSubTab] = useState('appointments'); // 'appointments', 'profile', 'notifications'
   const [redirectTo, setRedirectTo] = useState(null);
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [bookingModalOpen, setBookingModalOpen] = useState(() => {
+    return sessionStorage.getItem('isBookingModalOpen') === 'true';
+  });
 
-  // Global function to open the booking modal from any component
+  // Sync modal open state to sessionStorage
   useEffect(() => {
-    window.openBookingModal = () => setBookingModalOpen(true);
-    return () => { delete window.openBookingModal; };
-  }, []);
+    if (bookingModalOpen) {
+      sessionStorage.setItem('isBookingModalOpen', 'true');
+    } else {
+      sessionStorage.removeItem('isBookingModalOpen');
+    }
+  }, [bookingModalOpen]);
 
   const [route, setRoute] = useState(() => {
     const path = window.location.pathname;
@@ -35,10 +42,27 @@ function AppRoutes() {
     if (path === '/booking') return 'booking';
     if (path === '/contact') return 'contact';
     if (path === '/faq') return 'faq';
+    if (path === '/privacy-policy') return 'privacy-policy';
+    if (path === '/terms-conditions') return 'terms-conditions';
     if (path === '/admin-dashboard') return 'admin-dashboard';
     if (path === '/doctor-dashboard') return 'doctor-dashboard';
     return 'home'; // default landing page
   });
+
+  // Global function to open the booking modal from any component
+  useEffect(() => {
+    window.openBookingModal = () => {
+      const isAuth = !!currentUser || !!localStorage.getItem('token');
+      if (!isAuth) {
+        setRedirectTo({ route: route, openModal: true });
+        window.history.pushState(null, '', '/login');
+        setRoute('login');
+      } else {
+        setBookingModalOpen(true);
+      }
+    };
+    return () => { delete window.openBookingModal; };
+  }, [currentUser, route]);
 
   const [renderedRoute, setRenderedRoute] = useState(route);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -70,6 +94,10 @@ function AppRoutes() {
         setRoute('contact');
       } else if (path === '/faq') {
         setRoute('faq');
+      } else if (path === '/privacy-policy') {
+        setRoute('privacy-policy');
+      } else if (path === '/terms-conditions') {
+        setRoute('terms-conditions');
       } else if (path === '/booking') {
         if (!isAuth) {
           setRedirectTo('booking');
@@ -137,9 +165,20 @@ function AppRoutes() {
     
     // Redirect if there is a pending destination
     if (redirectTo) {
-      const dest = redirectTo;
-      setRedirectTo(null);
-      navigate(dest);
+      if (typeof redirectTo === 'object') {
+        const dest = redirectTo.route;
+        setRedirectTo(null);
+        navigate(dest);
+        if (redirectTo.openModal) {
+          setTimeout(() => {
+            if (window.openBookingModal) window.openBookingModal();
+          }, 100);
+        }
+      } else {
+        const dest = redirectTo;
+        setRedirectTo(null);
+        navigate(dest);
+      }
     } else {
       if (user.role === 'admin') {
         navigate('admin-dashboard');
@@ -239,6 +278,30 @@ function AppRoutes() {
       )}
       {renderedRoute === 'faq' && (
         <FaqPage
+          navigate={navigate}
+          isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          portalSubTab={portalSubTab}
+          setPortalSubTab={setPortalSubTab}
+        />
+      )}
+      {renderedRoute === 'privacy-policy' && (
+        <PrivacyPolicy
+          navigate={navigate}
+          isLoggedIn={isLoggedIn}
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          portalSubTab={portalSubTab}
+          setPortalSubTab={setPortalSubTab}
+        />
+      )}
+      {renderedRoute === 'terms-conditions' && (
+        <TermsConditions
           navigate={navigate}
           isLoggedIn={isLoggedIn}
           currentUser={currentUser}

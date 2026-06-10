@@ -3,16 +3,16 @@ import { Mail, Phone, ArrowRight } from 'lucide-react';
 
 function Footer({ navigate }) {
     return (
-        <footer className="bg-white border-t border-slate-200/50 text-black pt-16 pb-8 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
-            <div className="w-full max-w-[1200px] flex flex-col gap-12">
+        <footer className="bg-white border-t border-slate-200/50 text-black pt-5 pb-6 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
+            <div className="w-full max-w-[1200px] flex flex-col gap-8">
 
                 {/* Upper Grid Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_2.5fr] gap-12 items-start w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_2.5fr] gap-8 items-start w-full">
 
                     {/* Left Column: Branding & Newsletter */}
                     <div className="flex flex-col gap-8 max-w-[400px]">
                         <div className="flex flex-col gap-2">
-                            <h2 
+                            <h2
                                 className="text-[2.2rem] font-bold italic tracking-tight m-0 cursor-pointer"
                                 onClick={() => navigate?.('home')}
                             >
@@ -52,7 +52,6 @@ function Footer({ navigate }) {
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Cavity</span>
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Dental clinic</span>
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Orthodontics</span>
-                                    <span onClick={() => navigate?.('booking')} className="hover:text-black cursor-pointer transition-colors">Payments</span>
                                 </div>
                             </div>
 
@@ -60,7 +59,7 @@ function Footer({ navigate }) {
                             <div className="flex flex-col gap-4">
                                 <h5 className="text-[0.78rem] font-bold text-black/50 uppercase tracking-widest m-0">Quick Link</h5>
                                 <div className="flex flex-col gap-2.5 text-[0.85rem] text-black/70">
-                                    <span 
+                                    <span
                                         onClick={() => {
                                             if (navigate) {
                                                 navigate('home');
@@ -68,14 +67,14 @@ function Footer({ navigate }) {
                                                     document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
                                                 }, 100);
                                             }
-                                        }} 
+                                        }}
                                         className="hover:text-black cursor-pointer transition-colors"
                                     >
                                         FAQs
                                     </span>
                                     <span onClick={() => navigate?.('contact')} className="hover:text-black cursor-pointer transition-colors">Contact Us</span>
-                                    <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Privacy</span>
-                                    <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Terms & Conditions</span>
+                                    <span onClick={() => navigate?.('privacy-policy')} className="hover:text-black cursor-pointer transition-colors">Privacy</span>
+                                    <span onClick={() => navigate?.('terms-conditions')} className="hover:text-black cursor-pointer transition-colors">Terms & Conditions</span>
                                 </div>
                             </div>
 
@@ -113,15 +112,7 @@ function Footer({ navigate }) {
 
                 {/* Bottom Metadata Row */}
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[0.75rem] text-black/45 w-full">
-                    {/* Legal Links */}
-                    <div className="flex gap-4.5 flex-wrap max-sm:justify-center">
-                        <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Terms</span>
-                        <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Privacy</span>
-                        <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Cookies</span>
-                        <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Legal</span>
-                        <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Recalls</span>
-                    </div>
-
+                    {/* Legal Links removed per user request */}
                     {/* Copyright statement */}
                     <div className="text-center font-medium">
                         &copy; {new Date().getFullYear()} ClearDent. All Rights Reserved.

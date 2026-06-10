@@ -216,6 +216,38 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
           availability: d.availability || []
         }));
         setDbDoctors(formatted);
+
+        // Restore saved state after doctors are loaded
+        const savedState = localStorage.getItem('booking_form_state');
+        if (savedState) {
+          try {
+            const parsed = JSON.parse(savedState);
+            if (parsed.currentStep) setCurrentStep(parsed.currentStep);
+            if (parsed.notes) setNotes(parsed.notes);
+            if (parsed.patientName && !currentUser) setPatientName(parsed.patientName);
+            if (parsed.patientEmail && !currentUser) setPatientEmail(parsed.patientEmail);
+            if (parsed.patientPhone && !currentUser) setPatientPhone(parsed.patientPhone);
+            if (parsed.paymentMethod) setPaymentMethod(parsed.paymentMethod);
+            if (parsed.selectedDate) setSelectedDate(parsed.selectedDate);
+            if (parsed.selectedTimeSlot) setSelectedTimeSlot(parsed.selectedTimeSlot);
+            if (parsed.selectedCategoryId) {
+                const cat = TREATMENTS_DATA.find(c => c.id === parsed.selectedCategoryId);
+                if (cat) setSelectedCategory(cat);
+                if (cat && parsed.selectedTreatmentName) {
+                    const trt = cat.items.find(t => t.name === parsed.selectedTreatmentName);
+                    if (trt) setSelectedTreatment(trt);
+                }
+            }
+            if (parsed.selectedLocationId) {
+                const loc = CLINIC_LOCATIONS.find(l => l.id === parsed.selectedLocationId);
+                if (loc) setSelectedLocation(loc);
+            }
+            if (parsed.selectedDoctorName && formatted.length > 0) {
+                const doc = formatted.find(d => d.name === parsed.selectedDoctorName);
+                if (doc) setSelectedDoctor(doc);
+            }
+          } catch (e) { console.error('Failed to parse saved state', e); }
+        }
       } catch (err) {
         console.error('Failed to load doctors:', err);
       }
@@ -248,13 +280,31 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       const docObj = dbDoctors.find(d => d.name === savedDoctor);
       if (docObj) {
         setSelectedDoctor(docObj);
-        const spec = docObj.specialty.toLowerCase();
-        const matchedCat = TREATMENTS_DATA.find(c => spec.includes(c.category.toLowerCase().split(' ')[0]));
-        if (matchedCat) setSelectedCategory(matchedCat);
+        localStorage.removeItem('selected_booking_doctor');
       }
-      localStorage.removeItem('selected_booking_doctor');
     }
-  }, [dbDoctors]);
+  }, [isOpen, dbDoctors]);
+
+  /* ── Form State Persistence (LocalStorage) ── */
+  useEffect(() => {
+    if (isOpen && dbDoctors.length > 0 && !bookingSuccessData) {
+      const stateToSave = {
+        currentStep,
+        selectedCategoryId: selectedCategory?.id,
+        selectedTreatmentName: selectedTreatment?.name,
+        selectedDoctorName: selectedDoctor?.name,
+        selectedDate: selectedDate || null,
+        selectedTimeSlot,
+        selectedLocationId: selectedLocation?.id,
+        notes,
+        patientName,
+        patientEmail,
+        patientPhone,
+        paymentMethod
+      };
+      localStorage.setItem('booking_form_state', JSON.stringify(stateToSave));
+    }
+  }, [isOpen, dbDoctors, currentStep, selectedCategory, selectedTreatment, selectedDoctor, selectedDate, selectedTimeSlot, selectedLocation, notes, patientName, patientEmail, patientPhone, paymentMethod, bookingSuccessData]);
 
   /* ── Auto-select doctor when category changes ── */
   useEffect(() => {
@@ -462,6 +512,20 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
         paymentMethod
       };
 
+      if (paymentMethod === 'Pay at Clinic') {
+        const payload = {
+          ...appointmentData,
+          paymentStatus: 'Pending',
+          paymentMethod: 'Pay at Clinic'
+        };
+        const created = await createAppointment(payload);
+        localStorage.removeItem('booking_form_state');
+        setBookingSuccessData(created);
+        setCurrentStep(6);
+        setLoading(false);
+        return;
+      }
+
       if (paymentMethod === 'Razorpay / Online Payment') {
         const scriptLoaded = await loadRazorpayScript();
         if (!scriptLoaded) {
@@ -513,8 +577,9 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
               const verifyData = await verifyRes.json();
               if (verifyData.success) {
                 const result = await createAppointment(appointmentData, token);
+                window.showToast?.('success', 'Payment successful! Appointment confirmed.');
+                localStorage.removeItem('booking_form_state');
                 setBookingSuccessData(result.appointment);
-                window.showToast?.('Payment successful & Appointment booked!');
                 setCurrentStep(6);
               } else {
                 window.showError?.('Payment verification failed!');
