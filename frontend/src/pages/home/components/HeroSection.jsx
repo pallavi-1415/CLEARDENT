@@ -1,4 +1,6 @@
 import Button from '../../../components/ui/Button';
+import orthoAlignerImg from '../../../assets/ortho_aligner.png';
+import dentalHeroArtworkImg from '../../../assets/dental_hero_artwork.png';
 
 function HeroSection({ navigate }) {
   return (
@@ -114,7 +116,7 @@ function HeroSection({ navigate }) {
           onClick={() => navigate('services')}
         >
           <img
-            src="/images/ortho_aligner.png"
+            src={orthoAlignerImg}
             alt="Orthodontics Aligners"
             className="absolute w-full h-full object-cover opacity-80"
           />
@@ -129,7 +131,7 @@ function HeroSection({ navigate }) {
           onClick={() => navigate('services')}
         >
           <img
-            src="/dental_hero_artwork.png"
+            src={dentalHeroArtworkImg}
             alt="Dental Surgery"
             className="absolute w-full h-full object-cover opacity-[0.95]"
           />

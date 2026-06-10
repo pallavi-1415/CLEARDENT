@@ -1,4 +1,5 @@
 import Button from '../../../components/ui/Button';
+import doctorAuthProImg from '../../../assets/doctor_auth_pro.png';
 
 function FeatureBanner({ navigate, isLoggedIn, setActiveTab }) {
   return (
@@ -33,7 +34,7 @@ function FeatureBanner({ navigate, isLoggedIn, setActiveTab }) {
             {/* Clipped image container */}
             <div className="w-full h-full [clip-path:url(#dentistry-wave-mask)] overflow-hidden flex items-center justify-center bg-[#dbeafe]">
               <img
-                src="/images/doctor_auth_pro.png"
+                src={doctorAuthProImg}
                 alt="Modern Dentist adjustment procedure"
                 className="w-full h-full object-cover"
               />

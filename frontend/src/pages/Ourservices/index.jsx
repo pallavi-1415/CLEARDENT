@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
+import laserImg from '../../assets/laser.jpg';
+import veneersImg from '../../assets/72e73c84e980e834943641d6f0a7e909.jpg';
+import pediatricImg from '../../assets/Gentle Pediatric Extractions.jpg';
 import {
   Sparkles,
   Activity,
@@ -38,7 +41,7 @@ const SERVICES_DATA = [
     tagline: 'Precision Diagnosis',
     description: 'Full digital scan and comprehensive diagnosis of teeth and gums.',
     extraInfo: 'Includes low-radiation digital X-rays, detailed gum health check, oral cancer screening, and a customized treatment plan.',
-    photo: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://images.unsplash.com/photo-1744829903372-6e6f254780bb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fENvbXByZWhlbnNpdmUlMjBFeGFtJTIwJTI2JTIwWC1SYXlzfGVufDB8MXwwfHx8MA%3D%3D',
     iconBg: '#ccfbf1',
     iconColor: '#0d9488'
   },
@@ -68,7 +71,7 @@ const SERVICES_DATA = [
     tagline: 'Invisible Restoration',
     description: 'Natural-looking, tooth-colored composite restorations.',
     extraInfo: 'Restores decayed or chipped teeth using high-grade composite resin, shaded to match your natural tooth color seamlessly.',
-    photo: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1626736985932-c0df2ae07a2e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE0fHx8ZW58MHx8fHx8',
     iconBg: '#ccfbf1',
     iconColor: '#0d9488'
   },
@@ -85,7 +88,7 @@ const SERVICES_DATA = [
     tagline: 'Discreet Straightening',
     description: 'Virtually invisible aligners customized for comfortable straightening.',
     extraInfo: 'Includes advanced 3D scanning, customized clear aligner treatment plans, and step-by-step progress monitoring for a perfect smile.',
-    photo: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://plus.unsplash.com/premium_photo-1677174625851-508b71ac2df3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fENsZWFyJTIwQWxpZ25lciUyMFRoZXJhcHl8ZW58MHwxfDB8fHww',
     iconBg: '#e0e7ff',
     iconColor: '#4f46e5'
   },
@@ -100,7 +103,7 @@ const SERVICES_DATA = [
     tagline: 'Low-Profile Alignment',
     description: 'Discreet tooth-colored brackets to fix complex bite issues.',
     extraInfo: 'Offers durable, aesthetic ceramic brackets that blend with your teeth, providing effective alignment for complex orthodontic cases.',
-    photo: 'https://images.unsplash.com/photo-1513415277900-a62401e50853?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://plus.unsplash.com/premium_photo-1661436629100-ba3c5ea70514?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     iconBg: '#e0e7ff',
     iconColor: '#4f46e5'
   },
@@ -132,7 +135,7 @@ const SERVICES_DATA = [
     tagline: 'Natural Looking Replacement',
     description: 'Bio-compatible titanium post topped with a custom porcelain crown.',
     extraInfo: 'Provides a stable, lifelong solution to replace a single missing tooth, matching the strength and look of a natural tooth.',
-    photo: 'https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=800&q=80',
+    photo: 'https://images.unsplash.com/photo-1660737216887-7bdf4402bc89?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2luZ2xlJTIwVG9vdGglMjBJbXBsYW50fGVufDB8MXwwfHx8MA%3D%3D',
     iconBg: '#ffe4e6',
     iconColor: '#e11d48'
   },
@@ -147,7 +150,7 @@ const SERVICES_DATA = [
     tagline: 'Complete Smile Rebuilding',
     description: 'Full-arch teeth replacement secured by four advanced implants.',
     extraInfo: 'Restores a complete arch of teeth with just four dental implants, offering immediate functionality and high aesthetic value.',
-    photo: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1664529845836-433c172142ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fEFsbC1vbi00JTIwRnVsbCUyMEFyY2glMjB0ZWV0aHxlbnwwfDF8MHx8fDA%3D',
     iconBg: '#ffe4e6',
     iconColor: '#e11d48'
   },
@@ -162,7 +165,7 @@ const SERVICES_DATA = [
     tagline: 'Foundation Rebuilding',
     description: 'Bone density enhancement to ensure solid implant integration.',
     extraInfo: 'Strengthens the jawbone when bone mass is insufficient to support a secure and long-lasting dental implant placement.',
-    photo: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&auto=format&fit=crop&q=60',
     iconBg: '#ffe4e6',
     iconColor: '#e11d48'
   },
@@ -179,7 +182,7 @@ const SERVICES_DATA = [
     tagline: 'Instant Brightness',
     description: 'Professional medical-grade bleaching up to 8 shades lighter.',
     extraInfo: 'Utilizes advanced, safe laser activation and professional-strength bleaching gels to safely lift stains and brightens teeth in one hour.',
-    photo: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=600&auto=format&fit=crop&q=60',
+    photo: laserImg,
     iconBg: '#f3e8ff',
     iconColor: '#9333ea'
   },
@@ -194,7 +197,7 @@ const SERVICES_DATA = [
     tagline: 'Hollywood Smile Transformation',
     description: 'Ultra-thin custom shells bonded to hide chips, gaps, or stains.',
     extraInfo: 'Individually sculpted custom porcelain veneers designed to fit over your teeth, transforming alignment, color, and spacing permanently.',
-    photo: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600&auto=format&fit=crop&q=60',
+    photo: veneersImg,
     iconBg: '#f3e8ff',
     iconColor: '#9333ea'
   },
@@ -241,7 +244,7 @@ const SERVICES_DATA = [
     tagline: 'Lock Out Tooth Decay',
     description: 'Protective thin coatings on back molars to lock out decay.',
     extraInfo: 'Applied directly to the deep grooves of kids\' molars, creating a protective shield against bacteria and decay.',
-    photo: 'https://plus.unsplash.com/premium_photo-1661281397737-9b5d75b52606?w=600&auto=format&fit=crop&q=60',
+    photo: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=600&auto=format&fit=crop&q=60',
     iconBg: '#fef3c7',
     iconColor: '#d97706'
   },
@@ -256,7 +259,7 @@ const SERVICES_DATA = [
     tagline: 'Painless Extractions',
     description: 'Comfortable, safe removal of troubled baby teeth.',
     extraInfo: 'Ensures the safe and pain-free removal of loose, damaged, or overcrowded baby teeth in a comforting environment.',
-    photo: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=600&auto=format&fit=crop&q=60',
+    photo: pediatricImg,
     iconBg: '#fef3c7',
     iconColor: '#d97706'
   },
@@ -316,43 +319,70 @@ function ServicePhotoCard({ item, onBook }) {
   const [expanded, setExpanded] = useState(false);
   const Icon = item.icon;
 
+  const getTailwindBg = (hex) => {
+    const map = {
+      '#ccfbf1': 'bg-teal-100',
+      '#e0e7ff': 'bg-indigo-100',
+      '#ffe4e6': 'bg-rose-100',
+      '#f3e8ff': 'bg-purple-100',
+      '#fef3c7': 'bg-amber-100',
+      '#dcfce7': 'bg-green-100'
+    };
+    return map[hex] || 'bg-slate-100';
+  };
+
+  const getTailwindText = (hex) => {
+    const map = {
+      '#0d9488': 'text-teal-600',
+      '#4f46e5': 'text-indigo-600',
+      '#e11d48': 'text-rose-600',
+      '#9333ea': 'text-purple-600',
+      '#d97706': 'text-amber-600',
+      '#16a34a': 'text-green-600'
+    };
+    return map[hex] || 'text-slate-600';
+  };
+
   return (
-    <div className="category-card" onClick={() => setExpanded(!expanded)}>
+    <div
+      className="group bg-white rounded-[24px] border border-slate-200/80 p-4 flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_35px_rgba(15,23,42,0.08)] hover:border-slate-300"
+      onClick={() => setExpanded(!expanded)}
+    >
       {/* Inset Photo container */}
-      <div className="card-img-container">
+      <div className="w-full h-[200px] rounded-2xl overflow-hidden mb-4 relative bg-slate-100">
         <img
           src={item.photo}
           alt={item.name}
-          className="card-img"
+          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
       </div>
 
       {/* Title & Icon Header */}
-      <div className="card-header">
-        <div className="card-icon-box" style={{ background: item.iconBg, color: item.iconColor }}>
+      <div className="flex items-center gap-3 mb-3.5 px-1">
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${getTailwindBg(item.iconBg)} ${getTailwindText(item.iconColor)}`}>
           <Icon size={20} />
         </div>
         <div>
-          <span style={{ fontSize: '0.68rem', fontWeight: 800, textTransform: 'uppercase', color: item.iconColor, letterSpacing: '0.05em' }}>
+          <span className={`text-[0.68rem] font-extrabold uppercase tracking-wider ${getTailwindText(item.iconColor)}`}>
             {item.category}
           </span>
-          <h3 className="card-title" style={{ marginTop: '2px' }}>{item.name}</h3>
+          <h3 className="text-[1.15rem] font-bold text-slate-900 m-0 tracking-tight mt-0.5">{item.name}</h3>
         </div>
       </div>
 
       {/* Horizontal Divider */}
-      <hr className="card-divider" />
+      <hr className="border-none border-t border-slate-100 my-3.5 w-full" />
 
       {/* Description & Inline More Extra Info */}
-      <p className="card-desc-box">
+      <p className="text-[0.88rem] text-slate-500 leading-relaxed mb-5 px-1 flex-grow">
         {item.description}
         {expanded && (
-          <span className="extra-info-text">
+          <span className="text-slate-700 font-normal transition-all duration-300 animate-slide-down ml-1">
             {" "}{item.extraInfo}
           </span>
         )}
         <button
-          className="more-btn"
+          className="text-blue-600 font-bold cursor-pointer border-none bg-transparent p-0 ml-1.5 hover:text-blue-800 hover:underline"
           onClick={(e) => {
             e.stopPropagation();
             setExpanded(!expanded);
@@ -363,26 +393,26 @@ function ServicePhotoCard({ item, onBook }) {
       </p>
 
       {/* Duration & Price Details */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 4px', marginBottom: '16px' }}>
-        <span style={{ fontSize: '0.78rem', color: '#64748b', fontWeight: '600' }}>
+      <div className="flex justify-between items-center px-1 mb-4">
+        <span className="text-[0.78rem] text-slate-400 font-semibold">
           Duration: {item.duration}
         </span>
-        <span style={{ fontSize: '0.9rem', color: '#059669', fontWeight: '800', background: '#ecfdf5', padding: '3px 8px', borderRadius: '8px' }}>
+        <span className="text-[0.9rem] text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-lg">
           {item.price}
         </span>
       </div>
 
       {/* Make An Appointment CTA */}
-      <div className="card-cta-row">
+      <div className="mt-auto px-1 pb-1">
         <span
-          className="cta-link"
+          className="inline-flex items-center gap-1.5 text-orange-500 font-bold text-[0.92rem] cursor-pointer transition-all duration-200 hover:text-orange-600 select-none group/cta"
           onClick={(e) => {
             e.stopPropagation();
             onBook(item.categoryId, item.name);
           }}
         >
           Make An Appointment
-          <ArrowUpRight size={16} />
+          <ArrowUpRight size={16} className="transition-transform duration-300 ease-out group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5" />
         </span>
       </div>
     </div>
@@ -428,390 +458,7 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
   return (
     <>
-      {/* ── Scoped Redesigned styles ── */}
-      <style>{`
-        /* ── BASE PAGE ── */
-        .services-page {
-          min-height: 100vh;
-          background: #f8fafc;
-          display: flex;
-          flex-direction: column;
-          font-family: 'Inter', sans-serif;
-          animation: fadeIn 0.4s ease;
-        }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ── HERO BANNER ── */
-        .services-hero {
-          background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-          padding: 3.5rem 2rem;
-          position: relative;
-          overflow: hidden;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .hero-inner {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          gap: 1.5rem;
-          max-width: 800px;
-          width: 100%;
-          position: relative;
-          z-index: 2;
-        }
-        .services-hero::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-          background-size: 32px 32px;
-          pointer-events: none;
-        }
-        .services-hero::after {
-          content: '';
-          position: absolute;
-          width: 600px; height: 300px;
-          background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
-          top: -100px;
-          pointer-events: none;
-        }
-        .hero-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
-          background: rgba(255,255,255,0.06);
-          color: rgba(255,255,255,0.7);
-          font-size: 0.7rem;
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          padding: 0.3rem 0.85rem;
-          border-radius: 999px;
-          border: 1px solid rgba(255,255,255,0.1);
-          width: fit-content;
-        }
-        .hero-title {
-          font-size: clamp(2rem, 4.5vw, 2.75rem);
-          font-weight: 800;
-          color: #ffffff;
-          letter-spacing: -0.03em;
-          line-height: 1.15;
-          margin: 0;
-        }
-        .hero-title span {
-          background: linear-gradient(90deg, #93c5fd 0%, #60a5fa 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-
-        /* Search input bar */
-        .search-container {
-          position: relative;
-          width: 100%;
-          max-width: 500px;
-          display: flex;
-          align-items: center;
-          background: rgba(255, 255, 255, 0.08);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 999px;
-          padding: 0 18px;
-          transition: all 0.3s;
-          backdrop-filter: blur(8px);
-        }
-        .search-container:focus-within {
-          background: #ffffff;
-          border-color: #3b82f6;
-          box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
-        }
-        .search-icon {
-          color: rgba(255, 255, 255, 0.4);
-          flex-shrink: 0;
-          margin-right: 10px;
-          transition: color 0.3s;
-        }
-        .search-container:focus-within .search-icon {
-          color: #3b82f6;
-        }
-        .search-input {
-          width: 100%;
-          background: transparent;
-          border: none;
-          padding: 14px 0;
-          font-size: 0.95rem;
-          color: #ffffff;
-          font-family: inherit;
-          outline: none;
-        }
-        .search-container:focus-within .search-input {
-          color: #0f172a;
-        }
-        .search-input::placeholder {
-          color: rgba(255, 255, 255, 0.4);
-        }
-        .search-container:focus-within .search-input::placeholder {
-          color: #94a3b8;
-        }
-        .search-clear-btn {
-          background: transparent;
-          border: none;
-          color: rgba(255, 255, 255, 0.4);
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 4px;
-          border-radius: 50%;
-          transition: all 0.2s;
-        }
-        .search-container:focus-within .search-clear-btn {
-          color: #64748b;
-        }
-        .search-clear-btn:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: #ffffff;
-        }
-        .search-container:focus-within .search-clear-btn:hover {
-          background: #f1f5f9;
-          color: #0f172a;
-        }
-
-        /* ── STICKY FILTER BAR ── */
-        .filter-bar {
-          background: rgba(255, 255, 255, 0.85);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid #e2e8f0;
-          padding: 0.8rem 2rem;
-          position: sticky;
-          top: 72px;
-          z-index: 40;
-          display: flex;
-          justify-content: center;
-          overflow-x: auto;
-          scrollbar-width: none;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-        }
-        .filter-bar::-webkit-scrollbar { display: none; }
-        .filter-pill-group {
-          display: flex;
-          gap: 0.4rem;
-          background: #f1f5f9;
-          padding: 0.25rem;
-          border-radius: 999px;
-          border: 1px solid #e2e8f0;
-        }
-        .filter-pill {
-          border: none;
-          padding: 0.5rem 1.25rem;
-          border-radius: 999px;
-          font-size: 0.8rem;
-          font-weight: 600;
-          cursor: pointer;
-          font-family: inherit;
-          transition: all 0.2s ease;
-          white-space: nowrap;
-          color: #64748b;
-          background: transparent;
-        }
-        .filter-pill:hover { color: #0f172a; background: rgba(15,23,42,0.04); }
-        .filter-pill.active {
-          background: #0f172a;
-          color: #ffffff;
-          box-shadow: 0 4px 12px rgba(15,23,42,0.15);
-        }
-
-        /* ── CONTENT AREA ── */
-        .services-content-wrapper {
-          background: #f8fafc;
-          display: flex;
-          justify-content: center;
-          width: 100%;
-          min-height: 50vh;
-        }
-        .services-content {
-          flex: 1;
-          padding: 4rem 2rem;
-          max-width: 1200px;
-          width: 100%;
-          box-sizing: border-box;
-        }
-
-        /* ── CARD GRID ── */
-        .services-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
-        }
-        @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 640px) { .services-grid { grid-template-columns: 1fr; } }
-
-        /* ── CATEGORY CARD ── */
-        .category-card {
-          background: #ffffff;
-          border-radius: 24px;
-          border: 1px solid #e8edf5;
-          padding: 16px;
-          display: flex;
-          flex-direction: column;
-          cursor: pointer;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
-        }
-        .category-card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 20px 35px rgba(15, 23, 42, 0.08);
-          border-color: #cbd5e1;
-        }
-
-        /* Inset Image Box */
-        .card-img-container {
-          width: 100%;
-          height: 200px;
-          border-radius: 16px;
-          overflow: hidden;
-          margin-bottom: 16px;
-          position: relative;
-          background: #f1f5f9;
-        }
-        .card-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .category-card:hover .card-img {
-          transform: scale(1.05);
-        }
-
-        /* Card Header (Icon + Title) */
-        .card-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 14px;
-          padding: 0 4px;
-        }
-        .card-icon-box {
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-        .card-title {
-          font-size: 1.15rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin: 0;
-          letter-spacing: -0.01em;
-        }
-
-        /* Separator Divider */
-        .card-divider {
-          border: none;
-          border-top: 1px solid #eef2f6;
-          margin: 0 0 14px 0;
-          width: 100%;
-        }
-
-        /* Description Text */
-        .card-desc-box {
-          font-size: 0.88rem;
-          color: #64748b;
-          line-height: 1.6;
-          margin: 0 0 20px 0;
-          padding: 0 4px;
-          flex-grow: 1;
-        }
-        .extra-info-text {
-          color: #475569;
-          font-weight: 400;
-          transition: all 0.3s;
-          animation: slideDown 0.3s ease;
-        }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .more-btn {
-          color: #2563eb;
-          font-weight: 700;
-          cursor: pointer;
-          border: none;
-          background: transparent;
-          padding: 0;
-          margin-left: 6px;
-          font-size: inherit;
-          transition: color 0.2s;
-        }
-        .more-btn:hover {
-          color: #1d4ed8;
-          text-decoration: underline;
-        }
-
-        /* CTA Bottom Link */
-        .card-cta-row {
-          margin-top: auto;
-          padding: 0 4px 4px;
-        }
-        .cta-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          color: #f97316;
-          font-weight: 700;
-          font-size: 0.92rem;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          user-select: none;
-        }
-        .cta-link svg {
-          transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .cta-link:hover {
-          color: #ea580c;
-        }
-        .cta-link:hover svg {
-          transform: translate(3px, -3px);
-        }
-
-        /* No results state */
-        .no-results {
-          text-align: center;
-          padding: 4rem 2rem;
-          background: #ffffff;
-          border-radius: 24px;
-          border: 1px solid #e2e8f0;
-          width: 100%;
-          max-width: 500px;
-          margin: 4rem auto;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
-        }
-        .no-results h3 {
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: #0f172a;
-          margin: 0 0 8px 0;
-        }
-        .no-results p {
-          font-size: 0.9rem;
-          color: #64748b;
-          margin: 0;
-        }
-
-        /* ── RESPONSIVE ADAPTATIONS ── */
-        @media (max-width: 768px) {
-          .services-hero { padding: 3rem 1.5rem; }
-          .services-content { padding: 2.5rem 1rem; }
-          .filter-bar { padding: 0.65rem 1rem; top: 60px; }
-        }
-      `}</style>
-
-      <div className="services-page">
+      <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
         <Navbar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -822,29 +469,38 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
           setPortalSubTab={setPortalSubTab}
         />
 
-        {/* ── HERO BANNER with Search ── */}
-        <section className="services-hero">
-          <div className="hero-inner">
-            <span className="hero-badge">
+        <div className="flex-1 flex flex-col animate-fade-in">
+          {/* ── HERO BANNER with Search ── */}
+        <section className="bg-gradient-to-br from-slate-900 to-slate-800 py-14 px-8 relative overflow-hidden flex justify-center items-center">
+          {/* Grid background lines */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
+          {/* Radial blob */}
+          <div className="absolute w-[600px] h-[300px] bg-[radial-gradient(circle,rgba(59,130,246,0.12)_0%,transparent_70%)] -top-[100px] pointer-events-none"></div>
+
+          <div className="flex flex-col items-center text-center gap-6 max-w-3xl w-full relative z-10">
+            <span className="inline-flex items-center gap-1.5 bg-white/5 text-white/70 text-[0.7rem] font-bold tracking-wider uppercase px-3.5 py-1.5 rounded-full border border-white/10 w-fit">
               <Sparkles size={10} />
               ClearDent Clinical Services
             </span>
-            <h1 className="hero-title">
-              Our Specialized <span>Dental Services</span>
+            <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight m-0">
+              Our Specialized <span className="bg-gradient-to-r from-blue-300 to-blue-400 bg-clip-text text-transparent">Dental Services</span>
             </h1>
 
             {/* Search Input Bar */}
-            <div className="search-container">
-              <Search size={18} className="search-icon" />
+            <div className="relative w-full max-w-[500px] flex items-center bg-white/10 border border-white/12 rounded-full px-5 transition-all duration-300 backdrop-blur-md focus-within:bg-white focus-within:border-blue-500 focus-within:shadow-[0_10px_30px_rgba(59,130,246,0.15)] group">
+              <Search size={18} className="text-white/40 shrink-0 mr-2.5 transition-colors duration-300 group-focus-within:text-blue-500" />
               <input
                 type="text"
                 placeholder="Search dental treatments, categories..."
-                className="search-input"
+                className="w-full bg-transparent border-none py-3.5 text-[0.95rem] text-white outline-none focus:text-slate-900 placeholder-white/40 focus:placeholder-slate-400"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {searchQuery && (
-                <button className="search-clear-btn" onClick={() => setSearchQuery('')}>
+                <button
+                  className="bg-transparent border-none text-white/40 cursor-pointer flex items-center justify-center p-1 rounded-full transition-all duration-200 hover:bg-white/10 hover:text-white focus-within:text-slate-500 focus-within:hover:bg-slate-100 focus-within:hover:text-slate-900"
+                  onClick={() => setSearchQuery('')}
+                >
                   <X size={16} />
                 </button>
               )}
@@ -853,10 +509,13 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         </section>
 
         {/* ── STICKY CATEGORIES FILTER BAR ── */}
-        <div className="filter-bar">
-          <div className="filter-pill-group">
+        <div className="bg-white/85 backdrop-blur-md border-b border-slate-200 px-8 py-3 sticky top-[72px] z-40 flex justify-center overflow-x-auto no-scrollbar shadow-sm">
+          <div className="flex gap-1.5 bg-slate-100 p-1 rounded-full border border-slate-200">
             <button
-              className={`filter-pill${selectedCategory === 'all' ? ' active' : ''}`}
+              className={`border-none px-5 py-2 rounded-full text-[0.8rem] font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap ${selectedCategory === 'all'
+                ? 'bg-slate-900 text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:bg-slate-900 hover:text-white'
+                : 'text-slate-500 bg-transparent hover:text-slate-900 hover:bg-black/5'
+                }`}
               onClick={() => setSelectedCategory('all')}
             >
               All Services
@@ -864,7 +523,10 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
             {CATEGORIES_DATA.map(cat => (
               <button
                 key={cat.id}
-                className={`filter-pill${selectedCategory === cat.id ? ' active' : ''}`}
+                className={`border-none px-5 py-2 rounded-full text-[0.8rem] font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap ${selectedCategory === cat.id
+                  ? 'bg-slate-900 text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:bg-slate-900 hover:text-white'
+                  : 'text-slate-500 bg-transparent hover:text-slate-900 hover:bg-black/5'
+                  }`}
                 onClick={() => setSelectedCategory(cat.id)}
               >
                 {cat.category}
@@ -874,15 +536,15 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         </div>
 
         {/* ── SERVICES GRID ── */}
-        <div className="services-content-wrapper">
-          <div className="services-content">
+        <div className="bg-slate-50 flex justify-center w-full min-h-[50vh]">
+          <div className="flex-1 px-8 py-16 max-w-[1200px] w-full box-border">
             {filteredServices.length === 0 ? (
-              <div className="no-results">
-                <h3>No treatments found</h3>
-                <p>Try searching for a different keyword or category.</p>
+              <div className="text-center py-16 px-8 bg-white rounded-[24px] border border-slate-200 w-full max-w-[500px] mx-auto my-16 shadow-[0_4px_20px_rgba(0,0,0,0.015)]">
+                <h3 className="text-[1.25rem] font-bold text-slate-900 mb-2 m-0">No treatments found</h3>
+                <p className="text-[0.9rem] text-slate-500 m-0">Try searching for a different keyword or category.</p>
               </div>
             ) : (
-              <div className="services-grid">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredServices.map((section) => (
                   <ServicePhotoCard
                     key={section.id}
@@ -896,6 +558,7 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         </div>
 
         <Footer navigate={navigate} />
+        </div>
       </div>
     </>
   );

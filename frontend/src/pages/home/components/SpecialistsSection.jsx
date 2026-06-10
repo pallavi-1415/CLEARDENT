@@ -28,24 +28,24 @@ function SpecialistsSection({ navigate }) {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-lg:gap-6 max-sm:gap-4 w-full max-w-[1200px]">
           {[
             {
-              name: "Dr. Emily Carter",
+              name: "Dr. John Doe",
               role: "General Dentist",
-              img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=150&h=150&q=80"
+              img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=150&h=150&q=80"
             },
             {
-              name: "Dr. Michael Novak",
+              name: "Dr. Serhii Kinash",
               role: "Orthodontist",
               img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=150&h=150&q=80"
             },
             {
-              name: "Dr. Sophia Bennett",
+              name: "Dr. Marcus Thorne",
               role: "Oral & Implant Surgeon",
-              img: "https://images.unsplash.com/photo-1594824813573-246434de83fb?auto=format&fit=crop&w=150&h=150&q=80"
+              img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=150&h=150&q=80"
             },
             {
-              name: "Dr. Daniel Rossi",
+              name: "Dr. James Carter",
               role: "Pediatric Dentist",
-              img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=150&h=150&q=80"
+              img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=150&h=150&q=80"
             }
           ].map((spec, idx) => (
             <div
