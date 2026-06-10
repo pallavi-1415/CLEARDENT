@@ -19,9 +19,20 @@ app.use(express.json());
 // Serve uploaded license files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Connect to MongoDB and seed admin
+// Connect to MongoDB and seed admin in background (for local development)
 connectDB().then(() => seedAdmin()).catch(err => {
   console.error('❌ Initial database connection or seeding failed:', err);
+});
+
+// For Vercel Serverless Functions: Ensure DB is connected before handling any request
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('Vercel DB Connection Error:', err);
+    res.status(500).json({ message: 'Database connection failed on serverless' });
+  }
 });
 
 // Routes

@@ -532,7 +532,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
             contact: patientPhone
           },
           theme: {
-            color: '#0e8374'
+            color: '#1d4ed8'
           },
           modal: {
             ondismiss: function() {

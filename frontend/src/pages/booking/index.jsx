@@ -546,7 +546,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
             contact: patientPhone
           },
           theme: {
-            color: '#0e8374'
+            color: '#1d4ed8'
           },
           modal: {
             ondismiss: function() {
@@ -617,30 +617,30 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
         {/* Outer Booking Card Container */}
         <div className="flex-1 w-full max-w-5xl mx-auto px-4 py-12 z-10 relative flex items-center justify-center box-border">
-          <div className="w-full rounded-[28px] border border-[#cbdad6] shadow-xl flex flex-col md:flex-row bg-[#f4f8f7] overflow-hidden min-h-[580px]">
+          <div className="w-full rounded-[28px] border border-slate-200 shadow-xl flex flex-col md:flex-row bg-[#f8fafc] overflow-hidden min-h-[580px]">
             
             {/* LEFT COLUMN: STEPPER SIDEBAR */}
-            <div className="w-full md:w-[28%] bg-[#e8f1ed] p-5 md:p-8 border-b md:border-b-0 md:border-r border-[#cbdad6] flex flex-col md:justify-between relative md:min-h-[480px]">
+            <div className="w-full md:w-[28%] bg-[#eef2ff] p-5 md:p-8 border-b md:border-b-0 md:border-r border-slate-200 flex flex-col md:justify-between relative md:min-h-[480px]">
               
               <div className="space-y-4 md:space-y-10 relative z-10">
                 {/* Logo and Brand */}
                 <div className="flex items-center justify-between md:justify-start gap-3">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 grid grid-cols-2 gap-1 shrink-0">
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center"><div className="w-1 h-1 rounded-full bg-white"></div></div>
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-70"><div className="w-1 h-1 rounded-full bg-white"></div></div>
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-80"><div className="w-1 h-1 rounded-full bg-white"></div></div>
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-90"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#1d4ed8] flex items-center justify-center"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#1d4ed8] flex items-center justify-center opacity-70"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#1d4ed8] flex items-center justify-center opacity-80"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#1d4ed8] flex items-center justify-center opacity-90"><div className="w-1 h-1 rounded-full bg-white"></div></div>
                     </div>
                     <div>
-                      <span className="block text-[1.12rem] font-black tracking-tight text-[#1a332e] leading-none">ClearDent</span>
-                      <span className="text-[0.6rem] text-[#0e8374] font-extrabold uppercase tracking-widest block mt-0.5">Dental Studio</span>
+                      <span className="block text-[1.12rem] font-black tracking-tight text-slate-900 leading-none">ClearDent</span>
+                      <span className="text-[0.6rem] text-[#1d4ed8] font-extrabold uppercase tracking-widest block mt-0.5">Dental Studio</span>
                     </div>
                   </div>
 
                   {/* Need Help Link on Mobile */}
-                  <div className="md:hidden flex items-center gap-1.5 text-[0.72rem] text-[#879d97] font-bold cursor-pointer hover:text-[#1a332e]" onClick={() => window.showToast?.('Help center is available at info@cleardent.com')}>
-                    <HelpCircle size={15} className="text-[#0e8374]" />
+                  <div className="md:hidden flex items-center gap-1.5 text-[0.72rem] text-[#879d97] font-bold cursor-pointer hover:text-slate-900" onClick={() => window.showToast?.('Help center is available at info@cleardent.com')}>
+                    <HelpCircle size={15} className="text-[#1d4ed8]" />
                   </div>
                 </div>
 
@@ -655,20 +655,20 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     return (
                       <div key={step.number} className="flex items-center gap-4.5 relative z-10">
                         {isCompleted ? (
-                          <div className="w-8 h-8 rounded-full bg-white border border-[#0d9488] text-[#0d9488] flex items-center justify-center shadow-xs transition-all">
+                          <div className="w-8 h-8 rounded-full bg-white border border-[#1d4ed8] text-[#1d4ed8] flex items-center justify-center shadow-xs transition-all">
                             <Check size={14} className="stroke-[3]" />
                           </div>
                         ) : isActive ? (
-                          <div className="w-8 h-8 rounded-full bg-[#0d9488] text-white flex items-center justify-center font-bold text-sm shadow-md shadow-[#0d9488]/20 border border-[#0d9488] transition-all">
+                          <div className="w-8 h-8 rounded-full bg-[#1d4ed8] text-white flex items-center justify-center font-bold text-sm shadow-md shadow-[#1d4ed8]/20 border border-[#1d4ed8] transition-all">
                             {step.number}
                           </div>
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-white text-[#9caea9] border border-[#cbdad6] flex items-center justify-center font-semibold text-sm transition-all">
+                          <div className="w-8 h-8 rounded-full bg-white text-[#9caea9] border border-slate-200 flex items-center justify-center font-semibold text-sm transition-all">
                             {step.number}
                           </div>
                         )}
                         <span className={`text-[0.7rem] font-bold font-sans tracking-wide uppercase transition-colors ${
-                          isActive ? 'text-[#1a332e]' : 'text-[#879d97]'
+                          isActive ? 'text-slate-900' : 'text-[#879d97]'
                         }`}>
                           {step.name}
                         </span>
@@ -678,7 +678,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                 </nav>
 
                 {/* Mobile Stepper Timeline (hidden on desktop) */}
-                <nav className="md:hidden flex flex-col gap-3.5 w-full mt-4 pb-2 border-b border-[#cbdad6]/30">
+                <nav className="md:hidden flex flex-col gap-3.5 w-full mt-4 pb-2 border-b border-slate-200/30">
                   <div className="flex items-center justify-between relative w-full px-2">
                     {/* Connecting Line */}
                     <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-0.5 bg-[#cbdad6] z-0" />
@@ -690,15 +690,15 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                       return (
                         <div key={step.number} className="relative z-10">
                           {isCompleted ? (
-                            <div className="w-7 h-7 rounded-full bg-white border border-[#0d9488] text-[#0d9488] flex items-center justify-center shadow-xs transition-all">
+                            <div className="w-7 h-7 rounded-full bg-white border border-[#1d4ed8] text-[#1d4ed8] flex items-center justify-center shadow-xs transition-all">
                               <Check size={12} className="stroke-[3]" />
                             </div>
                           ) : isActive ? (
-                            <div className="w-7 h-7 rounded-full bg-[#0d9488] text-white flex items-center justify-center font-bold text-xs shadow-md border border-[#0d9488] transition-all">
+                            <div className="w-7 h-7 rounded-full bg-[#1d4ed8] text-white flex items-center justify-center font-bold text-xs shadow-md border border-[#1d4ed8] transition-all">
                               {step.number}
                             </div>
                           ) : (
-                            <div className="w-7 h-7 rounded-full bg-white text-[#9caea9] border border-[#cbdad6] flex items-center justify-center font-semibold text-xs transition-all">
+                            <div className="w-7 h-7 rounded-full bg-white text-[#9caea9] border border-slate-200 flex items-center justify-center font-semibold text-xs transition-all">
                               {step.number}
                             </div>
                           )}
@@ -708,7 +708,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                   </div>
                   {/* Active Step Label */}
                   <div className="text-center">
-                    <span className="text-[0.72rem] font-extrabold font-sans tracking-wider uppercase text-[#0e8374]">
+                    <span className="text-[0.72rem] font-extrabold font-sans tracking-wider uppercase text-[#1d4ed8]">
                       Step {currentStep} of 6: {STEPS[currentStep - 1]?.name}
                     </span>
                   </div>
@@ -716,8 +716,8 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
               </div>
 
               {/* Sidebar Footer Link */}
-              <div className="hidden md:flex pt-6 border-t border-[#cbdad6]/50 mt-10 relative z-10 items-center gap-1.5 text-[0.72rem] text-[#879d97] font-bold cursor-pointer hover:text-[#1a332e]">
-                <HelpCircle size={13} className="text-[#0e8374]" /> Need help with booking?
+              <div className="hidden md:flex pt-6 border-t border-slate-200/50 mt-10 relative z-10 items-center gap-1.5 text-[0.72rem] text-[#879d97] font-bold cursor-pointer hover:text-slate-900">
+                <HelpCircle size={13} className="text-[#1d4ed8]" /> Need help with booking?
               </div>
             </div>
 
@@ -728,7 +728,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
               {currentStep === 1 && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-bold text-[#1a332e] tracking-tight">Select Dental Procedure & Dentist</h2>
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Select Dental Procedure & Dentist</h2>
                     <p className="text-xs text-[#879d97] mt-0.5">Please choose your category, procedure, and attending dental specialist.</p>
                   </div>
 
@@ -751,8 +751,8 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               }}
                               className={`px-4 py-2 rounded-full text-[0.68rem] font-extrabold uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap shrink-0 border ${
                                 isSelected 
-                                  ? 'bg-[#0e8374] text-white border-[#0e8374] shadow-xs'
-                                  : 'bg-[#f4f7f6] border-[#cbdad6]/60 text-[#2c4e47] hover:bg-[#e9f0ee]'
+                                  ? 'bg-[#1d4ed8] text-white border-[#1d4ed8] shadow-xs'
+                                  : 'bg-[#f8fafc] border-slate-200/60 text-slate-700 hover:bg-[#e9f0ee]'
                               }`}
                             >
                               {cat.category}
@@ -774,13 +774,13 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               onClick={() => setSelectedTreatment(treatment)}
                               className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
                                 isSelected 
-                                  ? 'border-[#0e8374] bg-[#0e8374]/5 shadow-xs'
-                                  : 'border-[#cbdad6]/40 bg-[#f4f7f6]/40 hover:bg-[#f4f7f6]'
+                                  ? 'border-[#1d4ed8] bg-[#1d4ed8]/5 shadow-xs'
+                                  : 'border-slate-200/40 bg-[#f8fafc]/40 hover:bg-[#f8fafc]'
                               }`}
                             >
                               <div className="flex justify-between items-start">
-                                <span className="font-bold text-xs text-[#1a332e] leading-tight block">{treatment.name}</span>
-                                <span className="text-[0.68rem] font-black text-emerald-650 block pl-2">{treatment.price}</span>
+                                <span className="font-bold text-xs text-slate-900 leading-tight block">{treatment.name}</span>
+                                <span className="text-[0.68rem] font-black text-blue-600 block pl-2">{treatment.price}</span>
                               </div>
                               <p className="text-[0.7rem] text-[#879d97] mt-1.5 leading-normal truncate">{treatment.desc}</p>
                             </div>
@@ -804,15 +804,15 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                                 onClick={() => setSelectedDoctor(doc)}
                                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border cursor-pointer transition-all shrink-0 select-none ${
                                   isSelected
-                                    ? 'border-[#0e8374] bg-[#0e8374]/5 shadow-xs'
-                                    : 'border-[#cbdad6]/40 bg-[#f4f7f6]/40 hover:bg-[#f4f7f6]'
+                                    ? 'border-[#1d4ed8] bg-[#1d4ed8]/5 shadow-xs'
+                                    : 'border-slate-200/40 bg-[#f8fafc]/40 hover:bg-[#f8fafc]'
                                 }`}
                               >
                                 <div className="w-7 h-7 rounded-full overflow-hidden border border-white shadow-xs">
                                   <img src={doc.photo} alt={doc.name} className="w-full h-full object-cover" />
                                 </div>
                                 <div>
-                                  <span className="block text-[0.74rem] font-bold text-[#1a332e] leading-none">{doc.name}</span>
+                                  <span className="block text-[0.74rem] font-bold text-slate-900 leading-none">{doc.name}</span>
                                   <span className="block text-[0.62rem] text-[#879d97] mt-1 leading-none font-semibold">{doc.specialty}</span>
                                 </div>
                               </div>
@@ -830,7 +830,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
               {currentStep === 2 && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-bold text-[#1a332e] tracking-tight">Personal Details</h2>
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Personal Details</h2>
                     <p className="text-xs text-[#879d97] mt-0.5">Please check patient contact parameters and notes.</p>
                   </div>
 
@@ -843,7 +843,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                           type="text"
                           value={patientName}
                           onChange={(e) => setPatientName(e.target.value)}
-                          className="w-full px-4 py-3 bg-[#f4f7f6] border border-[#cbdad6] rounded-xl text-xs focus:outline-none focus:border-[#0e8374] focus:bg-white text-slate-700 font-bold transition-all shadow-xs"
+                          className="w-full px-4 py-3 bg-[#f8fafc] border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#1d4ed8] focus:bg-white text-slate-700 font-bold transition-all shadow-xs"
                           placeholder="Your Name"
                           required
                         />
@@ -854,7 +854,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                           type="email"
                           value={patientEmail}
                           onChange={(e) => setPatientEmail(e.target.value)}
-                          className="w-full px-4 py-3 bg-[#f4f7f6] border border-[#cbdad6] rounded-xl text-xs focus:outline-none focus:border-[#0e8374] focus:bg-white text-slate-700 font-bold transition-all shadow-xs"
+                          className="w-full px-4 py-3 bg-[#f8fafc] border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#1d4ed8] focus:bg-white text-slate-700 font-bold transition-all shadow-xs"
                           placeholder="yourname@example.com"
                           required
                         />
@@ -865,7 +865,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                           type="tel"
                           value={patientPhone}
                           onChange={(e) => setPatientPhone(e.target.value)}
-                          className="w-full px-4 py-3 bg-[#f4f7f6] border border-[#cbdad6] rounded-xl text-xs focus:outline-none focus:border-[#0e8374] focus:bg-white text-slate-700 font-bold transition-all shadow-xs"
+                          className="w-full px-4 py-3 bg-[#f8fafc] border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#1d4ed8] focus:bg-white text-slate-700 font-bold transition-all shadow-xs"
                           placeholder="+91 9876543210"
                           required
                         />
@@ -875,7 +875,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                         <textarea
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
-                          className="w-full h-24 px-4 py-3 bg-[#f4f7f6] border border-[#cbdad6] rounded-xl text-xs focus:outline-none focus:border-[#0e8374] focus:bg-white text-slate-700 font-semibold transition-all resize-none shadow-xs"
+                          className="w-full h-24 px-4 py-3 bg-[#f8fafc] border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-[#1d4ed8] focus:bg-white text-slate-700 font-semibold transition-all resize-none shadow-xs"
                           placeholder="Describe any tooth issues, dental pain, history or special requests..."
                         />
                       </div>
@@ -888,7 +888,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
               {currentStep === 3 && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-bold text-[#1a332e] tracking-tight">Studio Location</h2>
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Studio Location</h2>
                     <p className="text-xs text-[#879d97] mt-0.5">Choose the ClearDent clinic location for your procedure.</p>
                   </div>
 
@@ -902,26 +902,26 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                           onClick={() => setSelectedLocation(loc)}
                           className={`p-5 rounded-2xl border cursor-pointer bg-white transition-all ${
                             isSelected
-                              ? 'border-[#0e8374] bg-[#0e8374]/5 shadow-xs'
-                              : 'border-[#cbdad6]/40 hover:bg-[#f4f7f6]/40'
+                              ? 'border-[#1d4ed8] bg-[#1d4ed8]/5 shadow-xs'
+                              : 'border-slate-200/40 hover:bg-[#f8fafc]/40'
                           }`}
                         >
                           <div className="flex justify-between items-start mb-4">
-                            <div className="w-8 h-8 rounded-lg bg-[#e2ece9] border border-[#cbdad6]/45 text-[#0e8374] flex items-center justify-center">
+                            <div className="w-8 h-8 rounded-lg bg-[#eff6ff] border border-slate-200/45 text-[#1d4ed8] flex items-center justify-center">
                               <MapPin size={15} />
                             </div>
                             {isSelected && (
-                              <span className="w-5 h-5 rounded-full bg-[#0e8374] text-white flex items-center justify-center">
+                              <span className="w-5 h-5 rounded-full bg-[#1d4ed8] text-white flex items-center justify-center">
                                 <Check size={11} className="stroke-[2.5]" />
                               </span>
                             )}
                           </div>
-                          <h4 className="font-bold text-xs text-[#1a332e] tracking-tight">{loc.name}</h4>
+                          <h4 className="font-bold text-xs text-slate-900 tracking-tight">{loc.name}</h4>
                           <p className="text-[0.7rem] text-[#879d97] mt-1 leading-normal">{loc.address}</p>
                           
-                          <div className="pt-3 border-t border-[#e2ece9]/60 mt-4 flex flex-col gap-1 text-[0.65rem] text-[#2c4e47] font-bold uppercase">
-                            <span className="flex items-center gap-1.5"><Clock size={11} className="text-[#0e8374]" /> Open: {loc.hours}</span>
-                            <span className="flex items-center gap-1.5"><Phone size={11} className="text-[#0e8374]" /> Tel: {loc.phone}</span>
+                          <div className="pt-3 border-t border-blue-200/50 mt-4 flex flex-col gap-1 text-[0.65rem] text-slate-700 font-bold uppercase">
+                            <span className="flex items-center gap-1.5"><Clock size={11} className="text-[#1d4ed8]" /> Open: {loc.hours}</span>
+                            <span className="flex items-center gap-1.5"><Phone size={11} className="text-[#1d4ed8]" /> Tel: {loc.phone}</span>
                           </div>
                         </div>
                       );
@@ -935,28 +935,28 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                 <div className="space-y-6">
                   
                   {/* Select Date and Time Main Card Panel (SAME TO SAME PIXELS) */}
-                  <div className="border border-[#cbdad6]/60 rounded-2xl p-6 bg-white shadow-xs relative">
+                  <div className="border border-slate-200/60 rounded-2xl p-6 bg-white shadow-xs relative">
                     
                     {/* Header: Date and Month Selector */}
                     <div className="flex justify-between items-center mb-5">
-                      <h3 className="text-lg font-extrabold text-[#1a332e] tracking-tight">Select Date and Time</h3>
+                      <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">Select Date and Time</h3>
                       
                       {/* Month Selector container */}
                       <div className="flex items-center gap-3 border border-[#d0ded9] rounded-lg px-2.5 py-1 bg-white shadow-xs select-none">
                         <button 
                           type="button" 
                           onClick={handlePrevMonth}
-                          className="p-1.5 hover:bg-[#f4f7f6] rounded-md text-[#2c4e47] cursor-pointer border-none bg-transparent flex items-center justify-center"
+                          className="p-1.5 hover:bg-[#f8fafc] rounded-md text-slate-700 cursor-pointer border-none bg-transparent flex items-center justify-center"
                         >
                           <ChevronLeft size={13} />
                         </button>
-                        <span className="text-[0.74rem] font-bold text-[#2c4e47] tracking-tight font-sans">
+                        <span className="text-[0.74rem] font-bold text-slate-700 tracking-tight font-sans">
                           {currentMonthDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}
                         </span>
                         <button 
                           type="button" 
                           onClick={handleNextMonth}
-                          className="p-1.5 hover:bg-[#f4f7f6] rounded-md text-[#2c4e47] cursor-pointer border-none bg-transparent flex items-center justify-center"
+                          className="p-1.5 hover:bg-[#f8fafc] rounded-md text-slate-700 cursor-pointer border-none bg-transparent flex items-center justify-center"
                         >
                           <ChevronRight size={13} />
                         </button>
@@ -979,7 +979,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                                 {getDayLabel(dt.dateObj)}
                               </span>
                               <span className={`block text-base font-extrabold font-sans leading-none mt-2 pb-2 ${
-                                isSelected ? 'text-[#1a332e]' : 'text-[#879d97]'
+                                isSelected ? 'text-slate-900' : 'text-[#879d97]'
                               }`}>
                                 {dt.dayNum}
                               </span>
@@ -996,7 +996,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     {/* Time Slots Grid (SAME TO SAME PIXELS) */}
                     <div className="space-y-4">
                       {allDoctorSlots.length === 0 ? (
-                        <div className="text-center py-6 border border-dashed border-[#e2ece9] rounded-xl text-slate-450 text-xs italic bg-[#f4f7f6]/30">
+                        <div className="text-center py-6 border border-dashed border-[#e2ece9] rounded-xl text-slate-450 text-xs italic bg-[#f8fafc]/30">
                           Unavailable (No active working slots configured for this day)
                         </div>
                       ) : (
@@ -1024,8 +1024,8 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                                   onClick={() => setSelectedTimeSlot(slot)}
                                   className={`py-3 rounded-lg text-center text-[0.74rem] font-semibold cursor-pointer transition-all border border-transparent ${
                                     isSelected
-                                      ? 'bg-[#0e8374] text-white font-bold shadow-xs'
-                                      : 'bg-[#f4f7f6] hover:bg-[#e9f0ee] text-[#2c4e47]'
+                                      ? 'bg-[#1d4ed8] text-white font-bold shadow-xs'
+                                      : 'bg-[#f8fafc] hover:bg-[#e9f0ee] text-slate-700'
                                   }`}
                                 >
                                   {displayTime}
@@ -1039,7 +1039,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                             <div className="flex items-center gap-1.5 pt-1 select-none">
                               <span
                                 onClick={() => setShowAllSlots(!showAllSlots)}
-                                className="text-[0.72rem] font-black text-[#0e8374] hover:text-[#0c7265] cursor-pointer flex items-center gap-1 transition-colors uppercase tracking-wider"
+                                className="text-[0.72rem] font-black text-[#1d4ed8] hover:text-[#1e40af] cursor-pointer flex items-center gap-1 transition-colors uppercase tracking-wider"
                               >
                                 {showAllSlots ? 'Show fewer slots ^' : 'Show more slots v'}
                               </span>
@@ -1054,12 +1054,12 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                   {/* Glassmorphic Selected Date Bar (SAME TO SAME PIXEL FORMAT) */}
                   {selectedDate && selectedTimeSlot && (
                     <div 
-                      className="rounded-xl p-4 flex items-center gap-3 text-slate-800 shadow-xs bg-[#0e8374]/[0.08] border border-[#0e8374]/[0.15]"
+                      className="rounded-xl p-4 flex items-center gap-3 text-slate-800 shadow-xs bg-[#1d4ed8]/[0.08] border border-[#1d4ed8]/[0.15]"
                     >
-                      <Clock size={15} className="text-[#0e8374] shrink-0" />
+                      <Clock size={15} className="text-[#1d4ed8] shrink-0" />
                       <div className="text-[0.72rem]">
                         <span className="block font-bold text-[#879d97] leading-none">Currently Selected:</span>
-                        <span className="block font-extrabold text-[#0e8374] mt-1 leading-none">
+                        <span className="block font-extrabold text-[#1d4ed8] mt-1 leading-none">
                           {getSelectedDateTimeString()}
                         </span>
                       </div>
@@ -1072,7 +1072,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
               {currentStep === 5 && (
                 <div className="space-y-6">
                   <div>
-                    <h2 className="text-xl font-bold text-[#1a332e] tracking-tight">Payment Details</h2>
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Payment Details</h2>
                     <p className="text-xs text-[#879d97] mt-0.5">Please review total billing details and complete booking.</p>
                   </div>
 
@@ -1080,11 +1080,11 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       
                       {/* Review details */}
-                      <div className="space-y-3.5 text-xs bg-[#f4f7f6]/40 p-4 border border-[#cbdad6]/35 rounded-xl leading-normal">
+                      <div className="space-y-3.5 text-xs bg-[#f8fafc]/40 p-4 border border-slate-200/35 rounded-xl leading-normal">
                         <h4 className="text-[0.62rem] font-extrabold uppercase tracking-wider text-[#879d97] border-b border-[#e2ece9] pb-1.5">Procedure Summary</h4>
                         <div>
                           <span className="block text-[0.62rem] text-slate-400 font-bold uppercase">Procedure</span>
-                          <span className="font-extrabold text-[#1a332e] mt-0.5 block">{selectedTreatment?.name}</span>
+                          <span className="font-extrabold text-slate-900 mt-0.5 block">{selectedTreatment?.name}</span>
                         </div>
                         <div>
                           <span className="block text-[0.62rem] text-slate-400 font-bold uppercase">Specialist</span>
@@ -1096,7 +1096,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                         </div>
                         <div>
                           <span className="block text-[0.62rem] text-slate-400 font-bold uppercase">Schedule Time</span>
-                          <span className="font-black text-[#0e8374] mt-0.5 block">
+                          <span className="font-black text-[#1d4ed8] mt-0.5 block">
                             {selectedDate?.fullDateString} @ {selectedTimeSlot}
                           </span>
                         </div>
@@ -1104,7 +1104,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
                       {/* Pay setup */}
                       <div className="space-y-4">
-                        <div className="bg-[#f4f7f6] p-4 border border-[#cbdad6]/45 rounded-xl text-xs space-y-2">
+                        <div className="bg-[#f8fafc] p-4 border border-slate-200/45 rounded-xl text-xs space-y-2">
                           <div className="flex justify-between text-slate-500 font-semibold">
                             <span>Dental Procedure Fee:</span>
                             <span className="font-bold text-slate-800">{selectedTreatment?.price}</span>
@@ -1113,9 +1113,9 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                             <span>Service & Facility Fee:</span>
                             <span className="font-bold text-slate-800">₹150</span>
                           </div>
-                          <div className="border-t border-[#cbdad6]/35 pt-2 flex justify-between font-black text-sm text-slate-800">
+                          <div className="border-t border-slate-200/35 pt-2 flex justify-between font-black text-sm text-slate-800">
                             <span>Total Bill:</span>
-                            <span className="text-emerald-650">
+                            <span className="text-blue-600">
                               ₹{(parseInt(selectedTreatment?.price.replace(/[^0-9]/g, '')) + 150).toLocaleString()}
                             </span>
                           </div>
@@ -1133,8 +1133,8 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                                   onClick={() => setPaymentMethod(m)}
                                   className={`py-2 px-1 rounded-xl text-center text-[0.66rem] font-extrabold cursor-pointer border transition-all uppercase tracking-wider ${
                                     isSelected
-                                      ? 'bg-[#0e8374] text-white border-[#0e8374]'
-                                      : 'bg-[#f4f7f6] border-[#cbdad6]/60 text-[#2c4e47] hover:bg-[#e9f0ee]'
+                                      ? 'bg-[#1d4ed8] text-white border-[#1d4ed8]'
+                                      : 'bg-[#f8fafc] border-slate-200/60 text-slate-700 hover:bg-[#e9f0ee]'
                                   }`}
                                 >
                                   {m}
@@ -1151,7 +1151,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               placeholder="Cardholder Name"
                               value={cardName}
                               onChange={(e) => setCardName(e.target.value)}
-                              className="w-full px-3 py-2 bg-[#f4f7f6] border border-[#cbdad6] rounded-lg text-xs focus:outline-none focus:border-[#0e8374]"
+                              className="w-full px-3 py-2 bg-[#f8fafc] border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[#1d4ed8]"
                               required
                             />
                             <input
@@ -1159,7 +1159,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               placeholder="Card Number"
                               value={cardNumber}
                               onChange={(e) => setCardNumber(e.target.value)}
-                              className="w-full px-3 py-2 bg-[#f4f7f6] border border-[#cbdad6] rounded-lg text-xs focus:outline-none focus:border-[#0e8374]"
+                              className="w-full px-3 py-2 bg-[#f8fafc] border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[#1d4ed8]"
                               required
                             />
                             <input
@@ -1167,7 +1167,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               placeholder="MM/YY"
                               value={cardExpiry}
                               onChange={(e) => setCardExpiry(e.target.value)}
-                              className="w-full px-3 py-2 bg-[#f4f7f6] border border-[#cbdad6] rounded-lg text-xs focus:outline-none focus:border-[#0e8374] text-center"
+                              className="w-full px-3 py-2 bg-[#f8fafc] border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[#1d4ed8] text-center"
                               required
                             />
                             <input
@@ -1175,7 +1175,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               placeholder="CVV"
                               value={cardCvv}
                               onChange={(e) => setCardCvv(e.target.value)}
-                              className="w-full px-3 py-2 bg-[#f4f7f6] border border-[#cbdad6] rounded-lg text-xs focus:outline-none focus:border-[#0e8374] text-center"
+                              className="w-full px-3 py-2 bg-[#f8fafc] border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[#1d4ed8] text-center"
                               required
                             />
                           </div>
@@ -1188,7 +1188,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               placeholder="Insurance Provider"
                               value={insuranceProvider}
                               onChange={(e) => setInsuranceProvider(e.target.value)}
-                              className="w-full px-3 py-2 bg-[#f4f7f6] border border-[#cbdad6] rounded-lg text-xs focus:outline-none focus:border-[#0e8374]"
+                              className="w-full px-3 py-2 bg-[#f8fafc] border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[#1d4ed8]"
                               required
                             />
                             <input
@@ -1196,7 +1196,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                               placeholder="Policy Number"
                               value={insurancePolicyId}
                               onChange={(e) => setInsurancePolicyId(e.target.value)}
-                              className="w-full px-3 py-2 bg-[#f4f7f6] border border-[#cbdad6] rounded-lg text-xs focus:outline-none focus:border-[#0e8374]"
+                              className="w-full px-3 py-2 bg-[#f8fafc] border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-[#1d4ed8]"
                               required
                             />
                           </div>
@@ -1211,26 +1211,26 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
               {/* STEP 6: CONFIRMATION DETAILS */}
               {currentStep === 6 && bookingSuccessData && (
                 <div className="space-y-6 text-center py-4 max-w-md mx-auto">
-                  <div className="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+                  <div className="w-14 h-14 rounded-full bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center mx-auto shadow-sm">
                     <CheckCircle2 size={32} className="stroke-[2.5]" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-[#1a332e] tracking-tight">Booking Confirmed!</h2>
+                    <h2 className="text-xl font-bold text-slate-900 tracking-tight">Booking Confirmed!</h2>
                     <p className="text-xs text-[#879d97] mt-0.5">Your dental pass has been successfully configured in the system.</p>
                   </div>
 
                   {/* Confirmed pass ticket detail */}
-                  <div className="border border-dashed border-[#cbdad6] rounded-2xl p-5 text-left bg-white relative overflow-hidden shadow-xs">
+                  <div className="border border-dashed border-slate-200 rounded-2xl p-5 text-left bg-white relative overflow-hidden shadow-xs">
                     <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-650" />
                     
                     <div className="flex justify-between items-center border-b border-[#e2ece9] pb-3 mb-4 text-xs">
                       <div>
                         <span className="block text-[0.62rem] text-slate-400 font-bold uppercase leading-none">Receipt reference</span>
-                        <span className="block text-[0.72rem] font-mono font-bold text-[#2c4e47] mt-1 tracking-wider leading-none">
+                        <span className="block text-[0.72rem] font-mono font-bold text-slate-700 mt-1 tracking-wider leading-none">
                           LUM-{(bookingSuccessData._id || '7721').slice(-6).toUpperCase()}
                         </span>
                       </div>
-                      <span className="text-[0.62rem] font-extrabold text-emerald-650 bg-emerald-50 border border-emerald-100 rounded-full px-2.5 py-0.5 uppercase tracking-wider">
+                      <span className="text-[0.62rem] font-extrabold text-blue-600 bg-blue-50 border border-blue-100 rounded-full px-2.5 py-0.5 uppercase tracking-wider">
                         Confirmed
                       </span>
                     </div>
@@ -1238,7 +1238,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     <div className="grid grid-cols-2 gap-3 text-xs leading-normal">
                       <div>
                         <span className="block text-[0.62rem] text-slate-400 font-bold uppercase">Patient</span>
-                        <span className="font-bold text-[#1a332e] block mt-0.5">{patientName}</span>
+                        <span className="font-bold text-slate-900 block mt-0.5">{patientName}</span>
                       </div>
                       <div>
                         <span className="block text-[0.62rem] text-slate-400 font-bold uppercase">Specialist</span>
@@ -1254,7 +1254,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                       </div>
                       <div className="col-span-2">
                         <span className="block text-[0.62rem] text-slate-400 font-bold uppercase">Schedule Date & Time</span>
-                        <span className="font-black text-[#0e8374] block mt-0.5">
+                        <span className="font-black text-[#1d4ed8] block mt-0.5">
                           {bookingSuccessData.appointmentDate} @ {bookingSuccessData.timeSlot}
                         </span>
                       </div>
@@ -1269,14 +1269,14 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                         setPortalSubTab('appointments');
                         navigate('home');
                       }}
-                      className="bg-[#0e8374] hover:bg-[#0c7265] text-white font-bold text-[0.72rem] uppercase tracking-wider py-2.5 px-6 rounded-xl transition-all cursor-pointer shadow-xs border-none"
+                      className="bg-[#1d4ed8] hover:bg-[#1e40af] text-white font-bold text-[0.72rem] uppercase tracking-wider py-2.5 px-6 rounded-xl transition-all cursor-pointer shadow-xs border-none"
                     >
                       Portal Dashboard
                     </button>
                     <button
                       type="button"
                       onClick={handleReset}
-                      className="bg-white border border-[#cbdad6] text-[#2c4e47] hover:border-[#879d97] hover:text-[#1a332e] font-bold text-[0.72rem] uppercase tracking-wider py-2.5 px-6 rounded-xl transition-all cursor-pointer"
+                      className="bg-white border border-slate-200 text-slate-700 hover:border-[#879d97] hover:text-slate-900 font-bold text-[0.72rem] uppercase tracking-wider py-2.5 px-6 rounded-xl transition-all cursor-pointer"
                     >
                       Schedule Another
                     </button>
@@ -1286,12 +1286,12 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
               {/* BUTTONS BAR FOR PREV / NEXT STEPS */}
               {currentStep < 6 && (
-                <div className="pt-6 border-t border-[#cbdad6]/45 flex items-center justify-between mt-8 select-none">
+                <div className="pt-6 border-t border-slate-200/45 flex items-center justify-between mt-8 select-none">
                   {currentStep > 1 ? (
                     <button
                       type="button"
                       onClick={handleBackStep}
-                      className="flex items-center gap-2 bg-[#f4f7f6] hover:bg-[#e9f0ee] border border-[#cbdad6] text-[#2c4e47] font-bold text-xs py-3 px-6 rounded-xl transition-all cursor-pointer"
+                      className="flex items-center gap-2 bg-[#f8fafc] hover:bg-[#e9f0ee] border border-slate-200 text-slate-700 font-bold text-xs py-3 px-6 rounded-xl transition-all cursor-pointer"
                     >
                       <ArrowLeft size={13} className="stroke-[2.5]" />
                       Back
@@ -1300,7 +1300,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     <button
                       type="button"
                       onClick={() => navigate('services')}
-                      className="flex items-center gap-2 bg-[#f4f7f6] hover:bg-[#e9f0ee] border border-[#cbdad6] text-[#2c4e47] font-bold text-xs py-3 px-6 rounded-xl transition-all cursor-pointer"
+                      className="flex items-center gap-2 bg-[#f8fafc] hover:bg-[#e9f0ee] border border-slate-200 text-slate-700 font-bold text-xs py-3 px-6 rounded-xl transition-all cursor-pointer"
                     >
                       <ArrowLeft size={13} className="stroke-[2.5]" />
                       Exit Booking
@@ -1312,7 +1312,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                       type="button"
                       onClick={handleNextStep}
                       disabled={currentStep === 1 && (!selectedTreatment || !selectedDoctor)}
-                      className={`flex items-center gap-2 bg-[#0e8374] hover:bg-[#0c7265] text-white font-bold text-xs py-3 px-8 rounded-xl transition-all shadow-xs cursor-pointer border-none ${
+                      className={`flex items-center gap-2 bg-[#1d4ed8] hover:bg-[#1e40af] text-white font-bold text-xs py-3 px-8 rounded-xl transition-all shadow-xs cursor-pointer border-none ${
                         currentStep === 1 && (!selectedTreatment || !selectedDoctor) ? 'opacity-50 cursor-not-allowed' : ''
                       }`}
                     >
@@ -1324,7 +1324,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                       type="button"
                       onClick={handleBookingSubmit}
                       disabled={loading}
-                      className="flex items-center gap-2 bg-[#0e8374] hover:bg-[#0c7265] text-white font-bold text-xs py-3.5 px-8 rounded-xl transition-all shadow-md cursor-pointer border-none uppercase tracking-wider"
+                      className="flex items-center gap-2 bg-[#1d4ed8] hover:bg-[#1e40af] text-white font-bold text-xs py-3.5 px-8 rounded-xl transition-all shadow-md cursor-pointer border-none uppercase tracking-wider"
                     >
                       {loading ? 'Confirming...' : 'Confirm Appointment'}
                       <ShieldCheck size={14} className="stroke-[2.5]" />

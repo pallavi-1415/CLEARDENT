@@ -3,7 +3,7 @@ import { Mail, Phone, ArrowRight } from 'lucide-react';
 
 function Footer({ navigate }) {
     return (
-        <footer className="bg-[#f5f4f0] text-black pt-16 pb-8 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
+        <footer className="bg-white border-t border-slate-200/50 text-black pt-16 pb-8 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
             <div className="w-full max-w-[1200px] flex flex-col gap-12">
 
                 {/* Upper Grid Layout */}
@@ -73,9 +73,9 @@ function Footer({ navigate }) {
                                     >
                                         FAQs
                                     </span>
+                                    <span onClick={() => navigate?.('contact')} className="hover:text-black cursor-pointer transition-colors">Contact Us</span>
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Privacy</span>
                                     <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Terms & Conditions</span>
-                                    <span onClick={() => navigate?.('services')} className="hover:text-black cursor-pointer transition-colors">Refund Policy</span>
                                 </div>
                             </div>
 
