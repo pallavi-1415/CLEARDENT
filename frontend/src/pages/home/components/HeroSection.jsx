@@ -48,27 +48,27 @@ function HeroSection({ navigate }) {
       {/* Bottom row cards grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-[2fr_1fr_1fr] gap-6 max-lg:gap-4 w-full max-w-[1200px] mt-8 mx-auto">
         {/* Card 1: Dental Treatment */}
-        <div className="relative bg-[#5a8bdc] bg-gradient-to-br from-[#5a8bdc] to-[#4777c5] rounded-[24px] p-[2rem_2.5rem] text-white flex flex-col justify-between overflow-hidden h-[330px] max-sm:h-[220px]">
+        <div className="relative bg-[#5a8bdc] bg-gradient-to-br from-[#5a8bdc] to-[#4777c5] rounded-[24px] p-[2rem_2.5rem] max-sm:p-6 text-white flex flex-col justify-between overflow-hidden h-[330px] max-sm:h-[220px]">
           {/* Background soft concentric waves */}
           <div className="absolute bottom-0 left-0 right-0 h-3/5 bg-[radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.15)_0%,transparent_70%)] pointer-events-none"></div>
-
+ 
           {/* Text group */}
-          <div className="z-[2] max-w-[60%] flex flex-col gap-2.5">
-            <h2 className="text-[2rem] font-normal m-0 font-sans tracking-[-0.01em]">
+          <div className="z-[2] max-w-[60%] max-sm:max-w-[70%] flex flex-col gap-2.5">
+            <h2 className="text-[2rem] max-sm:text-[1.5rem] font-normal m-0 font-sans tracking-[-0.01em]">
               Dental Treatment
             </h2>
-            <p className="text-[0.88rem] opacity-90 leading-[1.55] m-0 font-sans font-light">
+            <p className="text-[0.88rem] max-sm:text-[0.78rem] opacity-90 leading-[1.55] m-0 font-sans font-light">
               Comprehensive care including check-ups, fillings, and preventive treatments.
             </p>
           </div>
-
+ 
           {/* Doctor cutout image */}
           <img
             src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=500&q=80"
             alt="Dentist"
-            className="absolute right-[5%] bottom-0 h-[85%] w-[40%] rounded-t-full object-cover pointer-events-none z-[1] border-t-2 border-white/20 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            className="absolute right-[5%] max-sm:right-[2%] bottom-0 h-[85%] max-sm:h-[80%] w-[40%] max-sm:w-[35%] rounded-t-full object-cover pointer-events-none z-[1] border-t-2 border-white/20 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
           />
-
+ 
           {/* Bottom Row */}
           <div className="flex justify-between items-center z-[2] mt-auto">
             {/* Avatars */}
@@ -76,30 +76,30 @@ function HeroSection({ navigate }) {
               <img
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&h=100&q=80"
                 alt="Dr. Jenkins"
-                className="w-9 h-9 rounded-full border-[3px] border-[#5a8bdc] object-cover"
+                className="w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-full border-[3px] border-[#5a8bdc] object-cover"
               />
               <img
                 src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&h=100&q=80"
                 alt="Dr. Kinash"
-                className="w-9 h-9 rounded-full border-[3px] border-[#5a8bdc] ml-[-10px] object-cover"
+                className="w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-full border-[3px] border-[#5a8bdc] ml-[-10px] object-cover"
               />
               <img
                 src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=100&h=100&q=80"
                 alt="Dr. Thorne"
-                className="w-9 h-9 rounded-full border-[3px] border-[#5a8bdc] ml-[-10px] object-cover"
+                className="w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-full border-[3px] border-[#5a8bdc] ml-[-10px] object-cover"
               />
-              <div className="w-9 h-9 rounded-full bg-white text-[#1d2e88] text-[0.75rem] font-bold flex items-center justify-center border-[3px] border-[#5a8bdc] ml-[-10px]">
+              <div className="w-9 h-9 max-sm:w-8 max-sm:h-8 rounded-full bg-white text-[#1d2e88] text-[0.75rem] max-sm:text-[0.65rem] font-bold flex items-center justify-center border-[3px] border-[#5a8bdc] ml-[-10px]">
                 +20
               </div>
             </div>
-
+ 
             {/* Up-Right Arrow Button */}
             <Button
               onClick={() => {
                 if (window.openBookingModal) window.openBookingModal();
                 else navigate('services');
               }}
-              className="w-10 h-10 rounded-[10px] bg-[#1d2e88] text-white border-none flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-[#131e5f] hover:scale-105"
+              className="w-10 h-10 max-sm:w-8 max-sm:h-8 rounded-[10px] bg-[#1d2e88] text-white border-none flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-[#131e5f] hover:scale-105"
               variant="plain"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -109,7 +109,7 @@ function HeroSection({ navigate }) {
             </Button>
           </div>
         </div>
-
+ 
         {/* Card 2: Orthodontics */}
         <div
           className="relative bg-[#d9e8fb] rounded-[24px] flex flex-col items-center justify-center overflow-hidden cursor-pointer transition-transform duration-200 hover:-translate-y-1 h-[330px] max-sm:h-[220px]"
@@ -120,11 +120,13 @@ function HeroSection({ navigate }) {
             alt="Orthodontics Aligners"
             className="absolute w-full h-full object-cover opacity-80"
           />
-          <div className="relative z-[2] -rotate-90 whitespace-nowrap text-[2rem] font-light text-text-primary font-sans tracking-[0.02em]">
+          {/* Mobile readable contrast overlay */}
+          <div className="absolute inset-0 bg-black/15 md:hidden z-[1]" />
+          <div className="relative z-[2] rotate-0 md:-rotate-90 md:whitespace-nowrap text-[2rem] max-sm:text-[1.6rem] font-medium md:font-light text-text-primary max-sm:text-white font-sans tracking-[0.02em] text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)] md:drop-shadow-none">
             Orthodontics
           </div>
         </div>
-
+ 
         {/* Card 3: Dental Surgery */}
         <div
           className="relative bg-white rounded-[24px] flex flex-col items-center justify-center overflow-hidden border border-slate-900/5 shadow-[0_10px_30px_rgba(15,23,42,0.02)] cursor-pointer transition-transform duration-200 hover:-translate-y-1 h-[330px] max-sm:h-[220px]"
@@ -135,7 +137,9 @@ function HeroSection({ navigate }) {
             alt="Dental Surgery"
             className="absolute w-full h-full object-cover opacity-[0.95]"
           />
-          <div className="relative z-[2] -rotate-90 whitespace-nowrap text-[2rem] font-light text-text-primary font-sans tracking-[0.02em]">
+          {/* Mobile readable contrast overlay */}
+          <div className="absolute inset-0 bg-black/15 md:hidden z-[1]" />
+          <div className="relative z-[2] rotate-0 md:-rotate-90 md:whitespace-nowrap text-[2rem] max-sm:text-[1.6rem] font-medium md:font-light text-text-primary max-sm:text-white font-sans tracking-[0.02em] text-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)] md:drop-shadow-none">
             Dental Surgery
           </div>
         </div>

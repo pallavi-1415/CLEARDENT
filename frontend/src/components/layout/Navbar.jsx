@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { LogOut, ChevronUp, ChevronDown, User, Calendar } from 'lucide-react';
+import { LogOut, ChevronUp, ChevronDown, User, Calendar, Menu, X } from 'lucide-react';
 import Button from '../ui/Button';
 import ConfirmModal from '../ui/ConfirmModal';
 
 function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, navigate, setPortalSubTab }) {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const userInitials = currentUser && currentUser.name
         ? currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase()
@@ -71,7 +72,7 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
             {/* Right Section: Login / Logout */}
             <div className="flex items-center gap-4">
                 {!isLoggedIn ? (
-                    <div className="flex gap-3 items-center">
+                    <div className="hidden md:flex gap-3 items-center">
                         <Button
                             onClick={() => navigate('login')}
                             variant="primary"
@@ -181,6 +182,16 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
                         )}
                     </div>
                 )}
+                {/* Mobile Menu Hamburger Button */}
+                {activeTab === 'website' && (
+                    <button
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="md:hidden p-2 text-text-primary hover:bg-slate-100 rounded-lg transition-colors border-none bg-transparent cursor-pointer flex items-center justify-center shrink-0"
+                        aria-label="Toggle mobile menu"
+                    >
+                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                )}
             </div>
             <ConfirmModal
                 isOpen={logoutConfirm.isOpen}
@@ -191,6 +202,73 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
                 confirmText="Yes, Logout"
                 cancelText="Cancel"
             />
+
+            {/* Collapsible Mobile Menu Drawer */}
+            {activeTab === 'website' && mobileMenuOpen && (
+                <>
+                    {/* Backdrop */}
+                    <div
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="fixed inset-0 top-[72px] z-[40] bg-slate-900/20 backdrop-blur-xs md:hidden"
+                    />
+                    <div className="absolute top-[100%] left-0 right-0 bg-[#f8fafc]/98 backdrop-blur-[20px] border-b border-slate-200 p-6 flex flex-col gap-5 md:hidden z-[49] animate-fade-in shadow-lg">
+                        <nav className="flex flex-col gap-4">
+                            <span
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    navigate('services');
+                                }}
+                                className="text-text-primary text-[1.1rem] font-medium py-2 hover:text-gold transition-colors font-sans cursor-pointer text-left"
+                            >
+                                Services
+                            </span>
+                            <span
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    navigate('doctors');
+                                }}
+                                className="text-text-primary text-[1.1rem] font-medium py-2 hover:text-gold transition-colors font-sans cursor-pointer text-left"
+                            >
+                                Our Doctors
+                            </span>
+                            <span
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    navigate('faq');
+                                }}
+                                className="text-text-primary text-[1.1rem] font-medium py-2 hover:text-gold transition-colors font-sans cursor-pointer text-left"
+                            >
+                                FAQ
+                            </span>
+                        </nav>
+
+                        {!isLoggedIn && (
+                            <div className="flex flex-col gap-3 pt-4 border-t border-slate-200">
+                                <Button
+                                    onClick={() => {
+                                        setMobileMenuOpen(false);
+                                        navigate('login');
+                                    }}
+                                    variant="primary"
+                                    className="w-full py-3 text-[0.95rem] justify-center"
+                                >
+                                    Login
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        setMobileMenuOpen(false);
+                                        navigate('signup');
+                                    }}
+                                    variant="outline"
+                                    className="w-full py-3 text-[0.95rem] justify-center bg-white"
+                                >
+                                    Sign Up
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </>
+            )}
         </header>
     );
 }

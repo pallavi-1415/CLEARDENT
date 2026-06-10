@@ -620,25 +620,32 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
           <div className="w-full rounded-[28px] border border-[#cbdad6] shadow-xl flex flex-col md:flex-row bg-[#f4f8f7] overflow-hidden min-h-[580px]">
             
             {/* LEFT COLUMN: STEPPER SIDEBAR */}
-            <div className="w-full md:w-[28%] bg-[#e8f1ed] p-8 border-r border-[#cbdad6] flex flex-col justify-between relative min-h-[480px]">
+            <div className="w-full md:w-[28%] bg-[#e8f1ed] p-5 md:p-8 border-b md:border-b-0 md:border-r border-[#cbdad6] flex flex-col md:justify-between relative md:min-h-[480px]">
               
-              <div className="space-y-10 relative z-10">
+              <div className="space-y-4 md:space-y-10 relative z-10">
                 {/* Logo and Brand */}
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 grid grid-cols-2 gap-1 shrink-0">
-                    <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center"><div className="w-1 h-1 rounded-full bg-white"></div></div>
-                    <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-70"><div className="w-1 h-1 rounded-full bg-white"></div></div>
-                    <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-80"><div className="w-1 h-1 rounded-full bg-white"></div></div>
-                    <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-90"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                <div className="flex items-center justify-between md:justify-start gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 grid grid-cols-2 gap-1 shrink-0">
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-70"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-80"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#0e8374] flex items-center justify-center opacity-90"><div className="w-1 h-1 rounded-full bg-white"></div></div>
+                    </div>
+                    <div>
+                      <span className="block text-[1.12rem] font-black tracking-tight text-[#1a332e] leading-none">ClearDent</span>
+                      <span className="text-[0.6rem] text-[#0e8374] font-extrabold uppercase tracking-widest block mt-0.5">Dental Studio</span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="block text-[1.12rem] font-black tracking-tight text-[#1a332e] leading-none">ClearDent</span>
-                    <span className="text-[0.6rem] text-[#0e8374] font-extrabold uppercase tracking-widest block mt-0.5">Dental Studio</span>
+
+                  {/* Need Help Link on Mobile */}
+                  <div className="md:hidden flex items-center gap-1.5 text-[0.72rem] text-[#879d97] font-bold cursor-pointer hover:text-[#1a332e]" onClick={() => window.showToast?.('Help center is available at info@cleardent.com')}>
+                    <HelpCircle size={15} className="text-[#0e8374]" />
                   </div>
                 </div>
 
-                {/* Stepper Timeline List */}
-                <nav className="relative pl-1.5 space-y-7">
+                {/* Desktop Stepper Timeline List (hidden on mobile) */}
+                <nav className="hidden md:block relative pl-1.5 space-y-7">
                   <div className="absolute left-[15px] top-1.5 bottom-1.5 w-0.5 bg-[#cbdad6]" />
                   
                   {STEPS.map((step) => {
@@ -669,16 +676,53 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     );
                   })}
                 </nav>
+
+                {/* Mobile Stepper Timeline (hidden on desktop) */}
+                <nav className="md:hidden flex flex-col gap-3.5 w-full mt-4 pb-2 border-b border-[#cbdad6]/30">
+                  <div className="flex items-center justify-between relative w-full px-2">
+                    {/* Connecting Line */}
+                    <div className="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-0.5 bg-[#cbdad6] z-0" />
+                    
+                    {STEPS.map((step) => {
+                      const isCompleted = currentStep > step.number;
+                      const isActive = currentStep === step.number;
+                      
+                      return (
+                        <div key={step.number} className="relative z-10">
+                          {isCompleted ? (
+                            <div className="w-7 h-7 rounded-full bg-white border border-[#0d9488] text-[#0d9488] flex items-center justify-center shadow-xs transition-all">
+                              <Check size={12} className="stroke-[3]" />
+                            </div>
+                          ) : isActive ? (
+                            <div className="w-7 h-7 rounded-full bg-[#0d9488] text-white flex items-center justify-center font-bold text-xs shadow-md border border-[#0d9488] transition-all">
+                              {step.number}
+                            </div>
+                          ) : (
+                            <div className="w-7 h-7 rounded-full bg-white text-[#9caea9] border border-[#cbdad6] flex items-center justify-center font-semibold text-xs transition-all">
+                              {step.number}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {/* Active Step Label */}
+                  <div className="text-center">
+                    <span className="text-[0.72rem] font-extrabold font-sans tracking-wider uppercase text-[#0e8374]">
+                      Step {currentStep} of 6: {STEPS[currentStep - 1]?.name}
+                    </span>
+                  </div>
+                </nav>
               </div>
 
               {/* Sidebar Footer Link */}
-              <div className="pt-6 border-t border-[#cbdad6]/50 mt-10 relative z-10 flex items-center gap-1.5 text-[0.72rem] text-[#879d97] font-bold cursor-pointer hover:text-[#1a332e]">
+              <div className="hidden md:flex pt-6 border-t border-[#cbdad6]/50 mt-10 relative z-10 items-center gap-1.5 text-[0.72rem] text-[#879d97] font-bold cursor-pointer hover:text-[#1a332e]">
                 <HelpCircle size={13} className="text-[#0e8374]" /> Need help with booking?
               </div>
             </div>
 
             {/* RIGHT COLUMN: MAIN CONTENT wizard forms */}
-            <div className="w-full md:w-[72%] p-8 flex flex-col justify-between min-h-[500px]">
+            <div className="w-full md:w-[72%] p-6 md:p-8 flex flex-col justify-between min-h-[500px]">
               
               {/* STEP 1: SERVICE & DENTIST SELECTOR */}
               {currentStep === 1 && (
@@ -921,7 +965,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
 
                     {/* Date Horizontal Picker Slider with navigation */}
                     <div className="relative mb-5 flex items-center border-b border-[#e2ece9] pb-2">
-                      <ChevronLeft size={13} className="text-slate-350 cursor-pointer absolute -left-3" />
+                      <ChevronLeft size={13} className="text-slate-350 cursor-pointer absolute -left-3 hidden md:block" />
                       <div className="flex gap-5 overflow-x-auto pb-1 scrollable-dates w-full px-2">
                         {datesList.map((dt) => {
                           const isSelected = selectedDate?.fullDateString === dt.fullDateString;
@@ -946,7 +990,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                           );
                         })}
                       </div>
-                      <ChevronRight size={13} className="text-slate-350 cursor-pointer absolute -right-3" />
+                      <ChevronRight size={13} className="text-slate-350 cursor-pointer absolute -right-3 hidden md:block" />
                     </div>
 
                     {/* Time Slots Grid (SAME TO SAME PIXELS) */}

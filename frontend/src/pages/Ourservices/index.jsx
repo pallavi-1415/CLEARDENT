@@ -509,8 +509,8 @@ function OurServices({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
         </section>
 
         {/* ── STICKY CATEGORIES FILTER BAR ── */}
-        <div className="bg-white/85 backdrop-blur-md border-b border-slate-200 px-8 py-3 sticky top-[72px] z-40 flex justify-center overflow-x-auto no-scrollbar shadow-sm">
-          <div className="flex gap-1.5 bg-slate-100 p-1 rounded-full border border-slate-200">
+        <div className="bg-white/85 backdrop-blur-md border-b border-slate-200 px-4 md:px-8 py-3 sticky top-[72px] z-40 flex md:justify-center overflow-x-auto no-scrollbar shadow-sm">
+          <div className="flex flex-row flex-nowrap gap-1.5 bg-slate-100 p-1 rounded-full border border-slate-200 overflow-x-auto no-scrollbar max-w-full select-none shrink-0">
             <button
               className={`border-none px-5 py-2 rounded-full text-[0.8rem] font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap ${selectedCategory === 'all'
                 ? 'bg-slate-900 text-white shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:bg-slate-900 hover:text-white'

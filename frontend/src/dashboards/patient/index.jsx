@@ -285,11 +285,11 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
       <div className="grid grid-cols-[260px_1fr] min-h-[80vh] w-full max-w-[1300px] mx-auto gap-8 p-8 box-border max-[900px]:grid-cols-1 max-[900px]:p-4">
         
         {/* Left Sidebar */}
-        <aside className="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col gap-1.5 h-fit shadow-[0_4px_15px_rgba(15,23,42,0.01)] max-[900px]:flex-row max-[900px]:overflow-x-auto no-scrollbar">
+        <aside className="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col gap-1.5 h-fit shadow-[0_4px_15px_rgba(15,23,42,0.01)] max-[900px]:flex-row max-[900px]:overflow-x-auto no-scrollbar shrink-0">
           <span className="text-[0.72rem] uppercase tracking-[0.08em] text-[#94a3b8] font-bold px-3 pt-1.5 pb-3 max-[900px]:hidden">Menu Navigation</span>
           
           <button
-            className={`flex items-center gap-3 px-4 py-3 border-none text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900 ${
+            className={`flex items-center gap-3 px-4 py-3 border-none text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900 whitespace-nowrap shrink-0 ${
               currentTab === 'appointments' ? 'bg-slate-900 text-white' : 'bg-transparent text-[#475569]'
             }`}
             onClick={() => setPortalSubTab('appointments')}
@@ -299,7 +299,7 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
           </button>
           
           <button
-            className={`flex items-center gap-3 px-4 py-3 border-none text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900 ${
+            className={`flex items-center gap-3 px-4 py-3 border-none text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900 whitespace-nowrap shrink-0 ${
               currentTab === 'profile' ? 'bg-slate-900 text-white' : 'bg-transparent text-[#475569]'
             }`}
             onClick={() => setPortalSubTab('profile')}
@@ -311,7 +311,7 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
           <div className="h-[1px] bg-slate-200 my-3 max-[900px]:hidden" />
 
           <button
-            className="flex items-center gap-3 px-4 py-3 border-none bg-transparent text-[#475569] text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900"
+            className="flex items-center gap-3 px-4 py-3 border-none bg-transparent text-[#475569] text-[0.88rem] font-semibold rounded-xl cursor-pointer transition-all duration-200 text-left hover:bg-slate-100 hover:text-slate-900 whitespace-nowrap shrink-0"
             onClick={() => setActiveTab('website')}
           >
             <ArrowLeft size={16} />

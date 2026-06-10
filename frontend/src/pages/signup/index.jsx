@@ -137,9 +137,9 @@ function Signup({ navigate, onLoginSuccess }) {
   }
 
   return (
-    <div className="h-screen max-h-screen overflow-hidden flex bg-bg-secondary w-screen m-0 p-0 animate-fade-in">
+    <div className="min-h-screen md:h-screen md:max-h-screen md:overflow-hidden flex bg-bg-secondary w-screen m-0 p-0 animate-fade-in">
       {/* Split Screen Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full h-screen max-h-screen overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 w-full min-h-screen md:h-screen md:max-h-screen md:overflow-hidden">
 
         {/* Left Side: Brand & Visual Panel */}
         <div
@@ -176,7 +176,7 @@ function Signup({ navigate, onLoginSuccess }) {
         </div>
 
         {/* Right Side: Form Panel */}
-        <div className="flex items-center justify-center p-6 max-md:px-5 max-md:py-6 bg-bg-primary h-full overflow-hidden">
+        <div className="flex items-center justify-center p-6 max-md:px-5 max-md:py-12 bg-bg-primary min-h-screen md:h-full md:overflow-hidden overflow-y-auto">
           <div className="w-full max-w-[400px]">
 
             {/* Back Button */}

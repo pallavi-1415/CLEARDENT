@@ -6,7 +6,9 @@ import {
   LogOut, 
   Home, 
   Activity, 
-  Loader2
+  Loader2,
+  Menu,
+  X
 } from 'lucide-react';
 import { 
   getAdminStats, 
@@ -31,6 +33,7 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
   const [doctors, setDoctors] = useState([]);
   const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
@@ -151,23 +154,46 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
         onCancel={handleCancelAction}
       />
       
+      {/* Sidebar Mobile Backdrop Drawer */}
+      {sidebarOpen && (
+        <div 
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-30 md:hidden animate-fade-in"
+        />
+      )}
+      
       {/* SIDEBAR */}
-      <aside className="w-[280px] bg-white border-r border-slate-200 flex flex-col justify-between p-6 shrink-0 shadow-sm">
+      <aside className={`w-[280px] bg-white border-r border-slate-200 flex flex-col justify-between p-6 shrink-0 shadow-sm fixed inset-y-0 left-0 z-40 transform md:relative md:translate-x-0 transition-transform duration-300 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
         <div className="space-y-8">
           {/* Logo / Brand */}
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-serif font-bold text-slate-900 text-[1rem] tracking-[0.05em] shadow-sm">C</div>
-            <div>
-              <span className="block font-serif text-[1rem] font-semibold tracking-[0.1em] uppercase text-slate-900 leading-none">ClearDent</span>
-              <span className="text-[0.62rem] text-blue-700 font-bold uppercase tracking-[0.15em]">Admin Control</span>
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-serif font-bold text-white text-[1rem] tracking-[0.05em] shadow-sm">C</div>
+              <div>
+                <span className="block font-serif text-[1rem] font-semibold tracking-[0.1em] uppercase text-slate-900 leading-none">ClearDent</span>
+                <span className="text-[0.62rem] text-blue-700 font-bold uppercase tracking-[0.15em]">Admin Control</span>
+              </div>
             </div>
+            
+            <button 
+              onClick={() => setSidebarOpen(false)}
+              className="p-1.5 text-slate-400 hover:text-slate-700 md:hidden bg-transparent border-none cursor-pointer"
+              title="Close Menu"
+            >
+              <X size={18} />
+            </button>
           </div>
 
           {/* Navigation Items */}
           <nav className="space-y-1.5">
             <button
-              onClick={() => setActiveSubTab('overview')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 ${
+              onClick={() => {
+                setActiveSubTab('overview');
+                setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 border-none bg-transparent cursor-pointer ${
                 activeSubTab === 'overview' 
                   ? 'bg-blue-50 text-blue-600 border-l-2 border-blue-600 pl-[14px]' 
                   : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
@@ -177,8 +203,11 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
               Overview
             </button>
             <button
-              onClick={() => setActiveSubTab('doctors')}
-              className={`w-full flex items-center justify-between px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 ${
+              onClick={() => {
+                setActiveSubTab('doctors');
+                setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 border-none bg-transparent cursor-pointer ${
                 activeSubTab === 'doctors' 
                   ? 'bg-blue-50 text-blue-600 border-l-2 border-blue-600 pl-[14px]' 
                   : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
@@ -195,8 +224,11 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
               )}
             </button>
             <button
-              onClick={() => setActiveSubTab('patients')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 ${
+              onClick={() => {
+                setActiveSubTab('patients');
+                setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 border-none bg-transparent cursor-pointer ${
                 activeSubTab === 'patients' 
                   ? 'bg-blue-50 text-blue-600 border-l-2 border-blue-600 pl-[14px]' 
                   : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
@@ -206,10 +238,13 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
               Patients Index
             </button>
             <button
-              onClick={() => setActiveSubTab('appointments')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 ${
+              onClick={() => {
+                setActiveSubTab('appointments');
+                setSidebarOpen(false);
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.88rem] font-semibold tracking-[0.02em] transition-all duration-200 border-none bg-transparent cursor-pointer ${
                 activeSubTab === 'appointments' 
-                  ? 'bg-blue-50 text-blue-600 border-l-2 border-blue-600 pl-[14px]' 
+                  ? 'bg-blue-50 text-[#1d4ed8] border-l-2 border-[#1d4ed8] pl-[14px]' 
                   : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
               }`}
             >
@@ -222,7 +257,7 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
         {/* User Info & Logout */}
         <div className="border-t border-slate-200 pt-6 space-y-4">
           <div className="flex items-center gap-3 px-2">
-            <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-600">
+            <div className="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-white">
               AD
             </div>
             <div>
@@ -232,7 +267,7 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
           </div>
           <button
             onClick={handleLogoutClick}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.85rem] font-semibold tracking-[0.02em] text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all duration-200 border-none bg-transparent cursor-pointer"
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-[8px] text-[0.85rem] font-semibold tracking-[0.02em] text-red-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 border-none bg-transparent cursor-pointer"
           >
             <LogOut size={16} />
             Secure Sign Out
@@ -250,22 +285,28 @@ function AdminDashboard({ navigate, currentUser, onLogout }) {
       </aside>
 
       {/* MAIN CONTAINER */}
-      <main className="flex-1 p-10 overflow-y-auto max-h-screen">
+      <main className="flex-1 p-6 md:p-10 overflow-y-auto max-h-screen flex flex-col">
         
         {/* Top Header */}
-        <header className="flex items-center justify-between mb-10">
-          <div>
-            <span className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-blue-700">ClearDent Medical Control Center</span>
-            <h1 className="font-serif text-[1.85rem] font-light text-slate-900 tracking-[0.02em] capitalize mt-1">
+        <header className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200/40 relative">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setSidebarOpen(true)}
+              className="p-1 text-slate-450 hover:text-slate-700 md:hidden bg-transparent border-none cursor-pointer"
+              title="Open Menu"
+            >
+              <Menu size={22} />
+            </button>
+            <h1 className="font-serif text-[1.65rem] md:text-[1.85rem] font-light text-slate-900 tracking-[0.02em] capitalize leading-none">
               Admin {activeSubTab}
             </h1>
           </div>
           <button 
             onClick={() => navigate('home')}
-            className="flex items-center gap-2 text-[0.82rem] font-bold tracking-[0.1em] uppercase bg-slate-50 hover:bg-[#1E293B] text-slate-600 hover:text-slate-900 px-4 py-2 rounded-[4px] border border-slate-200 transition-colors"
+            className="flex items-center gap-2 text-[0.75rem] font-bold tracking-[0.1em] uppercase bg-slate-50 hover:bg-[#1E293B] hover:text-white text-slate-600 px-3.5 py-2 rounded-[4px] border border-slate-200 transition-colors"
           >
-            <Home size={15} />
-            Go to Site
+            <Home size={14} />
+            <span className="hidden sm:inline">Go to Site</span>
           </button>
         </header>
 
