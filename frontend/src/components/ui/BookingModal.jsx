@@ -253,6 +253,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
       }
     };
     if (isOpen) loadDoctors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   /* ── Pre-fill from localStorage ── */
