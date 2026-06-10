@@ -3,11 +3,11 @@ import { Mail, Phone, ArrowRight } from 'lucide-react';
 
 function Footer({ navigate }) {
     return (
-        <footer className="bg-[#f5f4f0] text-black pt-16 pb-8 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
-            <div className="w-full max-w-[1200px] flex flex-col gap-12">
+        <footer className="bg-[#f5f4f0] text-black pt-10 pb-6 px-24 max-lg:px-12 max-md:px-6 max-sm:px-4 flex justify-center box-border font-sans">
+            <div className="w-full max-w-[1200px] flex flex-col gap-8">
 
                 {/* Upper Grid Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_2.5fr] gap-12 items-start w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_2.5fr] gap-8 items-start w-full">
 
                     {/* Left Column: Branding & Newsletter */}
                     <div className="flex flex-col gap-8 max-w-[400px]">
@@ -42,7 +42,7 @@ function Footer({ navigate }) {
                     </div>
 
                     {/* Right Columns Grid & Giant Wordmark */}
-                    <div className="flex flex-col gap-12 w-full">
+                    <div className="flex flex-col gap-8 w-full">
                         {/* 3 Columns Section */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full">
                             {/* Service Column */}
