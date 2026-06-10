@@ -16,6 +16,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Database connection check middleware (prevents serverless hangs if DB is down)
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path === '/api') return next();
+  const mongoose = require('mongoose');
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      message: 'Database connection is not established.',
+      error: 'Please verify that MONGO_URI is added to Vercel\'s Backend Environment Variables, and that MongoDB Atlas Network Access whitelists 0.0.0.0/0 (Access from Anywhere).'
+    });
+  }
+  next();
+});
+
+
 // Serve uploaded license files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
