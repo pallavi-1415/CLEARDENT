@@ -1,6 +1,8 @@
 // server.js - entry point for backend
 const dns = require('dns');
-dns.setServers(['8.8.8.8', '1.1.1.1']);
+if (!process.env.VERCEL) {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+}
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
@@ -18,7 +20,9 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB and seed admin
-connectDB().then(() => seedAdmin());
+connectDB().then(() => seedAdmin()).catch(err => {
+  console.error('❌ Initial database connection or seeding failed:', err);
+});
 
 // Routes
 const authRoutes = require('./routes/auth');
