@@ -31,7 +31,7 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-[#f8fafc]/95 backdrop-blur-[20px] flex justify-between items-center transition-all duration-200 px-24 py-6 max-lg:px-12 max-lg:py-[1.2rem] max-md:px-6 max-md:py-4 max-sm:px-4 max-sm:py-[0.9rem]">
+        <header className="sticky top-0 z-50 bg-[#f8fafc] border-b border-slate-200/50 flex justify-between items-center transition-all duration-200 px-24 py-6 max-lg:px-12 max-lg:py-[1.2rem] max-md:px-6 max-md:py-4 max-sm:px-4 max-sm:py-[0.9rem]">
             {/* Logo */}
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => { if (setActiveTab) setActiveTab('website'); navigate('home'); }}>
                 <div className="w-8 h-8 rounded-[8px] bg-gold flex items-center justify-center text-white">
@@ -186,10 +186,10 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
                 {activeTab === 'website' && (
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden p-2 text-text-primary hover:bg-slate-100 rounded-lg transition-colors border-none bg-transparent cursor-pointer flex items-center justify-center shrink-0"
+                        className="md:hidden p-2.5 text-text-primary hover:text-gold bg-white hover:bg-slate-50 border border-slate-200/85 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer flex items-center justify-center shrink-0"
                         aria-label="Toggle mobile menu"
                     >
-                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                     </button>
                 )}
             </div>
@@ -211,7 +211,7 @@ function Navbar({ activeTab, setActiveTab, isLoggedIn, onLogout, currentUser, na
                         onClick={() => setMobileMenuOpen(false)}
                         className="fixed inset-0 top-[72px] z-[40] bg-slate-900/20 backdrop-blur-xs md:hidden"
                     />
-                    <div className="absolute top-[100%] left-0 right-0 bg-[#f8fafc]/98 backdrop-blur-[20px] border-b border-slate-200 p-6 flex flex-col gap-5 md:hidden z-[49] animate-fade-in shadow-lg">
+                    <div className="absolute top-[100%] left-0 right-0 bg-[#f8fafc] border-b border-slate-200 p-6 flex flex-col gap-5 md:hidden z-[49] animate-fade-in shadow-lg">
                         <nav className="flex flex-col gap-4">
                             <span
                                 onClick={() => {

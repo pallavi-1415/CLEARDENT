@@ -189,11 +189,16 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
   /* ── Lock body scroll when modal open ── */
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
+      document.documentElement.classList.add('modal-open');
     } else {
-      document.body.style.overflow = '';
+      document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.classList.remove('modal-open');
+      document.documentElement.classList.remove('modal-open');
+    };
   }, [isOpen]);
 
   /* ── Load approved doctors ── */
@@ -611,11 +616,11 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
   return (
     <>
       <div className="fixed inset-0 bg-black/40 backdrop-blur-[4px] z-[99999] flex items-center justify-center p-4 animate-[bmOverlayIn_0.2s_ease_forwards] font-sans" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}>
-        <div className="bg-[#f4f7f6] rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] w-full max-w-[1000px] h-[600px] flex overflow-hidden relative animate-[bmCardIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] before:content-[''] before:absolute before:-bottom-[100px] before:-left-[100px] before:w-[400px] before:h-[400px] before:bg-[radial-gradient(circle,_var(--brand-green-gradient-1)_0%,_transparent_70%)] before:pointer-events-none before:z-0 after:content-[''] after:absolute after:-top-[50px] after:-right-[50px] after:w-[300px] after:h-[300px] after:bg-[radial-gradient(circle,_var(--brand-green-gradient-2)_0%,_transparent_70%)] after:pointer-events-none after:z-0">
-          <div className="flex flex-1 w-full z-[1]">
+        <div className="bg-[#f4f7f6] rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] w-full max-w-[1000px] h-[600px] max-md:h-[90vh] max-md:max-h-[620px] flex overflow-hidden relative animate-[bmCardIn_0.3s_cubic-bezier(0.16,1,0.3,1)_forwards] before:content-[''] before:absolute before:-bottom-[100px] before:-left-[100px] before:w-[400px] before:h-[400px] before:bg-[radial-gradient(circle,_var(--brand-green-gradient-1)_0%,_transparent_70%)] before:pointer-events-none before:z-0 after:content-[''] after:absolute after:-top-[50px] after:-right-[50px] after:w-[300px] after:h-[300px] after:bg-[radial-gradient(circle,_var(--brand-green-gradient-2)_0%,_transparent_70%)] after:pointer-events-none after:z-0">
+          <div className="flex flex-col md:flex-row flex-1 w-full z-[1] overflow-hidden">
             
-            {/* ─── SIDEBAR ─── */}
-            <div className="w-[280px] shrink-0 p-[40px_30px] flex flex-col border-r border-black/[0.04]">
+            {/* ─── DESKTOP SIDEBAR ─── */}
+            <div className="hidden md:flex w-[280px] shrink-0 p-[40px_30px] flex-col border-r border-black/[0.04]">
               <div className="flex items-center gap-2.5 mb-[50px]">
                 <svg className="text-[var(--brand-green)] w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
@@ -658,9 +663,57 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                 Need help with booking?
               </div>
             </div>
+
+            {/* ─── MOBILE HEADER STEPPER ─── */}
+            <div className="flex md:hidden w-full p-4 border-b border-black/[0.04] bg-[#e8f1ed] flex-col gap-2 shrink-0 select-none">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <svg className="text-[var(--brand-green)] w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                    <path d="M12 6a3.5 3.5 0 0 0-3.5 3.5c0 3.5 3.5 6.5 3.5 6.5s3.5-3 3.5-6.5A3.5 3.5 0 0 0 12 6z" />
+                  </svg>
+                  <span className="text-base font-bold text-[#111827] tracking-[-0.01em]">ClearDent</span>
+                </div>
+                <button className="bg-transparent border-none cursor-pointer text-slate-400 hover:text-slate-700 p-1 text-xs font-bold uppercase tracking-wider" onClick={handleClose}>
+                  Cancel
+                </button>
+              </div>
+              <div className="flex items-center justify-between px-1 relative w-full mt-1">
+                {/* Connecting Line */}
+                <div className="absolute left-3 right-3 top-1/2 -translate-y-1/2 h-[1.5px] bg-[#cbdad6] z-0" />
+                
+                {STEPS.map((step) => {
+                  const isDone = currentStep > step.number;
+                  const isActive = currentStep === step.number;
+                  
+                  return (
+                    <div key={step.number} className="relative z-10">
+                      {isDone ? (
+                        <div className="w-6 h-6 rounded-full bg-white border border-[var(--brand-green)] text-[var(--brand-green)] flex items-center justify-center shadow-xs">
+                          <Check size={10} strokeWidth={3} />
+                        </div>
+                      ) : isActive ? (
+                        <div className="w-6 h-6 rounded-full bg-[var(--brand-green)] text-white flex items-center justify-center font-bold text-xs shadow-md border border-[var(--brand-green)]">
+                          {step.number}
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-white text-[#9ca3af] border border-[#d1d5db] flex items-center justify-center font-semibold text-xs">
+                          {step.number}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="text-center mt-1">
+                <span className="text-[0.65rem] font-extrabold uppercase tracking-wider text-[var(--brand-green)]">
+                  Step {currentStep} of 6: {STEPS[currentStep - 1]?.name}
+                </span>
+              </div>
+            </div>
  
             {/* ─── CONTENT AREA ─── */}
-            <div className="flex-1 flex flex-col p-10">
+            <div className="flex-1 flex flex-col p-10 max-md:p-5 overflow-y-auto">
               
               {/* STEP 1: Service */}
               {currentStep === 1 && (
@@ -668,7 +721,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   <div className="flex justify-between items-center mb-[30px]">
                     <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Select Service</h2>
                   </div>
-                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] max-md:p-5 mb-6 max-md:mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div className="relative mb-6">
                       <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Category</span>
                       <CustomSelect 
@@ -730,7 +783,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   <div className="flex justify-between items-center mb-[30px]">
                     <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Personal Details</h2>
                   </div>
-                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] max-md:p-5 mb-6 max-md:mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="relative mb-6">
                         <span className="text-[0.85rem] font-semibold text-[#4b5563] mb-2 block">Full Name</span>
@@ -808,7 +861,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
               {/* STEP 4: Appointment (Date/Time) */}
               {currentStep === 4 && (
                 <div className="flex-1 flex flex-col">
-                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex-1 flex flex-col mb-5">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] max-md:p-4 mb-6 max-md:mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex-1 flex flex-col mb-5">
                     
                     <div className="flex justify-between items-center mb-[30px]">
                       <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Select Date and Time</h2>
@@ -819,9 +872,8 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                       </div>
                     </div>
  
-                    <div className="flex items-center justify-between border-b border-[#e5e7eb] pb-4 mb-6">
-                      <button className="text-[#9ca3af] bg-none border-none cursor-pointer p-1 hover:text-[#111827]"><ChevronLeft size={20} /></button>
-                      {datesList.slice(0, 7).map((d, i) => {
+                    <div className="flex items-center gap-4 border-b border-[#e5e7eb] pb-3 mb-5 overflow-x-auto scrollable-dates no-scrollbar">
+                      {datesList.map((d, i) => {
                         let label = d.dayName;
                         if (i === 0) label = 'Today';
                         else if (i === 1) label = 'Tomorrow';
@@ -829,15 +881,14 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                         return (
                           <div 
                             key={d.isoString} 
-                            className={`flex flex-col items-center gap-2 cursor-pointer min-width-[60px] relative after:content-[''] after:absolute after:-bottom-[17px] after:left-0 after:right-0 after:h-[3px] after:rounded-t-[3px] ${isSelected ? 'after:bg-[#111827]' : 'after:bg-transparent'}`}
+                            className={`flex flex-col items-center gap-1.5 cursor-pointer shrink-0 min-w-[52px] pb-2 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2.5px] after:rounded-t-[2px] ${isSelected ? 'after:bg-[#111827]' : 'after:bg-transparent'}`}
                             onClick={() => { setSelectedDate(d); setSelectedTimeSlot(null); }}
                           >
-                            <span className={`text-[0.85rem] font-medium ${isSelected ? 'text-[#111827] font-bold' : 'text-[#6b7280]'}`}>{label}</span>
-                            <span className={`text-[1.15rem] font-medium ${isSelected ? 'text-[#111827] font-bold' : 'text-[#374151]'}`}>{d.dayNum}</span>
+                            <span className={`text-[0.78rem] font-medium ${isSelected ? 'text-[#111827] font-bold' : 'text-[#6b7280]'}`}>{label}</span>
+                            <span className={`text-[1.08rem] font-extrabold ${isSelected ? 'text-[#111827]' : 'text-[#374151]'}`}>{d.dayNum}</span>
                           </div>
                         );
                       })}
-                      <button className="text-[#9ca3af] bg-none border-none cursor-pointer p-1 hover:text-[#111827]"><ChevronRight size={20} /></button>
                     </div>
  
                     <div className="grid grid-cols-[repeat(auto-fill,minmax(130px,1fr))] gap-3 mb-2">
@@ -890,7 +941,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
                   <div className="flex justify-between items-center mb-[30px]">
                     <h2 className="text-[1.45rem] font-bold text-[#1f2937] m-0">Payment Method</h2>
                   </div>
-                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] max-md:p-5 mb-6 max-md:mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
                     <div className="grid grid-cols-1 gap-4">
                       {['Pay at Clinic', 'Razorpay / Online Payment', 'Health Insurance'].map((method) => {
                         const isSelected = paymentMethod === method;
@@ -925,7 +976,7 @@ function BookingModal({ isOpen, onClose, currentUser, isLoggedIn, navigate }) {
               {/* STEP 6: Confirmation */}
               {currentStep === 6 && (
                 <div className="flex-1 overflow-y-auto">
-                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] mb-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center py-10 px-5 !m-0">
+                  <div className="bg-white border border-gray-200/50 rounded-xl p-[30px] max-md:p-5 mb-6 max-md:mb-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] flex flex-col items-center justify-center py-10 px-5 !m-0">
                     <div className="w-full max-w-[500px]">
                       <div className="no-print flex justify-center mb-4">
                         <div className="w-[60px] h-[60px] rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">

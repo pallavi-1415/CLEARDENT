@@ -285,7 +285,10 @@ function PortalDashboardView({ setActiveTab, currentUser, portalSubTab, setPorta
       <div className="grid grid-cols-[260px_1fr] min-h-[80vh] w-full max-w-[1300px] mx-auto gap-8 p-8 box-border max-[900px]:grid-cols-1 max-[900px]:p-4">
         
         {/* Left Sidebar */}
-        <aside className="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col gap-1.5 h-fit shadow-[0_4px_15px_rgba(15,23,42,0.01)] max-[900px]:flex-row max-[900px]:overflow-x-auto no-scrollbar shrink-0">
+        <aside 
+          className="bg-white border border-slate-200 rounded-[20px] p-6 flex flex-col gap-1.5 h-fit shadow-[0_4px_15px_rgba(15,23,42,0.01)] max-[900px]:flex-row max-[900px]:overflow-x-auto no-scrollbar shrink-0"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
           <span className="text-[0.72rem] uppercase tracking-[0.08em] text-[#94a3b8] font-bold px-3 pt-1.5 pb-3 max-[900px]:hidden">Menu Navigation</span>
           
           <button

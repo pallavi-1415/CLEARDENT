@@ -738,7 +738,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     {/* Category Selector Rows */}
                     <div className="space-y-2">
                       <label className="block text-[0.62rem] font-extrabold uppercase tracking-wider text-[#879d97]">1. Treatment Specialty</label>
-                      <div className="flex gap-2 overflow-x-auto pb-1 scrollable-dates">
+                      <div className="flex gap-2 overflow-x-auto pb-1 scrollable-dates no-scrollbar">
                         {TREATMENTS_DATA.map((cat) => {
                           const isSelected = selectedCategory.id === cat.id;
                           return (
@@ -792,7 +792,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     {/* Attending Dentist Selection Row */}
                     <div className="space-y-2">
                       <label className="block text-[0.62rem] font-extrabold uppercase tracking-wider text-[#879d97]">3. Attending Specialist</label>
-                      <div className="flex gap-3 overflow-x-auto pb-1 scrollable-dates">
+                      <div className="flex gap-3 overflow-x-auto pb-1 scrollable-dates no-scrollbar">
                         {filteredDoctors.length === 0 ? (
                           <div className="text-center w-full py-2 text-xs italic text-slate-400">No doctors available.</div>
                         ) : (
@@ -966,7 +966,7 @@ function BookingPage({ navigate, isLoggedIn, currentUser, onLogout, activeTab, s
                     {/* Date Horizontal Picker Slider with navigation */}
                     <div className="relative mb-5 flex items-center border-b border-[#e2ece9] pb-2">
                       <ChevronLeft size={13} className="text-slate-350 cursor-pointer absolute -left-3 hidden md:block" />
-                      <div className="flex gap-5 overflow-x-auto pb-1 scrollable-dates w-full px-2">
+                      <div className="flex gap-5 overflow-x-auto pb-1 scrollable-dates w-full px-2 no-scrollbar">
                         {datesList.map((dt) => {
                           const isSelected = selectedDate?.fullDateString === dt.fullDateString;
                           return (
