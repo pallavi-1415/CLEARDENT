@@ -20,7 +20,7 @@ function AppointmentCta({ navigate, isLoggedIn, setActiveTab }) {
           <div className="flex flex-col gap-4 mt-4 w-full max-w-[420px]">
             <Button
               onClick={() => {
-                window.location.href = 'mailto:info@cleardent.com';
+                navigate?.('contact');
               }}
               variant="navy"
               className="w-full rounded-full p-[0.65rem_0.65rem_0.65rem_2rem] text-[0.95rem] flex items-center justify-between shadow-[0_8px_25px_rgba(22,40,78,0.15)] font-sans"

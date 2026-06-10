@@ -59,22 +59,12 @@ function Footer({ navigate }) {
                             <div className="flex flex-col gap-4">
                                 <h5 className="text-[0.78rem] font-bold text-black/50 uppercase tracking-widest m-0">Quick Link</h5>
                                 <div className="flex flex-col gap-2.5 text-[0.85rem] text-black/70">
-                                    <span
-                                        onClick={() => {
-                                            if (navigate) {
-                                                navigate('home');
-                                                setTimeout(() => {
-                                                    document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-                                                }, 100);
-                                            }
-                                        }}
-                                        className="hover:text-black cursor-pointer transition-colors"
-                                    >
+                                    <span onClick={() => navigate?.('faq')} className="hover:text-black cursor-pointer transition-colors">
                                         FAQs
                                     </span>
                                     <span onClick={() => navigate?.('contact')} className="hover:text-black cursor-pointer transition-colors">Contact Us</span>
-                                    <span onClick={() => navigate?.('privacy-policy')} className="hover:text-black cursor-pointer transition-colors">Privacy</span>
-                                    <span onClick={() => navigate?.('terms-conditions')} className="hover:text-black cursor-pointer transition-colors">Terms & Conditions</span>
+                                    <span onClick={() => window.open('/privacy-policy', '_blank')} className="hover:text-black cursor-pointer transition-colors">Privacy</span>
+                                    <span onClick={() => window.open('/terms-conditions', '_blank')} className="hover:text-black cursor-pointer transition-colors">Terms & Conditions</span>
                                 </div>
                             </div>
 

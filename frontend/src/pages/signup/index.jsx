@@ -402,7 +402,20 @@ function Signup({ navigate, onLoginSuccess }) {
                     className="accent-gold w-3 h-3 cursor-pointer"
                   />
                   <span className="leading-[1.3]">
-                    I agree to the privacy policy and terms of service.
+                    I agree to the{' '}
+                    <span 
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open('/privacy-policy', '_blank'); }} 
+                      className="text-gold hover:underline hover:text-gold-dark transition-colors"
+                    >
+                      privacy policy
+                    </span> 
+                    {' '}and{' '}
+                    <span 
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open('/terms-conditions', '_blank'); }} 
+                      className="text-gold hover:underline hover:text-gold-dark transition-colors"
+                    >
+                      terms of service
+                    </span>.
                   </span>
                 </label>
                 {errors.agreeTerms && (
